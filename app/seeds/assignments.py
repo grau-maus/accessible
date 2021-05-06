@@ -7,7 +7,7 @@ fake = Faker()
 
 # Adds a assignment, you can add other assignments here if you want
 def seed_assignments():
-    for i in range(5000):
+    for i in range(500):
         new_assignment = Assignment(
             professional_id=fake.pyint(min_value=1, max_value=200),
             patient_id=fake.pyint(min_value=1, max_value=1000)

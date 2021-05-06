@@ -25,6 +25,12 @@ def seed_users():
 
     for i in range(4):
         fake_user_deets = fake.profile()
+        first_name_check = fake_user_deets['name'].split(' ')[0]
+
+        while first_name_check == 'Mr.' or first_name_check == 'Ms.' or first_name_check == 'Mrs.':
+            fake_user_deets = fake.profile()
+            first_name_check = fake_user_deets['name'].split(' ')[0]
+
         fake_user = User(
             first_name=fake_user_deets['name'].split(' ')[0],
             last_name=fake_user_deets['name'].split(' ')[-1],
@@ -35,13 +41,25 @@ def seed_users():
 
         db.session.add(fake_user)
 
-    for i in range(95):
+    for i in range(10):
         fake_user_deets = fake.profile()
         fake_user = User(
             first_name=fake_user_deets['name'].split(' ')[0],
             last_name=fake_user_deets['name'].split(' ')[-1],
             email=fake_user_deets['mail'],
-            role=roles[fake.pyint(min_value=1, max_value=9)],
+            role='S',
+            password=fake.password(length=10)
+        )
+
+        db.session.add(fake_user)
+
+    for i in range(85):
+        fake_user_deets = fake.profile()
+        fake_user = User(
+            first_name=fake_user_deets['name'].split(' ')[0],
+            last_name=fake_user_deets['name'].split(' ')[-1],
+            email=fake_user_deets['mail'],
+            role=roles[fake.pyint(min_value=2, max_value=9)],
             password=fake.password(length=10)
         )
 

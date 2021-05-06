@@ -45,10 +45,9 @@ class User(db.Model, UserMixin):
     )
 
     # associations
-    user_patient = relationship(
-        'Patient',
-        secondary='tasks',
-        back_populates='patient_user',
+    user_task = relationship(
+        'Task',
+        backref='task_user',
         cascade='all, delete'
     )
 
@@ -141,11 +140,11 @@ class Medical_Professional(db.Model):
         nullable=False
     )
     phone_number = db.Column(
-        db.Integer,
+        db.String(7),
         nullable=False
     )
     npi_number = db.Column(
-        db.Integer,
+        db.String(10),
         nullable=False
     )
     created_at = db.Column(
@@ -158,10 +157,9 @@ class Medical_Professional(db.Model):
     )
 
     # associations
-    professional_patient = relationship(
-        'Patient',
-        secondary='assignments',
-        back_populates='patient_professional',
+    professional_assignment = relationship(
+        'Assignment',
+        backref='assignment_professional',
         cascade='all, delete'
     )
 
@@ -223,19 +221,19 @@ class Patient(db.Model):
         default=datetime(1100, 12, 31)  # datetime(year, month, date)
     )
     mrn = db.Column(
-        db.Integer,
-        default=0
+        db.String(10),
+        default='0'
     )
     ssn = db.Column(
-        db.Integer,
-        default=0
+        db.String(9),
+        default='0'
     )
     primary_address = db.Column(
         db.Text,
         default='N/A'
     )
     phone_number = db.Column(
-        db.Integer,
+        db.String(7),
         default=0
     )
     active = db.Column(
@@ -252,16 +250,14 @@ class Patient(db.Model):
     )
 
     # associations
-    patient_user = relationship(
-        'User',
-        secondary='tasks',
-        back_populates='user_patient',
+    patient_assignment = relationship(
+        'Assignment',
+        backref='assignment_patient',
         cascade='all, delete'
     )
-    patient_professional = relationship(
-        'Medical_Professional',
-        secondary='assignments',
-        back_populates='professional_patient',
+    patient_task = relationship(
+        'Task',
+        backref='task_patient',
         cascade='all, delete'
     )
 

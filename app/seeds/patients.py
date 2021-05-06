@@ -11,6 +11,11 @@ def seed_patients():
         fake_profile = fake.profile()
         fake_middle_name = None
         add_middle_name = fake.boolean(chance_of_getting_true=45)
+        first_name_check = fake_profile['name'].split(' ')[0]
+
+        while first_name_check == 'Mr.' or first_name_check == 'Ms.' or first_name_check == 'Mrs.':
+            fake_profile = fake.profile()
+            first_name_check = fake_profile['name'].split(' ')[0]
 
         if add_middle_name:
             fake_middle_name = fake.profile()['name'].split(' ')[-1]

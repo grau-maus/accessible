@@ -1,17 +1,29 @@
 # from werkzeug.security import generate_password_hash
+from datetime import datetime
 from faker import Faker
-from app.models import db, Task
+from app.models import db, Task, User
 
 fake = Faker()
 
 
 # Adds a task, you can add other tasks here if you want
 def seed_tasks():
-    for i in range(5000):
+    for i in range(500):
+        fake_user_id = fake.pyint(min_value=16, max_value=100)
+        user_role = User.query.get(fake_user_id).role
+        task_type = ''
+
+        if user_role == 'RN':
+            task_type = 'Nurse visit'
+        elif user_role == 'CNA':
+            task_type = 'Home health aide visit'
+        else:
+            task_type = 'Therapy visit'
+
         new_task = Task(
-            user_id=fake.pyint(min_value=6, max_value=100),
+            user_id=fake_user_id,
             patient_id=fake.pyint(min_value=1, max_value=1000),
-            type='N/A',
+            type=task_type,
             scheduled_visit=datetime(
                 2022,
                 fake.pyint(min_value=1, max_value=12),

@@ -16,6 +16,7 @@ from .models import (
 )
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
+from .api.task_routes import task_routes
 
 from .seeds import seed_commands
 
@@ -39,6 +40,7 @@ app.cli.add_command(seed_commands)
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
+app.register_blueprint(task_routes, url_prefix='/api/tasks')
 db.init_app(app)
 Migrate(app, db)
 
