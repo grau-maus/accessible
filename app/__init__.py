@@ -19,6 +19,7 @@ from .api.auth_routes import auth_routes
 from .api.task_routes import task_routes
 from .api.patient_routes import patient_routes
 from .api.insurance_routes import insurance_routes
+from .api.mcp_routes import mcp_routes
 
 from .seeds import seed_commands
 
@@ -45,6 +46,7 @@ app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(task_routes, url_prefix='/api/tasks')
 app.register_blueprint(patient_routes, url_prefix='/api/patients')
 app.register_blueprint(insurance_routes, url_prefix='/api/insurances')
+app.register_blueprint(mcp_routes, url_prefix='/api/mcps')
 db.init_app(app)
 Migrate(app, db)
 
