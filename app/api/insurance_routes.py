@@ -58,38 +58,56 @@ def del_insurance():
 @login_required
 def edit_insurance():
     try:
-        # insurance_id = request.json['insuranceId']
         insurance_id = request.json['insuranceId']
         insurance = Insurance.query.get(insurance_id)
 
-        assigned_staff = request.json['staffId']
-        assigned_patient = request.json['patientId']
-        visit_type = request.json['visitType']
-        scheduled_date = request.json['scheduledDate']
-        status = request.json['status']
+        new_name = request.json['name']
+        new_type = request.json['type']
+        new_auth_visits = request.json['authVisits']
 
-        if assigned_staff:
-            insurance.user_id = assigned_staff
-        if assigned_patient:
-            insurance.patient_id = assigned_patient
-        if visit_type:
-            insurance.type = visit_type
-        if scheduled_date:
-            insurance.scheduled_visit = scheduled_date
-        if status is not None:
-            insurance.completed = status
+        if new_name:
+            insurance.name = new_name
+        if new_type:
+            insurance.type = new_type
+        if new_auth_visits:
+            insurance.authorized_visits = new_auth_visits
 
         if (
-            assigned_staff or
-            assigned_patient or
-            visit_type or
-            scheduled_date or
-            status is not None
+            new_name or
+            new_type or
+            new_auth_visits
         ):
             insurance.updated_at = datetime.now()
         db.session.commit()
 
         return insurance.to_dict()
+    except AttributeError:
+        return {'error': 'Error 404. Insurance does not exist in the database'}, 404
+    except UnmappedInstanceError:
+        return {'error': 'Error 404. Insurance does not exist in the database'}, 404
+    except:
+        return {'error': 'Error 500. Contact your administrator for more details.'}, 500
+
+
+# ADD INSURANCE
+@insurance_routes.route('/', methods=['POST'])
+@login_required
+def add_insurance():
+    try:
+        new_name = request.json['name']
+        new_type = request.json['type']
+        new_auth_visits = request.json['authVisits']
+
+        new_insurance = Insurance(
+            name=new_name,
+            type=new_type,
+            authorized_visits=new_auth_visits
+        )
+
+        db.session.add(new_insurance)
+        db.session.commit()
+
+        return new_insurance.to_dict()
     except AttributeError:
         return {'error': 'Error 404. Insurance does not exist in the database'}, 404
     except UnmappedInstanceError:
