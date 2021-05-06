@@ -14,8 +14,6 @@ def tasks():
     get_all_tasks = Task.query.filter(
         Task.user_id == 18
     ).all()
-    print('teeeeeeeest')
     all_tasks = {task.id: task.to_dict() for task in get_all_tasks}
-    print('teeeeeeeest')
 
     return all_tasks
