@@ -36,7 +36,7 @@ def del_user():
     old_user = User.query.get(user_id)
     db.session.delete(old_user)
     db.session.commit()
-    return {'message': 'Success'}
+    return {'message': 'Success.'}
 
 
 # EDIT USER
