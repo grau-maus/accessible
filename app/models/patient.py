@@ -60,12 +60,12 @@ class Patient(db.Model):
     )
 
     # associations
-    patient_assignment = relationship(
+    patient_assignments = relationship(
         'Assignment',
         backref='assignment_patient',
         cascade='all, delete'
     )
-    patient_task = relationship(
+    patient_tasks = relationship(
         'Task',
         backref='task_patient',
         cascade='all, delete'

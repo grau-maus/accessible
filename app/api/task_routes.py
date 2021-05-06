@@ -29,9 +29,9 @@ def task(task_id):
 
         return task.to_dict()
     except AttributeError:
-        return {'message': 'Error 404. Task does not exist in the database'}, 404
+        return {'error': 'Error 404. Task does not exist in the database'}, 404
     except:
-        return {'message': 'Error 500. Contact your administrator for more details.'}, 500
+        return {'error': 'Error 500. Contact your administrator for more details.'}, 500
 
 
 # DELETE TASK
@@ -46,11 +46,11 @@ def del_task():
 
         return {'message': 'Success.'}
     except AttributeError:
-        return {'message': 'Error 404. Task does not exist in the database'}, 404
+        return {'error': 'Error 404. Task does not exist in the database'}, 404
     except UnmappedInstanceError:
-        return {'message': 'Error 404. Task does not exist in the database'}, 404
+        return {'error': 'Error 404. Task does not exist in the database'}, 404
     except:
-        return {'message': 'Error 500. Contact your administrator for more details.'}, 500
+        return {'error': 'Error 500. Contact your administrator for more details.'}, 500
 
 
 # EDIT TASK
@@ -90,11 +90,11 @@ def edit_task():
 
         return task.to_dict()
     except AttributeError:
-        return {'message': 'Error 404. Task does not exist in the database'}, 404
+        return {'error': 'Error 404. Task does not exist in the database'}, 404
     except UnmappedInstanceError:
-        return {'message': 'Error 404. Task does not exist in the database'}, 404
+        return {'error': 'Error 404. Task does not exist in the database'}, 404
     except:
-        return {'message': 'Error 500. Contact your administrator for more details.'}, 500
+        return {'error': 'Error 500. Contact your administrator for more details.'}, 500
 
 
 # ADD TASK
@@ -121,8 +121,8 @@ def add_task():
 
         return new_task.to_dict()
     except AttributeError:
-        return {'message': 'Error 404. Task does not exist in the database'}, 404
+        return {'error': 'Error 404. Task does not exist in the database'}, 404
     except UnmappedInstanceError:
-        return {'message': 'Error 404. Task does not exist in the database'}, 404
+        return {'error': 'Error 404. Task does not exist in the database'}, 404
     except:
-        return {'message': 'Error 500. Contact your administrator for more details.'}, 500
+        return {'error': 'Error 500. Contact your administrator for more details.'}, 500
