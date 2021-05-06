@@ -34,7 +34,7 @@ def patient(patient_id):
         return {'error': 'Error 500. Contact your administrator for more details'}, 500
 
 
-# DELETE TASK
+# DELETE PATIENT
 @patient_routes.route('/', methods=['DELETE'])
 @login_required
 def del_patient():

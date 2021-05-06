@@ -20,6 +20,16 @@ def tasks():
     return all_tasks
 
 
+# GET ALLLLLLL TASKS (BAD IDEA, FUTURE JOSH PLS LIMIT QUERY)
+@task_routes.route('/all')
+@login_required
+def all_tasks():
+    get_all_tasks = Task.query.filter().all()
+    all_tasks = {task.id: task.to_dict() for task in get_all_tasks}
+
+    return all_tasks
+
+
 # GET SINGLE TASK
 @task_routes.route('/<int:task_id>')
 @login_required
