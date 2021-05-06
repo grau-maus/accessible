@@ -1,0 +1,62 @@
+#login-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-errors {
+  color: red;
+}
+
+#login-form {
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 40px;
+  width: 400px;
+  background-color: white;
+}
+
+.login-logo {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: baseline;
+  margin-bottom: 25px;
+}
+
+.login-logo > i.fa-ambulance {
+  border: 2px solid black;
+  border-radius: 100%;
+  padding: 10px;
+  color: #d62828;
+  font-size: 2.5rem;
+  margin-right: 5px;
+}
+
+#login-form > .login-email {
+  margin-bottom: 20px;
+}
+
+#login-buttons {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#login-buttons > button {
+  margin: 5px;
+}
+
+#login-admin-demo {
+  background-color: #a4161a;
+  border-color: #a4161a;
+}
+
+#login-admin-demo:hover {
+  background-color: #790f13;
+}

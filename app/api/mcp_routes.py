@@ -101,16 +101,11 @@ def edit_mcp():
 @login_required
 def add_mcp():
     try:
-        # new_name = request.json['mcpName']
-        # new_efax = request.json['efax']
-        # new_address = request.json['address']
-        # new_phone_num = request.json['phoneNumber']
-        # new_npi_num = request.json['npiNumber']
-        new_name = 'Dr. Who'
-        new_efax = None
-        new_address = 'Phone booth'
-        new_phone_num = '555'
-        new_npi_num = '209552'
+        new_name = request.json['mcpName']
+        new_efax = request.json['efax']
+        new_address = request.json['address']
+        new_phone_num = request.json['phoneNumber']
+        new_npi_num = request.json['npiNumber']
 
         new_mcp = Medical_Professional(
             name=new_name,
