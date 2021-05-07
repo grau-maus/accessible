@@ -1,0 +1,84 @@
+.home-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.home-nav-spacer {
+  height: 100px;
+}
+
+.dashboard-container {
+  background-color: white;
+  margin-top: 40px;
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  flex-direction: column;
+  border: 1px solid gray;
+  border-radius: 10px;
+  width: 95vw;
+  /* min-height: 77vh; */
+}
+
+.dashboard-navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid gray;
+}
+
+.dashboard-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 15px;
+  height: 50vh;
+}
+
+.dashboard-body-left {
+  border: 1px solid gray;
+  width: 56vw;
+  margin-right: 5px;
+  overflow-y: auto;
+}
+
+.dashboard-body-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 36vw;
+  margin-left: 5px;
+}
+
+.dashboard-body-right-insurance {
+  border: 1px solid gray;
+  margin-bottom: 5px;
+  height: 24vh;
+  overflow-y: auto;
+}
+
+.dashboard-body-right-physician {
+  border: 1px solid gray;
+  margin-top: 5px;
+  height: 24vh;
+  overflow-y: auto;
+}
+
+.dashboard-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-top: 1px solid gray;
+  height: 100px;
+}
+
+.dashboard-footer > h4 {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 10px;
+  padding-right: 15px;
+  border-right: 2px dotted gray;
+}
