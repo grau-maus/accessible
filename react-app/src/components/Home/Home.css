@@ -11,7 +11,7 @@
 
 .dashboard-container {
   background-color: white;
-  margin-top: 40px;
+  margin-top: 20px;
   display: flex;
   justify-self: center;
   align-self: center;
@@ -19,7 +19,6 @@
   border: 1px solid gray;
   border-radius: 10px;
   width: 95vw;
-  /* min-height: 77vh; */
 }
 
 .dashboard-navbar {
@@ -44,6 +43,19 @@
   overflow-y: auto;
 }
 
+.dashboard-task-header {
+  position: sticky;
+  top: 0;
+  padding: 0;
+  margin: 0;
+  padding: 5px;
+  height: 40px;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: white;
+  border-bottom: 1px solid gray;
+}
+
 .dashboard-body-right {
   display: flex;
   flex-direction: column;
@@ -59,11 +71,37 @@
   overflow-y: auto;
 }
 
+.dashboard-insurance-header {
+  position: sticky;
+  top: 0;
+  padding: 0;
+  margin: 0;
+  padding: 5px;
+  height: 40px;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: white;
+  border-bottom: 1px solid gray;
+}
+
 .dashboard-body-right-physician {
   border: 1px solid gray;
   margin-top: 5px;
   height: 24vh;
   overflow-y: auto;
+}
+
+.dashboard-physicians-header {
+  position: sticky;
+  top: 0;
+  padding: 0;
+  margin: 0;
+  padding: 5px;
+  height: 40px;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: white;
+  border-bottom: 1px solid gray;
 }
 
 .dashboard-footer {

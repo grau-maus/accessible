@@ -52,7 +52,7 @@ const LoginForm = () => {
     <div id='login-form-container'>
       <Form id='login-form' onSubmit={onLogin}>
         <div className='login-logo'>
-          <i className='fas fa-ambulance'></i>
+          <i className='fas fa-ambulance' />
 
           <h2>accessible</h2>
         </div>

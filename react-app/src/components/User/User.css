@@ -1,0 +1,8 @@
+#modal-header-add-user > button.close {
+  border: none;
+  background-color: transparent;
+}
+
+#modal-header-add-user > button.close:hover {
+  background-color: rgba(128, 128, 128, 0.466);
+}

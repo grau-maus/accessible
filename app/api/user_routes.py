@@ -95,15 +95,3 @@ def add_user():
     db.session.commit()
 
     return new_user.to_dict()
-
-
-# # DELETE PATIENT
-# @user_routes.route('/2')
-# @login_required
-# def del_patient():
-#     # patient_id = request.json['patientId']
-#     patient_id = 315
-#     old_patient = Patient.query.get(patient_id)
-#     db.session.delete(old_patient)
-#     db.session.commit()
-#     return {'message': 'Success'}

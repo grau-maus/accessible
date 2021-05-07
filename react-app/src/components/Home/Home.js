@@ -22,6 +22,9 @@ const Home = () => {
 
         <div className='dashboard-body'>
           <div className='dashboard-body-left'>
+            <div className='dashboard-task-header'>
+              <p>Tasks this month:</p>
+            </div>
             <h3>task container</h3>
             <h3>task container</h3>
             <h3>task container</h3>
@@ -40,6 +43,9 @@ const Home = () => {
 
           <div className='dashboard-body-right'>
             <div className='dashboard-body-right-insurance'>
+              <div className='dashboard-insurance-header'>
+                <p>Insurance:</p>
+              </div>
               <h3>insurance container</h3>
               <h3>insurance container</h3>
               <h3>insurance container</h3>
@@ -51,6 +57,9 @@ const Home = () => {
             </div>
 
             <div className='dashboard-body-right-physician'>
+              <div className='dashboard-physicians-header'>
+                <p>3rd party medical staff:</p>
+              </div>
               <h3>physician container</h3>
               <h3>physician container</h3>
               <h3>physician container</h3>
