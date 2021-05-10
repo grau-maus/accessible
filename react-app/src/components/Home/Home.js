@@ -58,7 +58,7 @@ const Home = () => {
 
             <div className='dashboard-body-right-physician'>
               <div className='dashboard-physicians-header'>
-                <p>3rd party medical staff:</p>
+                <p>Referring physicians:</p>
               </div>
               <h3>physician container</h3>
               <h3>physician container</h3>

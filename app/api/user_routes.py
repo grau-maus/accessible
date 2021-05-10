@@ -13,7 +13,7 @@ def users():
     if current_user.role != 'admin':
         return ({'message': 'Error 401. Contact your administrator for more details.'}, 401)
     users = User.query.all()
-    return {"users": [user.to_dict() for user in users]}
+    return {"users": {user.id: user.to_dict() for user in users}}
 
 
 # GET SINGLE USER
@@ -74,24 +74,36 @@ def edit_user():
 @user_routes.route('/', methods=['POST'])
 @login_required
 def add_user():
-    if current_user.role != 'admin':
-        return {'message': 'Error 401. Contact your administrator for more details.'}, 401
-        user_id = request.json['userId']
-    new_first_name = request.json['firstName']
-    new_last_name = request.json['lastName']
-    new_email = request.json['email']
-    new_role = request.json['role']
-    new_password = request.json['password']
+    try:
+        if current_user.role != 'admin':
+            return {'error': 'Error 401. Contact your administrator for more details.'}, 401
 
-    new_user = User(
-        first_name=new_first_name,
-        last_name=new_last_name,
-        email=new_email,
-        role=new_role,
-        password=new_password
-    )
+        new_first_name = request.json['firstName']
+        new_last_name = request.json['lastName']
+        new_email = request.json['email']
+        new_role = request.json['role']
+        new_password = request.json['password']
 
-    db.session.add(new_user)
-    db.session.commit()
+        if (
+            not new_first_name or
+            not new_last_name or
+            not new_email or
+            not new_role or
+            not new_password
+        ):
+            return {'error': 'Error 500. Values must not be null.'}, 500
 
-    return new_user.to_dict()
+        new_user = User(
+            first_name=new_first_name,
+            last_name=new_last_name,
+            email=new_email,
+            role=new_role,
+            password=new_password
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        return new_user.to_dict()
+    except TypeError:
+        return {'error': 'Error 500. Values must not be null.'}, 500

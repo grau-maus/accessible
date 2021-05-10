@@ -5,11 +5,11 @@ const REMOVE_USER = 'session/REMOVE_USER';
 const setUser = (user) => ({
     type: SET_USER,
     payload: user
-})
+});
 
 const removeUser = () => ({
     type: REMOVE_USER
-})
+});
 
 
 
@@ -27,7 +27,7 @@ export const authenticate = () => async (dispatch) => {
     }
     dispatch(setUser(data))
 
-}
+};
 
 export const login = (email, password) => async (dispatch) => {
     const response = await fetch('/api/auth/login', {
@@ -46,7 +46,7 @@ export const login = (email, password) => async (dispatch) => {
     }
     dispatch(setUser(data));
     return {};
-}
+};
 
 export const logout = () => async (dispatch) => {
     const response = await fetch('/api/auth/logout', {
@@ -75,12 +75,9 @@ export const signUp = (username, email, password) => async (dispatch) => {
     dispatch(setUser(data));
 }
 
-// reducer
-
 const initialState = { user: null };
 
-// useSelector(state => state.session.user)
-
+// reducer
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case SET_USER:

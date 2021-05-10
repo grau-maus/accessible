@@ -2,23 +2,27 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { addEditUser } from '../../store/users';
+import { editUserForm } from '../../store/edit';
 
 import './User.css';
 
-const AddUser = () => {
+const EditUser = ({ user }) => {
   const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('admin');
   const [password, setPassword] = useState('');
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    dispatch(editUserForm());
+  };
   const handleShow = () => setShow(true);
   const handleSubmit = async () => {
     const data = await dispatch(addEditUser({
-      type: 'POST',
+      type: 'PATCH',
       firstName,
       lastName,
       email,
@@ -41,10 +45,9 @@ const AddUser = () => {
 
   return (
     <>
-      <div onClick={handleShow}>
-        Add new user
-      </div>
-
+      {
+        user.show ? console.log('test') : null
+      }
       <Modal
         show={show}
         onHide={handleClose}
@@ -131,4 +134,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default EditUser;

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import AddUser from '../User/AddUser';
+import GetUser from '../User/GetUser';
 import { logout } from '../../store/session';
 
 import './NavBar.css';
@@ -18,13 +19,7 @@ const NavBar = () => {
         <AddUser />
       </Dropdown.Item>
       <Dropdown.Item>
-        Get user info
-      </Dropdown.Item>
-      <Dropdown.Item>
-        Edit user info
-      </Dropdown.Item>
-      <Dropdown.Item>
-        Remove user
+        <GetUser />
       </Dropdown.Item>
     </>
   );
@@ -37,7 +32,7 @@ const NavBar = () => {
     <div className='navbar-container'>
       <div className='navbar-logo'>
         <i className='fas fa-ambulance' />
-        <h3>accessible health</h3>
+        <h3>accessible health care</h3>
       </div>
       <div className='navbar-right'>
         <div className='navbar-company-name'>

@@ -6,3 +6,12 @@
 #modal-header-add-user > button.close:hover {
   background-color: rgba(128, 128, 128, 0.466);
 }
+
+#user-list-container > .table-responsive {
+  height: 65vh;
+}
+
+#user-list-container > .table-responsive > .table > tbody > tr:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}
