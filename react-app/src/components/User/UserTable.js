@@ -2,18 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import EditUser from './EditUser';
-import { addEditUser, getAllUsers } from '../../store/users';
+import { getAllUsers } from '../../store/users';
 import { editUserForm } from '../../store/edit';
+import { parseRole } from '../../services/role';
 
 const UserTable = () => {
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.users.userList);
   const showForm = useSelector((state) => state.edit.editUserForm);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState('admin');
-  const [password, setPassword] = useState('');
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -24,34 +20,8 @@ const UserTable = () => {
 
   const editUserInfo = (userObj) => {
     dispatch(editUserForm());
+    userObj.fullRole = parseRole(userObj.role);
     setUser(userObj);
-  };
-
-  const parseRole = (role) => {
-    switch (role) {
-      case 'admin':
-        return 'Administrator';
-      case 'S':
-        return 'Scheduler';
-      case 'RN':
-        return 'Nurse';
-      case 'CNA':
-        return 'Medical Health Aide';
-      case 'PT':
-        return 'Physical Therapist';
-      case 'PTA':
-        return 'Physical Therapist Assistant';
-      case 'OT':
-        return 'Occupational Therapist';
-      case 'OTA':
-        return 'Occupational Therapist Assistant';
-      case 'ST':
-        return 'Speech Therapist';
-      case 'STA':
-        return 'Speech Therapist Assistant';
-      default:
-        return 'N/A';
-    }
   };
 
   return (

@@ -11,8 +11,9 @@ user_routes = Blueprint('users', __name__)
 @login_required
 def users():
     if current_user.role != 'admin':
-        return ({'message': 'Error 401. Contact your administrator for more details.'}, 401)
+        return ({'error': 'Error 401. Contact your administrator for more details.'}, 401)
     users = User.query.all()
+
     return {"users": {user.id: user.to_dict() for user in users}}
 
 
@@ -21,8 +22,9 @@ def users():
 @login_required
 def user(user_id):
     if current_user.role != 'admin':
-        return {'message': 'Error 401. Contact your administrator for more details.'}, 401
+        return {'error': 'Error 401. Contact your administrator for more details.'}, 401
     user = User.query.get(user_id)
+
     return user.to_dict()
 
 
@@ -31,12 +33,19 @@ def user(user_id):
 @login_required
 def del_user():
     if current_user.role != 'admin':
-        return {'message': 'Error 401. Contact your administrator for more details.'}, 401
+        return {'error': 'Error 401. Contact your administrator for more details.'}, 401
+
     user_id = request.json['userId']
+
+    if current_user.id == user_id:
+        return {'error': 'Error 401. Unable to delete personal account.'}, 401
+
     old_user = User.query.get(user_id)
+
     db.session.delete(old_user)
     db.session.commit()
-    return {'message': 'Success.'}
+
+    return {'userId': user_id}
 
 
 # EDIT USER
@@ -44,30 +53,40 @@ def del_user():
 @login_required
 def edit_user():
     if current_user.role != 'admin':
-        return {'message': 'Error 401. Contact your administrator for more details.'}, 401
+        return {'error': 'Error 401. Contact your administrator for more details.'}, 401
+
     user_id = request.json['userId']
+
+    if user_id == 1:
+        return {'error': 'Error 401. Demo account not editable.'}, 401
+
+    if current_user.id == user_id:
+        return {'error': 'Error 401. Unable to edit personal account.'}, 401
+
     new_first_name = request.json['firstName']
     new_last_name = request.json['lastName']
     new_email = request.json['email']
     new_role = request.json['role']
     new_password = request.json['password']
 
-    if new_first_name:
-        edit_user.first_name = new_first_name
-    if new_last_name:
-        edit_user.last_name = new_last_name
-    if new_email:
-        edit_user.email = new_email
-    if new_role:
-        edit_user.role = new_role
-    if new_password:
-        edit_user.password = new_password
+    edited_user = User.query.get(user_id)
 
-    edit_user.updated_at = datetime.now()
+    if new_first_name:
+        edited_user.first_name = new_first_name
+    if new_last_name:
+        edited_user.last_name = new_last_name
+    if new_email:
+        edited_user.email = new_email
+    if new_role:
+        edited_user.role = new_role
+    if new_password:
+        edited_user.password = new_password
+
+    edited_user.updated_at = datetime.now()
 
     db.session.commit()
 
-    return edit_user.to_dict()
+    return edited_user.to_dict()
 
 
 # ADD USER

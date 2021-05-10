@@ -23,7 +23,10 @@ const GetUser = () => {
         backdrop='static'
         keyboard={false}
       >
-        <Modal.Header closeButton>
+        <Modal.Header
+          closeButton
+          className='modal-header-user'
+        >
           <Modal.Title>Users:</Modal.Title>
         </Modal.Header>
         <Modal.Body id='user-list-container'>

@@ -1,10 +1,15 @@
-#modal-header-add-user > button.close {
+.modal-header-user > button.close {
   border: none;
   background-color: transparent;
 }
 
-#modal-header-add-user > button.close:hover {
+.modal-header-user > button.close:hover {
   background-color: rgba(128, 128, 128, 0.466);
+}
+
+#modal-edit-user-container {
+  margin-top: 60px;
+  box-shadow: 0px 0px 5px 0px black;
 }
 
 #user-list-container > .table-responsive {

@@ -94,7 +94,7 @@ const AddUser = () => {
                 onChange={(e) => { setRole(e.target.value) }}
                 custom
               >
-                <option value='admin'>Admin</option>
+                <option value='admin'>Administrator</option>
                 <option value='S'>Scheduler</option>
                 <option value='RN'>Nurse</option>
                 <option value='CNA'>Medical Health Aide</option>
