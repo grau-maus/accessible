@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { addEditInsurance, removeInsurance } from '../../store/insurance';
 import { editForm } from '../../store/edit';
 
 const EditInsurance = ({ insurance }) => {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.session.user);
   const [show, setShow] = useState(true);
   const [name, setName] = useState(insurance.name);
   const [type, setType] = useState(insurance.type);
@@ -70,8 +69,8 @@ const EditInsurance = ({ insurance }) => {
             <>
               <div className='insurance-name'>{name}</div>
               <div className='insurance-type'>{type}</div>
-              <div className='insurance-added'>{insurance.createdAt}</div>
-              <div className='insurance-updated'>{insurance.updatedAt}</div>
+              <div className='insurance-added'>{`Added: ${insurance.createdAt}`}</div>
+              <div className='insurance-updated'>{`Updated: ${insurance.updatedAt}`}</div>
               <Button onClick={handleEditForm}>Edit details</Button>
               <Button onClick={handleDeleteInsurance}>Delete insurance</Button>
             </>

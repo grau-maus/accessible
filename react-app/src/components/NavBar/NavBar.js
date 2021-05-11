@@ -6,6 +6,8 @@ import AddUser from '../User/AddUser';
 import GetUser from '../User/GetUser';
 import AddInsurance from '../Insurance/AddInsurance';
 import GetInsurance from '../Insurance/GetInsurance';
+import AddPhysician from '../Physician/AddPhysician';
+import GetPhysician from '../Physician/GetPhysician';
 import { logout } from '../../store/session';
 
 import './NavBar.css';
@@ -58,9 +60,10 @@ const NavBar = () => {
           </DropdownButton>
           <DropdownButton id='physicians-dropdown' title='Physicians'>
             <Dropdown.Item>
-              <NavLink to='/users' exact={true} activeClassName='active'>
-                Users
-              </NavLink>
+              <AddPhysician />
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <GetPhysician />
             </Dropdown.Item>
           </DropdownButton>
           <DropdownButton id='insurance-dropdown' title='Insurance'>

@@ -1,0 +1,22 @@
+.modal-header-physician > button.close {
+  border: none;
+  background-color: transparent;
+}
+
+.modal-header-physician > button.close:hover {
+  background-color: rgba(128, 128, 128, 0.466);
+}
+
+#modal-edit-physician-container {
+  margin-top: 60px;
+  box-shadow: 0px 0px 5px 0px black;
+}
+
+#physician-list-container > .table-responsive {
+  height: 65vh;
+}
+
+#physician-list-container > .table-responsive > .table > tbody > tr:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}

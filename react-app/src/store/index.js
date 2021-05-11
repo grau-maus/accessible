@@ -1,16 +1,18 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import session from './session';
-import users from './users';
 import edit from './edit';
+import users from './users';
 import insurance from './insurance';
+import physicians from './physician';
 
 
 const rootReducer = combineReducers({
     session,
-    users,
     edit,
-    insurance
+    users,
+    insurance,
+    physicians
 });
 
 let enhancer;

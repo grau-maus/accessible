@@ -43,7 +43,7 @@ def del_mcp():
         db.session.delete(mcp)
         db.session.commit()
 
-        return {'message': 'Success.'}
+        return {'physicianId': mcp_id}
     except AttributeError:
         return {'error': 'Error 404. Medical care professional does not exist in the database'}, 404
     except UnmappedInstanceError:
@@ -106,6 +106,14 @@ def add_mcp():
         new_address = request.json['address']
         new_phone_num = request.json['phoneNumber']
         new_npi_num = request.json['npiNumber']
+
+        if (
+            not new_name or
+            not new_address or
+            not new_phone_num or
+            not new_npi_num
+        ):
+            return {'error': 'Error 500. Please provide a name / address / phone number / NPI number.'}, 500
 
         new_mcp = Medical_Professional(
             name=new_name,
