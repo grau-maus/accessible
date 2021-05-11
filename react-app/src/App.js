@@ -4,8 +4,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import LoginForm from './components/auth/LoginForm';
 import NavBar from './components/NavBar/NavBar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
-import UsersList from './components/User/UsersList';
-import User from './components/User/User';
 import Home from './components/Home/Home';
 import { authenticate } from './store/session';
 // import { authenticate } from './services/auth';
@@ -36,12 +34,6 @@ function App() {
         <Route path='/login' exact={true}>
           <LoginForm />
         </Route>
-        <ProtectedRoute path='/users' exact={true} >
-          <UsersList />
-        </ProtectedRoute>
-        <ProtectedRoute path='/users/:userId' exact={true} >
-          <User />
-        </ProtectedRoute>
         <ProtectedRoute path='/' exact={true}>
           <Home />
         </ProtectedRoute>

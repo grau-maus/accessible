@@ -13,7 +13,7 @@ const GetPhysician = () => {
   return (
     <>
       <div onClick={handleShow}>
-        Insurance
+        Physicians
       </div>
 
       <Modal

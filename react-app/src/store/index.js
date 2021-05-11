@@ -4,7 +4,8 @@ import session from './session';
 import edit from './edit';
 import users from './users';
 import insurance from './insurance';
-import physicians from './physician';
+import physicians from './physicians';
+import patients from './patients';
 
 
 const rootReducer = combineReducers({
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     edit,
     users,
     insurance,
-    physicians
+    physicians,
+    patients
 });
 
 let enhancer;

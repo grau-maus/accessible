@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { addEditPhysician } from '../../store/physician';
+import { addEditPhysician } from '../../store/physicians';
 
 import './Physician.css';
 

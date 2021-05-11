@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import EditPhysician from './EditPhysician';
-import { getAllPhysicians } from '../../store/physician';
+import { getAllPhysicians } from '../../store/physicians';
 import { editForm } from '../../store/edit';
 
 const PhysicianTable = () => {

@@ -1,5 +1,4 @@
 // constants
-// constants
 const EDIT_PHYSICIAN = 'session/EDIT_PHYSICIAN';
 const GET_PHYSICIANS = 'session/GET_PHYSICIANS';
 const DELETE_PHYSICIAN = 'session/DELETE_PHYSICIAN';

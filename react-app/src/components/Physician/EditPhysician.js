@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { addEditPhysician, removePhysician } from '../../store/physician';
+import { addEditPhysician, removePhysician } from '../../store/physicians';
 import { editForm } from '../../store/edit';
 
 const EditPhysician = ({ physician }) => {

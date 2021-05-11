@@ -44,7 +44,7 @@ def del_patient():
         db.session.delete(patient)
         db.session.commit()
 
-        return {'message': 'Success.'}
+        return {'patientId': patient_id}
     except AttributeError:
         return {'error': 'Error 404. Patient does not exist in the database'}, 404
     except UnmappedInstanceError:
@@ -146,6 +146,13 @@ def add_patient():
         new_status = request.json['active']
         new_auth_visits = request.json['authVisits']
 
+        if (
+            not new_insurance or
+            not new_first_name or
+            not new_last_name
+        ):
+            return {'error': 'Error 500. Please provide insurance / first name / last name.'}, 500
+
         new_patient = Patient(
             insurance_id=new_insurance,
             first_name=new_first_name,
@@ -168,5 +175,7 @@ def add_patient():
         return {'error': 'Error 404. Patient does not exist in the database'}, 404
     except UnmappedInstanceError:
         return {'error': 'Error 404. Patient does not exist in the database'}, 404
+    except KeyError:
+        return {'error': 'Error 500. Check the DOB.'}, 500
     except:
         return {'error': 'Error 500. Contact your administrator for more details.'}, 500

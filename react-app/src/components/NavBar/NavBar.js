@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import AddUser from '../User/AddUser';
 import GetUser from '../User/GetUser';
@@ -8,6 +7,7 @@ import AddInsurance from '../Insurance/AddInsurance';
 import GetInsurance from '../Insurance/GetInsurance';
 import AddPhysician from '../Physician/AddPhysician';
 import GetPhysician from '../Physician/GetPhysician';
+import AddPatient from '../Patient/AddPatient';
 import { logout } from '../../store/session';
 
 import './NavBar.css';
@@ -45,19 +45,22 @@ const NavBar = () => {
         <div className='navbar-dropdowns'>
           <DropdownButton id='tasks-dropdown' title='Tasks'>
             <Dropdown.Item>
-              <NavLink to='/users' exact={true} activeClassName='active'>
-                Users
-              </NavLink>
+              Add task
+            </Dropdown.Item>
+            <Dropdown.Item>
+              Tasks
             </Dropdown.Item>
           </DropdownButton>
 
           <DropdownButton id='patients-dropdown' title='Patients'>
             <Dropdown.Item>
-              <NavLink to='/users' exact={true} activeClassName='active'>
-                Users
-              </NavLink>
+              <AddPatient />
+            </Dropdown.Item>
+            <Dropdown.Item>
+              Patients
             </Dropdown.Item>
           </DropdownButton>
+
           <DropdownButton id='physicians-dropdown' title='Physicians'>
             <Dropdown.Item>
               <AddPhysician />
@@ -66,6 +69,7 @@ const NavBar = () => {
               <GetPhysician />
             </Dropdown.Item>
           </DropdownButton>
+
           <DropdownButton id='insurance-dropdown' title='Insurance'>
             <Dropdown.Item>
               <AddInsurance />
@@ -74,6 +78,7 @@ const NavBar = () => {
               <GetInsurance />
             </Dropdown.Item>
           </DropdownButton>
+
           <DropdownButton id='profile-dropdown' title={profileButton}>
             {user.role === 'admin' && adminFeatures}
             <Dropdown.Item>
