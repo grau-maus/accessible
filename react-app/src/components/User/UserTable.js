@@ -3,23 +3,23 @@ import { Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import EditUser from './EditUser';
 import { getAllUsers } from '../../store/users';
-import { editUserForm } from '../../store/edit';
+import { editForm } from '../../store/edit';
 import { parseRole } from '../../services/role';
 
 const UserTable = () => {
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.users.userList);
-  const showForm = useSelector((state) => state.edit.editUserForm);
+  const showForm = useSelector((state) => state.edit.editForm);
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    dispatch(getAllUsers())
+    dispatch(getAllUsers());
   }, [dispatch]);
 
   if (!userList) return null;
 
   const editUserInfo = (userObj) => {
-    dispatch(editUserForm());
+    dispatch(editForm());
     userObj.fullRole = parseRole(userObj.role);
     setUser(userObj);
   };

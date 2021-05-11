@@ -26,10 +26,22 @@ def seed_users():
     for i in range(4):
         fake_user_deets = fake.profile()
         first_name_check = fake_user_deets['name'].split(' ')[0]
+        last_name_check = fake_user_deets['name'].split(' ')[-1]
 
-        while first_name_check == 'Mr.' or first_name_check == 'Ms.' or first_name_check == 'Mrs.':
+        while (
+            first_name_check == 'Mr.' or
+            first_name_check == 'Ms.' or
+            first_name_check == 'Mrs.' or
+            first_name_check == 'Dr.' or
+            last_name_check == 'MD' or
+            last_name_check == 'PhD' or
+            last_name_check == 'Jr.' or
+            last_name_check == 'DVM' or
+            last_name_check == 'DDS'
+        ):
             fake_user_deets = fake.profile()
             first_name_check = fake_user_deets['name'].split(' ')[0]
+            last_name_check = fake_user_deets['name'].split(' ')[-1]
 
         fake_user = User(
             first_name=fake_user_deets['name'].split(' ')[0],

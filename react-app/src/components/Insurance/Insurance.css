@@ -1,0 +1,22 @@
+.modal-header-insurance > button.close {
+  border: none;
+  background-color: transparent;
+}
+
+.modal-header-insurance > button.close:hover {
+  background-color: rgba(128, 128, 128, 0.466);
+}
+
+#modal-edit-insurance-container {
+  margin-top: 60px;
+  box-shadow: 0px 0px 5px 0px black;
+}
+
+#insurance-list-container > .table-responsive {
+  height: 65vh;
+}
+
+#insurance-list-container > .table-responsive > .table > tbody > tr:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}

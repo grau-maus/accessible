@@ -75,6 +75,7 @@ def edit_patient():
         new_address = request.json['address']
         new_phone_num = request.json['phoneNumber']
         new_status = request.json['active']
+        new_auth_visits = request.json['authVisits']
 
         if new_insurance:
             patient.insurance_id = new_insurance
@@ -96,6 +97,8 @@ def edit_patient():
             patient.phone_number = new_phone_num
         if new_status:
             patient.active = new_status
+        if new_auth_visits:
+            patient.authorized_visits = new_auth_visits
 
         if (
             new_insurance or
@@ -107,7 +110,8 @@ def edit_patient():
             new_ssn or
             new_address or
             new_phone_num or
-            new_status
+            new_status or
+            new_auth_visits
         ):
             patient.updated_at = datetime.now()
         db.session.commit()
@@ -140,6 +144,7 @@ def add_patient():
         new_address = request.json['address']
         new_phone_num = request.json['phoneNumber']
         new_status = request.json['active']
+        new_auth_visits = request.json['authVisits']
 
         new_patient = Patient(
             insurance_id=new_insurance,
@@ -151,7 +156,8 @@ def add_patient():
             ssn=new_ssn,
             primary_address=new_address,
             phone_number=new_phone_num,
-            active=new_status
+            active=new_status,
+            authorized_visits=new_auth_visits
         )
 
         db.session.add(new_patient)

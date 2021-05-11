@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import AddUser from '../User/AddUser';
 import GetUser from '../User/GetUser';
+import AddInsurance from '../Insurance/AddInsurance';
+import GetInsurance from '../Insurance/GetInsurance';
 import { logout } from '../../store/session';
 
 import './NavBar.css';
@@ -63,14 +65,17 @@ const NavBar = () => {
           </DropdownButton>
           <DropdownButton id='insurance-dropdown' title='Insurance'>
             <Dropdown.Item>
-              <NavLink to='/users' exact={true} activeClassName='active'>
-                Users
-              </NavLink>
+              <AddInsurance />
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <GetInsurance />
             </Dropdown.Item>
           </DropdownButton>
           <DropdownButton id='profile-dropdown' title={profileButton}>
             {user.role === 'admin' && adminFeatures}
-
+            <Dropdown.Item>
+              My profile
+            </Dropdown.Item>
             <Dropdown.Item onClick={onLogout}>
               Log out
             </Dropdown.Item>

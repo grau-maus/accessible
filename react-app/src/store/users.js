@@ -1,5 +1,3 @@
-import { editUserForm } from "./edit";
-
 // constants
 const EDIT_USER = 'session/EDIT_USER';
 const GET_USERS = 'session/GET_USERS';
@@ -47,7 +45,9 @@ export const addEditUser = ({
 
   const data = await response.json();
 
-  dispatch(editUser(data));
+  if (type === 'PATCH') {
+    dispatch(editUser(data));
+  }
 
   return data;
 };
@@ -56,9 +56,9 @@ export const getAllUsers = () => async (dispatch) => {
   const response = await fetch('/api/users/');
   if (response.ok) {
     const data = await response.json();
-    await dispatch(getUsers(data.users))
+    await dispatch(getUsers(data.users));
   } else {
-    return { error: 'error' }
+    return { error: 'error' };
   }
 };
 

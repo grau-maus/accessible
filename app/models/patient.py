@@ -50,6 +50,10 @@ class Patient(db.Model):
         db.Boolean,
         default=True
     )
+    authorized_visits = db.Column(
+        db.Integer,
+        default=0
+    )
     created_at = db.Column(
         db.DateTime,
         default=datetime.now()
@@ -84,6 +88,7 @@ class Patient(db.Model):
             'primaryAddress': self.primary_address,
             'phoneNumber': self.phone_number,
             'active': self.active,
+            'authorizedVisits': self.authorized_visits,
             'createdAt': self.created_at,
             'updatedAt': self.updated_at
         }

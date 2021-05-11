@@ -1,19 +1,19 @@
 // constants
-const EDIT_USER_FORM = 'session/EDIT_USER_FORM';
+const EDIT_FORM = 'session/EDIT_FORM';
 
-export const editUserForm = () => ({
-  type: EDIT_USER_FORM
+export const editForm = () => ({
+  type: EDIT_FORM
 });
 
-const initialState = { editUserForm: false }
+const initialState = { editForm: false }
 
 export default function reducer(state = initialState, action) {
   let newState;
 
   switch (action.type) {
-    case EDIT_USER_FORM:
+    case EDIT_FORM:
       newState = Object.assign({}, state);
-      newState.editUserForm = !state.editUserForm;
+      newState.editForm = !state.editForm;
 
       return newState;
     default:

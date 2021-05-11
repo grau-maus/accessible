@@ -12,10 +12,22 @@ def seed_patients():
         fake_middle_name = None
         add_middle_name = fake.boolean(chance_of_getting_true=45)
         first_name_check = fake_profile['name'].split(' ')[0]
+        last_name_check = fake_profile['name'].split(' ')[-1]
 
-        while first_name_check == 'Mr.' or first_name_check == 'Ms.' or first_name_check == 'Mrs.':
+        while (
+            first_name_check == 'Mr.' or
+            first_name_check == 'Ms.' or
+            first_name_check == 'Mrs.' or
+            first_name_check == 'Dr.' or
+            last_name_check == 'MD' or
+            last_name_check == 'PhD' or
+            last_name_check == 'Jr.' or
+            last_name_check == 'DVM' or
+            last_name_check == 'DDS'
+        ):
             fake_profile = fake.profile()
             first_name_check = fake_profile['name'].split(' ')[0]
+            last_name_check = fake_profile['name'].split(' ')[-1]
 
         if add_middle_name:
             fake_middle_name = fake.profile()['name'].split(' ')[-1]
@@ -30,7 +42,8 @@ def seed_patients():
             ssn=fake.pyint(min_value=100000000, max_value=999999999),
             primary_address=fake_profile['address'],
             phone_number=fake.pyint(min_value=1000000, max_value=9999999),
-            active=fake.boolean(chance_of_getting_true=50)
+            active=fake.boolean(chance_of_getting_true=50),
+            authorized_visits=fake.pyint(min_value=1, max_value=10)
         )
         db.session.add(new_patient)
 

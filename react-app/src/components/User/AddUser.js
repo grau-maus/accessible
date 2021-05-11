@@ -14,7 +14,17 @@ const AddUser = () => {
   const [role, setRole] = useState('admin');
   const [password, setPassword] = useState('');
 
-  const handleClose = () => setShow(false);
+  const resetForm = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setRole('admin');
+    setPassword('');
+  };
+  const handleClose = () => {
+    setShow(false);
+    resetForm();
+  };
   const handleShow = () => setShow(true);
   const handleSubmit = async () => {
     const data = await dispatch(addEditUser({
@@ -27,17 +37,12 @@ const AddUser = () => {
     }));
 
     if (!data.error) {
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-      setRole('admin');
-      setPassword('');
+      resetForm();
       console.log('User added!');
     } else {
       console.log(data.error);
     }
   };
-
 
   return (
     <>
@@ -51,7 +56,10 @@ const AddUser = () => {
         backdrop='static'
         keyboard={false}
       >
-        <Modal.Header closeButton id='modal-header-add-user'>
+        <Modal.Header
+          closeButton
+          className='modal-header-user'
+        >
           <Modal.Title>Add new user:</Modal.Title>
         </Modal.Header>
         <Modal.Body>

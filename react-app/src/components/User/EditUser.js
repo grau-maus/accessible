@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { addEditUser, removeUser } from '../../store/users';
-import { editUserForm } from '../../store/edit';
+import { editForm } from '../../store/edit';
 import { parseRole } from '../../services/role';
 
 import './User.css';
@@ -23,8 +23,9 @@ const EditUser = ({ user }) => {
   // const handleShow = () => setShow(true);
   const handleClose = () => {
     setShow(false);
-    dispatch(editUserForm());
+    dispatch(editForm());
   };
+
   const handleSubmit = async () => {
     const data = await dispatch(addEditUser({
       type: 'PATCH',
@@ -51,7 +52,7 @@ const EditUser = ({ user }) => {
     setShowForm(!showForm);
   };
 
-  const handleDeleteUser = async () => {
+  const handleDeleteUser = () => {
     dispatch(removeUser(user.id));
     setDeletedUser(true);
   };

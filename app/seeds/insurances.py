@@ -21,7 +21,6 @@ def seed_insurances():
         new_insurance = Insurance(
             name=ele,
             type=insurance_type[fake.pyint(min_value=0, max_value=5)],
-            authorized_visits=fake.pyint(min_value=1, max_value=10),
         )
 
         db.session.add(new_insurance)

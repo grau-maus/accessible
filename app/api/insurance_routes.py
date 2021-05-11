@@ -38,13 +38,12 @@ def insurance(insurance_id):
 @login_required
 def del_insurance():
     try:
-        # insurance_id = request.json['insuranceId']
-        insurance_id = 4
+        insurance_id = request.json['insuranceId']
         insurance = Insurance.query.get(insurance_id)
         db.session.delete(insurance)
         db.session.commit()
 
-        return {'message': 'Success.'}
+        return {'insuranceId': insurance_id}
     except AttributeError:
         return {'error': 'Error 404. Insurance does not exist in the database'}, 404
     except UnmappedInstanceError:
@@ -63,19 +62,15 @@ def edit_insurance():
 
         new_name = request.json['name']
         new_type = request.json['type']
-        new_auth_visits = request.json['authVisits']
 
         if new_name:
             insurance.name = new_name
         if new_type:
             insurance.type = new_type
-        if new_auth_visits:
-            insurance.authorized_visits = new_auth_visits
 
         if (
             new_name or
-            new_type or
-            new_auth_visits
+            new_type
         ):
             insurance.updated_at = datetime.now()
         db.session.commit()
@@ -96,12 +91,13 @@ def add_insurance():
     try:
         new_name = request.json['name']
         new_type = request.json['type']
-        new_auth_visits = request.json['authVisits']
+
+        if not new_name:
+            return {'error': 'Error 500. Please provide a name for the insurance.'}, 500
 
         new_insurance = Insurance(
             name=new_name,
             type=new_type,
-            authorized_visits=new_auth_visits
         )
 
         db.session.add(new_insurance)

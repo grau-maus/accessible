@@ -18,10 +18,6 @@ class Insurance(db.Model):
         db.String(255),
         nullable=False
     )
-    authorized_visits = db.Column(
-        db.Integer,
-        nullable=False
-    )
     created_at = db.Column(
         db.DateTime,
         default=datetime.now()
@@ -43,7 +39,6 @@ class Insurance(db.Model):
             'id': self.id,
             'name': self.name,
             'type': self.type,
-            'authorizedVisits': self.authorized_visits,
             'createdAt': self.created_at,
             'updatedAt': self.updated_at
         }

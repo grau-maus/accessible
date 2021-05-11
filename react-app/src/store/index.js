@@ -3,12 +3,14 @@ import thunk from 'redux-thunk';
 import session from './session';
 import users from './users';
 import edit from './edit';
+import insurance from './insurance';
 
 
 const rootReducer = combineReducers({
     session,
     users,
-    edit
+    edit,
+    insurance
 });
 
 let enhancer;
