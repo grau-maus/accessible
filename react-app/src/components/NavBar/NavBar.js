@@ -8,6 +8,7 @@ import GetInsurance from '../Insurance/GetInsurance';
 import AddPhysician from '../Physician/AddPhysician';
 import GetPhysician from '../Physician/GetPhysician';
 import AddPatient from '../Patient/AddPatient';
+import GetPatient from '../Patient/GetPatient';
 import { logout } from '../../store/session';
 
 import './NavBar.css';
@@ -57,7 +58,7 @@ const NavBar = () => {
               <AddPatient />
             </Dropdown.Item>
             <Dropdown.Item>
-              Patients
+              <GetPatient />
             </Dropdown.Item>
           </DropdownButton>
 

@@ -132,7 +132,7 @@ const AddPatient = () => {
               />
             </Form.Group>
 
-            <Form.Group controlId='formGroupPatientLastName'>
+            <Form.Group controlId='formGroupPatientDOB'>
               <Form.Label>DOB</Form.Label>
               <Form.Control
                 type='date'

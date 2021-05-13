@@ -121,8 +121,8 @@ def edit_patient():
         return {'error': 'Error 404. Patient does not exist in the database'}, 404
     except UnmappedInstanceError:
         return {'error': 'Error 404. Patient does not exist in the database'}, 404
-    except:
-        return {'error': 'Error 500. Contact your administrator for more details.'}, 500
+    # except:
+    #     return {'error': 'Error 500. Contact your administrator for more details.'}, 500
 
 
 # ADD PATIENT

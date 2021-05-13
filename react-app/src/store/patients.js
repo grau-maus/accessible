@@ -85,7 +85,7 @@ export const removePatient = (patientId) => async (dispatch) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      mcpId: patientId
+      patientId
     })
   });
 
