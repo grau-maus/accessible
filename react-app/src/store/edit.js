@@ -1,5 +1,5 @@
 // constants
-const EDIT_FORM = 'session/EDIT_FORM';
+const EDIT_FORM = 'edit/EDIT_FORM';
 
 export const editForm = () => ({
   type: EDIT_FORM

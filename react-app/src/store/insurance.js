@@ -1,7 +1,7 @@
 // constants
-const EDIT_INSURANCE = 'session/EDIT_INSURANCE';
-const GET_INSURANCE = 'session/GET_INSURANCE';
-const DELETE_INSURANCE = 'session/DELETE_INSURANCE';
+const EDIT_INSURANCE = 'insurance/EDIT_INSURANCE';
+const GET_INSURANCE = 'insurance/GET_INSURANCE';
+const DELETE_INSURANCE = 'insurance/DELETE_INSURANCE';
 
 const editInsurance = (insurance) => ({
   type: EDIT_INSURANCE,

@@ -1,7 +1,7 @@
 // constants
-const EDIT_PHYSICIAN = 'session/EDIT_PHYSICIAN';
-const GET_PHYSICIANS = 'session/GET_PHYSICIANS';
-const DELETE_PHYSICIAN = 'session/DELETE_PHYSICIAN';
+const EDIT_PHYSICIAN = 'physicians/EDIT_PHYSICIAN';
+const GET_PHYSICIANS = 'physicians/GET_PHYSICIANS';
+const DELETE_PHYSICIAN = 'physicians/DELETE_PHYSICIAN';
 
 const editPhysician = (physician) => ({
   type: EDIT_PHYSICIAN,

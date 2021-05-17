@@ -1,7 +1,7 @@
 // constants
-const EDIT_USER = 'session/EDIT_USER';
-const GET_USERS = 'session/GET_USERS';
-const DELETE_USER = 'session/DELETE_USER';
+const EDIT_USER = 'users/EDIT_USER';
+const GET_USERS = 'users/GET_USERS';
+const DELETE_USER = 'users/DELETE_USER';
 
 const editUser = (user) => ({
   type: EDIT_USER,
