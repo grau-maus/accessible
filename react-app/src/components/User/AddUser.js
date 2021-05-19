@@ -45,7 +45,12 @@ const AddUser = () => {
   };
 
   return (
-    <>
+    <div
+      onKeyDown={(e) => e.stopPropagation()}
+      onFocus={(e) => e.stopPropagation()}
+      onMouseOver={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div onClick={handleShow}>
         Add new user
       </div>
@@ -135,7 +140,7 @@ const AddUser = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 };
 

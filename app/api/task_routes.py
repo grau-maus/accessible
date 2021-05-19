@@ -8,12 +8,12 @@ from app.models import db, Task
 task_routes = Blueprint('tasks', __name__)
 
 
-# GET ALL TASKS FROM CURRENT USER
-@task_routes.route('/')
+# GET ALL TASKS FROM A USER
+@task_routes.route('/<int:user_id>')
 @login_required
-def tasks():
+def tasks(user_id):
     get_all_tasks = Task.query.filter(
-        Task.user_id == current_user.id
+        Task.user_id == user_id
     ).all()
     all_tasks = {task.id: task.to_dict() for task in get_all_tasks}
 
@@ -21,17 +21,17 @@ def tasks():
 
 
 # GET ALLLLLLL TASKS (BAD IDEA, FUTURE JOSH PLS LIMIT QUERY)
-@task_routes.route('/all')
+@task_routes.route('/')
 @login_required
 def all_tasks():
-    get_all_tasks = Task.query.filter().all()
+    get_all_tasks = Task.query.all()
     all_tasks = {task.id: task.to_dict() for task in get_all_tasks}
 
     return all_tasks
 
 
 # GET SINGLE TASK
-@task_routes.route('/<int:task_id>')
+@task_routes.route('/<int:task_id>/')
 @login_required
 def task(task_id):
     try:

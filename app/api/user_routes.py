@@ -17,6 +17,20 @@ def users():
     return {"users": {user.id: user.to_dict() for user in users}}
 
 
+# GET ALL VISITING STAFF
+@user_routes.route('/visiting/')
+@login_required
+def visit_users():
+    if current_user.role != 'admin':
+        return ({'error': 'Error 401. Contact your administrator for more details.'}, 401)
+    users = User.query.filter(
+        User.role != 'admin',
+        User.role != 'S'
+    ).all()
+
+    return {"users": {user.id: user.to_dict() for user in users}}
+
+
 # GET SINGLE USER
 @user_routes.route('/<int:user_id>')
 @login_required

@@ -45,7 +45,12 @@ const AddPhysician = () => {
   };
 
   return (
-    <>
+    <div
+      onKeyDown={(e) => e.stopPropagation()}
+      onFocus={(e) => e.stopPropagation()}
+      onMouseOver={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div onClick={handleShow}>
         Add physician
       </div>
@@ -125,7 +130,7 @@ const AddPhysician = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 };
 

@@ -34,7 +34,12 @@ const AddInsurance = () => {
   };
 
   return (
-    <>
+    <div
+      onKeyDown={(e) => e.stopPropagation()}
+      onFocus={(e) => e.stopPropagation()}
+      onMouseOver={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div onClick={handleShow}>
         Add insurance
       </div>
@@ -90,7 +95,7 @@ const AddInsurance = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 };
 

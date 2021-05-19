@@ -1,6 +1,7 @@
 // constants
 const EDIT_USER = 'users/EDIT_USER';
 const GET_USERS = 'users/GET_USERS';
+const GET_VISITING_USERS = 'users/GET_VISITING_USERS';
 const DELETE_USER = 'users/DELETE_USER';
 
 const editUser = (user) => ({
@@ -10,6 +11,11 @@ const editUser = (user) => ({
 
 const getUsers = (users) => ({
   type: GET_USERS,
+  payload: users
+});
+
+const getVisitingUsers = (users) => ({
+  type: GET_VISITING_USERS,
   payload: users
 });
 
@@ -62,6 +68,16 @@ export const getAllUsers = () => async (dispatch) => {
   }
 };
 
+export const getAllVisitingUsers = () => async (dispatch) => {
+  const response = await fetch('/api/users/visiting/');
+  if (response.ok) {
+    const data = await response.json();
+    await dispatch(getVisitingUsers(data.users));
+  } else {
+    return { error: 'error' };
+  }
+};
+
 export const removeUser = (userId) => async (dispatch) => {
   const response = await fetch('/api/users/', {
     method: 'DELETE',
@@ -78,7 +94,10 @@ export const removeUser = (userId) => async (dispatch) => {
   dispatch(deleteUser(data.userId));
 };
 
-const initialState = { userList: null };
+const initialState = {
+  userList: null,
+  visitingUserList: null
+};
 
 // reducer
 export default function reducer(state = initialState, action) {
@@ -88,6 +107,11 @@ export default function reducer(state = initialState, action) {
     case GET_USERS:
       newState = Object.assign({}, state);
       newState.userList = action.payload;
+
+      return newState;
+    case GET_VISITING_USERS:
+      newState = Object.assign({}, state);
+      newState.visitingUserList = action.payload;
 
       return newState;
     case EDIT_USER:

@@ -82,7 +82,12 @@ const AddPatient = () => {
   };
 
   return (
-    <>
+    <div
+      onKeyDown={(e) => e.stopPropagation()}
+      onFocus={(e) => e.stopPropagation()}
+      onMouseOver={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div onClick={handleShow}>
         Add patient
       </div>
@@ -231,19 +236,18 @@ const AddPatient = () => {
                 onChange={(e) => setAuthVisits(e.target.value)}
               />
             </Form.Group>
-
-            <Button variant='primary' onClick={handleSubmit}>
-              Add patient
-            </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
+          <Button variant='primary' onClick={handleSubmit}>
+            Add patient
+          </Button>
           <Button variant='secondary' onClick={handleClose}>
             Cancel
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 };
 

@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllInsurance } from '../../store/insurance';
 
 import './Home.css'
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.session.user);
+  const insuranceList = useSelector((state) => state.insurance.insuranceList);
+  const physicianList = useSelector((state) => state.physicians.physicianList);
+
+  useEffect(() => {
+    dispatch(getAllInsurance());
+  }, [dispatch]);
+
   return (
     <div className='home-container'>
       <div className='home-nav-spacer'></div>

@@ -6,6 +6,7 @@ import users from './users';
 import insurance from './insurance';
 import physicians from './physicians';
 import patients from './patients';
+import tasks from './tasks';
 
 
 const rootReducer = combineReducers({
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     users,
     insurance,
     physicians,
-    patients
+    patients,
+    tasks
 });
 
 let enhancer;
