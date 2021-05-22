@@ -31,7 +31,9 @@ export const addEditTask = ({
   staffId,
   patientId,
   visitType,
-  scheduledDate,
+  visitYear,
+  visitMonth,
+  visitDay,
   status
 }) => async (dispatch) => {
   const response = await fetch('/api/tasks/', {
@@ -44,7 +46,9 @@ export const addEditTask = ({
       staffId,
       patientId,
       visitType,
-      scheduledDate,
+      visitYear,
+      visitMonth,
+      visitDay,
       status
     })
   });

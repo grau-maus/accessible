@@ -58,7 +58,12 @@ const EditUser = ({ user }) => {
   };
 
   return (
-    <>
+    <div
+      onKeyDown={(e) => e.stopPropagation()}
+      onFocus={(e) => e.stopPropagation()}
+      onMouseOver={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+    >
       <Modal
         show={show}
         onHide={handleClose}
@@ -168,7 +173,7 @@ const EditUser = ({ user }) => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 };
 

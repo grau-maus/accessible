@@ -83,7 +83,12 @@ const EditPatient = ({ patient }) => {
   };
 
   return (
-    <>
+    <div
+      onKeyDown={(e) => e.stopPropagation()}
+      onFocus={(e) => e.stopPropagation()}
+      onMouseOver={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+    >
       <Modal
         show={show}
         onHide={handleClose}
@@ -261,7 +266,7 @@ const EditPatient = ({ patient }) => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 };
 

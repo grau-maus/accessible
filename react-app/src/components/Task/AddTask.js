@@ -4,6 +4,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { addEditTask } from '../../store/tasks';
 import { getAllPatients } from '../../store/patients';
 import { getAllVisitingUsers } from '../../store/users';
+import { parseVisitType } from '../../services/role';
 
 import './Task.css';
 
@@ -43,14 +44,19 @@ const AddTask = () => {
   };
   const handleShow = () => setShow(true);
   const handleSubmit = async () => {
-    // const visitType;
+    const visitType = parseVisitType(userList[staffId].role);
+    const visitYear = parseInt(scheduledDate.split('-')[0], 10);
+    const visitMonth = parseInt(scheduledDate.split('-')[1], 10);
+    const visitDay = parseInt(scheduledDate.split('-')[2], 10);
 
     const data = await dispatch(addEditTask({
       fetchType: 'POST',
       staffId,
       patientId,
-      // visitType,
-      scheduledDate,
+      visitType,
+      visitYear,
+      visitMonth,
+      visitDay,
       status
     }));
 
@@ -86,14 +92,13 @@ const AddTask = () => {
           <Modal.Title>Add new task:</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <input type='text' />
           <Form id='add-task-form'>
             <Form.Group controlId='formGroupTaskStaff'>
               <Form.Label>Select staff</Form.Label>
               <Form.Control
                 as='select'
                 value={staffId}
-                onChange={(e) => setStaffId(e.target.value)}
+                onChange={(e) => setStaffId(Number(e.target.value))}
                 custom
               >
                 {userList &&
@@ -114,7 +119,7 @@ const AddTask = () => {
               <Form.Control
                 as='select'
                 value={patientId}
-                onChange={(e) => setPatientId(e.target.value)}
+                onChange={(e) => setPatientId(Number(e.target.value))}
                 custom
               >
                 {patientList &&
@@ -130,8 +135,26 @@ const AddTask = () => {
               </Form.Control>
             </Form.Group>
 
-            <Form.Group controlId='formGroupTaskVisitType'>
-              <input type='text' />
+            <Form.Group controlId='formGroupTaskVisitDate'>
+              <Form.Label>Visit date</Form.Label>
+              <Form.Control
+                type='date'
+                value={scheduledDate}
+                onChange={(e) => setScheduledDate(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group controlId='formGroupTaskVisitStatus'>
+              <Form.Label>Visit status</Form.Label>
+              <Form.Control
+                as='select'
+                value={status}
+                onChange={(e) => setStatus(Boolean(e.target.value))}
+                custom
+              >
+                <option value={false}>Pending</option>
+                <option value={true}>Completed</option>
+              </Form.Control>
             </Form.Group>
           </Form>
         </Modal.Body>

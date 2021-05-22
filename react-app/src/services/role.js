@@ -24,3 +24,14 @@ export const parseRole = (role) => {
       return 'N/A';
   }
 };
+
+export const parseVisitType = (role) => {
+  switch (role) {
+    case 'RN':
+      return 'Nurse visit';
+    case 'CNA':
+      return 'Home health aide visit';
+    default:
+      return 'Therapy visit';
+  }
+};

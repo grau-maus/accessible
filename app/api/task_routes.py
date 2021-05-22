@@ -115,7 +115,11 @@ def add_task():
         assigned_staff = request.json['staffId']
         assigned_patient = request.json['patientId']
         visit_type = request.json['visitType']
-        scheduled_date = request.json['scheduledDate']
+        scheduled_date = datetime(
+            request.json['visitYear'],
+            request.json['visitMonth'],
+            request.json['visitDay']
+        )
         status = request.json['status']
 
         new_task = Task(

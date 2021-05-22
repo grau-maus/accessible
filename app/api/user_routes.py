@@ -11,7 +11,7 @@ user_routes = Blueprint('users', __name__)
 @login_required
 def users():
     if current_user.role != 'admin':
-        return ({'error': 'Error 401. Contact your administrator for more details.'}, 401)
+        return {'error': 'Error 401. Contact your administrator for more details.'}, 401
     users = User.query.all()
 
     return {"users": {user.id: user.to_dict() for user in users}}
@@ -22,7 +22,7 @@ def users():
 @login_required
 def visit_users():
     if current_user.role != 'admin':
-        return ({'error': 'Error 401. Contact your administrator for more details.'}, 401)
+        return {'error': 'Error 401. Contact your administrator for more details.'}, 401
     users = User.query.filter(
         User.role != 'admin',
         User.role != 'S'
@@ -32,7 +32,7 @@ def visit_users():
 
 
 # GET SINGLE USER
-@user_routes.route('/<int:user_id>')
+@user_routes.route('/<int:user_id>/')
 @login_required
 def user(user_id):
     if current_user.role != 'admin':
@@ -50,6 +50,9 @@ def del_user():
         return {'error': 'Error 401. Contact your administrator for more details.'}, 401
 
     user_id = request.json['userId']
+
+    if user_id == 1:
+        return {'error': 'Error 401. Unable to delete demo account.'}, 401
 
     if current_user.id == user_id:
         return {'error': 'Error 401. Unable to delete personal account.'}, 401
