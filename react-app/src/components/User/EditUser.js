@@ -40,7 +40,7 @@ const EditUser = ({ user }) => {
     if (!data.error) {
       setShowForm(false);
     } else {
-      console.log(data.error);
+      window.alert(data.error);
     }
   };
 
@@ -53,6 +53,11 @@ const EditUser = ({ user }) => {
   };
 
   const handleDeleteUser = () => {
+    if (user.id === 1) {
+      window.alert('Error, unable to delete demo user. Please select another user to edit / delete.');
+      return;
+    }
+
     dispatch(removeUser(user.id));
     setDeletedUser(true);
   };

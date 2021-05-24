@@ -5,24 +5,24 @@ import { addEditTask, removeTask } from '../../store/tasks';
 import { getAllInsurance } from '../../store/insurance';
 import { editForm } from '../../store/edit';
 
-const EditTask = ({ patient }) => {
+const EditTask = ({ task }) => {
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.users.visitingUserList);
   const patientList = useSelector((state) => state.patients.patientList);
-  const parseDate = new Date(patient.dob).toISOString().split('T')[0];
+  const parseDate = new Date(task.dob).toISOString().split('T')[0];
   const [show, setShow] = useState(true);
-  const [firstName, setFirstName] = useState(patient.firstName);
-  const [middleName, setMiddleName] = useState(patient.middleName);
-  const [lastName, setLastName] = useState(patient.lastName);
+  const [firstName, setFirstName] = useState(task.firstName);
+  const [middleName, setMiddleName] = useState(task.middleName);
+  const [lastName, setLastName] = useState(task.lastName);
   const [dob, setDob] = useState(parseDate);
-  const [insurance, setInsurance] = useState(patient.insurance);
+  const [insurance, setInsurance] = useState(task.insurance);
   const [insuranceId, setInsuranceId] = useState(insurance.id);
-  const [authVisits, setAuthVisits] = useState(patient.authorizedVisits);
-  const [mrn, setMrn] = useState(patient.mrn);
-  const [ssn, setSsn] = useState(patient.ssn);
-  const [address, setAddress] = useState(patient.primaryAddress);
-  const [phoneNumber, setPhoneNumber] = useState(patient.phoneNumber);
-  const [active, setActive] = useState(patient.active);
+  const [authVisits, setAuthVisits] = useState(task.authorizedVisits);
+  const [mrn, setMrn] = useState(task.mrn);
+  const [ssn, setSsn] = useState(task.ssn);
+  const [address, setAddress] = useState(task.primaryAddress);
+  const [phoneNumber, setPhoneNumber] = useState(task.phoneNumber);
+  const [active, setActive] = useState(task.active);
   const [showForm, setShowForm] = useState(false);
   const [deletedPatient, setDeletedPatient] = useState(false);
 
@@ -34,14 +34,14 @@ const EditTask = ({ patient }) => {
   };
 
   const handleSubmit = async () => {
-    console.log(parseDate);
+    window.alert(parseDate);
     const dobYear = parseInt(dob.split('-')[0], 10);
     const dobMonth = parseInt(dob.split('-')[1], 10);
     const dobDate = parseInt(dob.split('-')[2], 10);
 
     const data = await dispatch(addEditTask({
       fetchType: 'PATCH',
-      patientId: patient.id,
+      patientId: task.id,
       insuranceId,
       firstName,
       middleName,
@@ -62,7 +62,7 @@ const EditTask = ({ patient }) => {
     if (!data.error) {
       setShowForm(false);
     } else {
-      console.log(data.error);
+      window.alert(data.error);
     }
   };
 
@@ -75,7 +75,7 @@ const EditTask = ({ patient }) => {
   };
 
   const handleDeletePatient = () => {
-    dispatch(removeTask(patient.id));
+    dispatch(removeTask(task.id));
     setDeletedPatient(true);
   };
 
@@ -91,38 +91,38 @@ const EditTask = ({ patient }) => {
         onHide={handleClose}
         backdrop='static'
         keyboard={false}
-        id='modal-edit-patient-container'
+        id='modal-edit-task-container'
       >
         <Modal.Header
           closeButton
-          id='modal-header-edit-patient'
-          className='modal-header-patient'
+          id='modal-header-edit-task'
+          className='modal-header-task'
         >
           <Modal.Title>Patient details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {deletedPatient &&
-            <div className='patient-deleted'>Patient removed from the database.</div>
+            <div className='task-deleted'>Patient removed from the database.</div>
           }
           {!showForm && !deletedPatient &&
             <>
-              <div className='patient-name'>{`${lastName}, ${firstName}${middleName ? ` ${middleName}` : null}`}</div>
-              <div className='patient-dob'>{`DOB: ${new Date(dob)}`}</div>
-              <div className='patient-insuranceName'>{`Insurance: ${insurance.name}, ${insurance.type}`}</div>
-              <div className='patient-authVisits'>{`Authorized visits: ${authVisits}`}</div>
-              <div className='patient-mrn'>{`MRN: ${mrn}`}</div>
-              <div className='patient-ssn'>{`SSN: ${ssn}`}</div>
-              <div className='patient-primaryAddress'>{`Primary address: ${address}`}</div>
-              <div className='patient-phoneNumber'>{`Phone: ${phoneNumber}`}</div>
-              <div className='patient-active'>{`Active patient: ${active ? 'Yes' : 'No'}`}</div>
-              <div className='patient-added'>{`Added: ${patient.createdAt}`}</div>
-              <div className='patient-updated'>{`Updated: ${patient.updatedAt}`}</div>
+              <div className='task-name'>{`${lastName}, ${firstName}${middleName ? ` ${middleName}` : null}`}</div>
+              <div className='task-dob'>{`DOB: ${new Date(dob)}`}</div>
+              <div className='task-insuranceName'>{`Insurance: ${insurance.name}, ${insurance.type}`}</div>
+              <div className='task-authVisits'>{`Authorized visits: ${authVisits}`}</div>
+              <div className='task-mrn'>{`MRN: ${mrn}`}</div>
+              <div className='task-ssn'>{`SSN: ${ssn}`}</div>
+              <div className='task-primaryAddress'>{`Primary address: ${address}`}</div>
+              <div className='task-phoneNumber'>{`Phone: ${phoneNumber}`}</div>
+              <div className='task-active'>{`Active task: ${active ? 'Yes' : 'No'}`}</div>
+              <div className='task-added'>{`Added: ${task.createdAt}`}</div>
+              <div className='task-updated'>{`Updated: ${task.updatedAt}`}</div>
               <Button onClick={handleEditForm}>Edit details</Button>
-              <Button onClick={handleDeletePatient}>Delete patient</Button>
+              <Button onClick={handleDeletePatient}>Delete task</Button>
             </>
           }
           {showForm &&
-            <Form id='edit-patient-form'>
+            <Form id='edit-task-form'>
               <Form.Group controlId='formGroupPatientFirstName'>
                 <Form.Label>First name</Form.Label>
                 <Form.Control
@@ -227,7 +227,7 @@ const EditTask = ({ patient }) => {
               </Form.Group>
 
               <Form.Group controlId='formGroupPatientActive'>
-                <Form.Label>Active patient?</Form.Label>
+                <Form.Label>Active task?</Form.Label>
                 <Button onClick={() => setActive(!active)}>
                   {!active &&
                     'No'
@@ -252,7 +252,7 @@ const EditTask = ({ patient }) => {
                   onChange={(e) => setAuthVisits(e.target.value)}
                 />
               </Form.Group>
-              <Button onClick={handleSubmit}>Edit patient</Button>
+              <Button onClick={handleSubmit}>Edit task</Button>
               <Button onClick={cancelEditPatient}>Cancel</Button>
             </Form>
           }

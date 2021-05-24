@@ -38,9 +38,9 @@ const AddUser = () => {
 
     if (!data.error) {
       resetForm();
-      console.log('User added!');
+      window.alert('User added!');
     } else {
-      console.log(data.error);
+      window.alert(data.error);
     }
   };
 

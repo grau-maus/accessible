@@ -62,9 +62,9 @@ const AddTask = () => {
 
     if (!data.error) {
       resetForm();
-      console.log('Task added!');
+      window.alert('Task added!');
     } else {
-      console.log(data.error);
+      window.alert(data.error);
     }
   };
 

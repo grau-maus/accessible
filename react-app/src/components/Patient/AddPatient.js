@@ -48,7 +48,7 @@ const AddPatient = () => {
   const handleShow = () => setShow(true);
   const handleSubmit = async () => {
     if (!dob) {
-      console.log('Error. Provide a DOB.');
+      window.alert('Error. Provide a DOB.');
       return;
     }
 
@@ -75,9 +75,9 @@ const AddPatient = () => {
 
     if (!data.error) {
       resetForm();
-      console.log('Patient added!');
+      window.alert('Patient added!');
     } else {
-      console.log(data.error);
+      window.alert(data.error);
     }
   };
 

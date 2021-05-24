@@ -34,7 +34,7 @@ const EditPhysician = ({ physician }) => {
     if (!data.error) {
       setShowForm(false);
     } else {
-      console.log(data.error);
+      window.alert(data.error);
     }
   };
 

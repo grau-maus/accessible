@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import EditUser from './EditUser';
-import { getAllUsers } from '../../store/users';
+import { getAllUsers, clearUserState } from '../../store/users';
 import { editForm } from '../../store/edit';
 import { parseRole } from '../../services/role';
 
@@ -14,6 +14,8 @@ const UserTable = () => {
 
   useEffect(() => {
     dispatch(getAllUsers());
+
+    return () => { dispatch(clearUserState()) };
   }, [dispatch]);
 
   if (!userList) return null;

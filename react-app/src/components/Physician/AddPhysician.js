@@ -38,9 +38,9 @@ const AddPhysician = () => {
 
     if (!data.error) {
       resetForm();
-      console.log('Physician added!');
+      window.alert('Physician added!');
     } else {
-      console.log(data.error);
+      window.alert(data.error);
     }
   };
 

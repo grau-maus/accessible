@@ -26,7 +26,7 @@ const LoginForm = () => {
         if (type === 'email') setEmailError(ele);
         if (type === 'password') setPassError(ele);
       }
-      console.log(data.errors);
+      window.alert(data.errors);
     }
   };
 

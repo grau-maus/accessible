@@ -3,6 +3,7 @@ const EDIT_USER = 'users/EDIT_USER';
 const GET_USERS = 'users/GET_USERS';
 const GET_VISITING_USERS = 'users/GET_VISITING_USERS';
 const DELETE_USER = 'users/DELETE_USER';
+const CLEAR_USER_STATE = 'users/CLEAR_USER_STATE';
 
 const editUser = (user) => ({
   type: EDIT_USER,
@@ -22,6 +23,10 @@ const getVisitingUsers = (users) => ({
 const deleteUser = (userId) => ({
   type: DELETE_USER,
   payload: userId
+});
+
+export const clearUserState = () => ({
+  type: CLEAR_USER_STATE
 });
 
 // thunks
@@ -124,6 +129,11 @@ export default function reducer(state = initialState, action) {
       delete newState.userList[action.payload];
 
       return newState;
+    case CLEAR_USER_STATE:
+      return {
+        userList: null,
+        visitingUserList: null
+      }
     default:
       return state;
   }

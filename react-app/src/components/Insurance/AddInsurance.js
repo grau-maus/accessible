@@ -27,9 +27,9 @@ const AddInsurance = () => {
 
     if (!data.error) {
       resetForm();
-      console.log('Insurance added!');
+      window.alert('Insurance added!');
     } else {
-      console.log(data.error);
+      window.alert(data.error);
     }
   };
 
