@@ -27,12 +27,13 @@ const GetPatient = () => {
           closeButton
           className='modal-header-patient'
         >
-          <Modal.Title>Insurance:</Modal.Title>
+          <Modal.Title>Patients:</Modal.Title>
         </Modal.Header>
         <Modal.Body id='patient-list-container'>
           <PatientTable />
         </Modal.Body>
         <Modal.Footer>
+          <h4>Click on a patient to edit details...</h4>
           <Button variant='secondary' onClick={handleClose}>
             Back
           </Button>

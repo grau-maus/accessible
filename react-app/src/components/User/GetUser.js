@@ -33,6 +33,7 @@ const GetUser = () => {
           <UserTable />
         </Modal.Body>
         <Modal.Footer>
+          <h4>Click on a user to edit details...</h4>
           <Button variant='secondary' onClick={handleClose}>
             Back
           </Button>

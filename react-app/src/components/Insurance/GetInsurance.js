@@ -33,6 +33,7 @@ const GetInsurance = () => {
           <InsuranceTable />
         </Modal.Body>
         <Modal.Footer>
+          <h4>Click on insurance to edit details...</h4>
           <Button variant='secondary' onClick={handleClose}>
             Back
           </Button>

@@ -37,7 +37,6 @@ const EditPatient = ({ patient }) => {
   };
 
   const handleSubmit = async () => {
-    window.alert(parseDate);
     const dobYear = parseInt(dob.split('-')[0], 10);
     const dobMonth = parseInt(dob.split('-')[1], 10);
     const dobDate = parseInt(dob.split('-')[2], 10);

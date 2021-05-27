@@ -11,20 +11,12 @@ const EditTask = ({ task }) => {
   const patientList = useSelector((state) => state.patients.patientList);
   const parseDate = new Date(task.dob).toISOString().split('T')[0];
   const [show, setShow] = useState(true);
-  const [firstName, setFirstName] = useState(task.firstName);
-  const [middleName, setMiddleName] = useState(task.middleName);
-  const [lastName, setLastName] = useState(task.lastName);
-  const [dob, setDob] = useState(parseDate);
-  const [insurance, setInsurance] = useState(task.insurance);
-  const [insuranceId, setInsuranceId] = useState(insurance.id);
-  const [authVisits, setAuthVisits] = useState(task.authorizedVisits);
-  const [mrn, setMrn] = useState(task.mrn);
-  const [ssn, setSsn] = useState(task.ssn);
-  const [address, setAddress] = useState(task.primaryAddress);
-  const [phoneNumber, setPhoneNumber] = useState(task.phoneNumber);
-  const [active, setActive] = useState(task.active);
+  const [staffId, setStaffId] = useState(1);
+  const [patientId, setPatientId] = useState(1);
+  const [scheduledDate, setScheduledDate] = useState('');
+  const [status, setStatus] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [deletedPatient, setDeletedPatient] = useState(false);
+  const [deletedTask, setDeletedTask] = useState(false);
 
   if (!insuranceList) return 'Loading...';
 
@@ -34,30 +26,21 @@ const EditTask = ({ task }) => {
   };
 
   const handleSubmit = async () => {
-    window.alert(parseDate);
-    const dobYear = parseInt(dob.split('-')[0], 10);
-    const dobMonth = parseInt(dob.split('-')[1], 10);
-    const dobDate = parseInt(dob.split('-')[2], 10);
+    const visitType = parseVisitType(userList[staffId].role);
+    const visitYear = parseInt(scheduledDate.split('-')[0], 10);
+    const visitMonth = parseInt(scheduledDate.split('-')[1], 10);
+    const visitDay = parseInt(scheduledDate.split('-')[2], 10);
 
     const data = await dispatch(addEditTask({
       fetchType: 'PATCH',
-      patientId: task.id,
-      insuranceId,
-      firstName,
-      middleName,
-      lastName,
-      dobYear,
-      dobMonth,
-      dobDate,
-      mrn,
-      ssn,
-      address,
-      phoneNumber,
-      active,
-      authVisits
+      staffId,
+      patientId,
+      visitType,
+      visitYear,
+      visitMonth,
+      visitDay,
+      status
     }));
-
-
 
     if (!data.error) {
       setShowForm(false);
@@ -70,13 +53,13 @@ const EditTask = ({ task }) => {
     setShowForm(!showForm);
   };
 
-  const cancelEditPatient = () => {
+  const cancelEditTask = () => {
     setShowForm(!showForm);
   };
 
-  const handleDeletePatient = () => {
+  const handleDeleteTask = () => {
     dispatch(removeTask(task.id));
-    setDeletedPatient(true);
+    setDeletedTask(true);
   };
 
   return (
@@ -98,13 +81,13 @@ const EditTask = ({ task }) => {
           id='modal-header-edit-task'
           className='modal-header-task'
         >
-          <Modal.Title>Patient details</Modal.Title>
+          <Modal.Title>Task details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {deletedPatient &&
-            <div className='task-deleted'>Patient removed from the database.</div>
+          {deletedTask &&
+            <div className='task-deleted'>Task removed from the database.</div>
           }
-          {!showForm && !deletedPatient &&
+          {!showForm && !deletedTask &&
             <>
               <div className='task-name'>{`${lastName}, ${firstName}${middleName ? ` ${middleName}` : null}`}</div>
               <div className='task-dob'>{`DOB: ${new Date(dob)}`}</div>
@@ -118,12 +101,12 @@ const EditTask = ({ task }) => {
               <div className='task-added'>{`Added: ${task.createdAt}`}</div>
               <div className='task-updated'>{`Updated: ${task.updatedAt}`}</div>
               <Button onClick={handleEditForm}>Edit details</Button>
-              <Button onClick={handleDeletePatient}>Delete task</Button>
+              <Button onClick={handleDeleteTask}>Delete task</Button>
             </>
           }
           {showForm &&
             <Form id='edit-task-form'>
-              <Form.Group controlId='formGroupPatientFirstName'>
+              <Form.Group controlId='formGroupTaskFirstName'>
                 <Form.Label>First name</Form.Label>
                 <Form.Control
                   type='text'
@@ -133,7 +116,7 @@ const EditTask = ({ task }) => {
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientMiddleName'>
+              <Form.Group controlId='formGroupTaskMiddleName'>
                 <Form.Label>Middle name</Form.Label>
                 <Form.Control
                   type='text'
@@ -143,7 +126,7 @@ const EditTask = ({ task }) => {
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientLastName'>
+              <Form.Group controlId='formGroupTaskLastName'>
                 <Form.Label>Last name</Form.Label>
                 <Form.Control
                   type='text'
@@ -153,7 +136,7 @@ const EditTask = ({ task }) => {
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientDOB'>
+              <Form.Group controlId='formGroupTaskDOB'>
                 <Form.Label>DOB</Form.Label>
                 <Form.Control
                   type='date'
@@ -162,7 +145,7 @@ const EditTask = ({ task }) => {
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientInsurance'>
+              <Form.Group controlId='formGroupTaskInsurance'>
                 <Form.Label>Insurance</Form.Label>
                 <Form.Control
                   as='select'
@@ -183,7 +166,7 @@ const EditTask = ({ task }) => {
                 </Form.Control>
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientMRN'>
+              <Form.Group controlId='formGroupTaskMRN'>
                 <Form.Label>MRN</Form.Label>
                 <Form.Control
                   type='text'
@@ -193,7 +176,7 @@ const EditTask = ({ task }) => {
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientSSN'>
+              <Form.Group controlId='formGroupTaskSSN'>
                 <Form.Label>SSN</Form.Label>
                 <Form.Control
                   type='text'
@@ -205,7 +188,7 @@ const EditTask = ({ task }) => {
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientAddress'>
+              <Form.Group controlId='formGroupTaskAddress'>
                 <Form.Label>Address</Form.Label>
                 <Form.Control
                   type='text'
@@ -215,7 +198,7 @@ const EditTask = ({ task }) => {
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientPhoneNumber'>
+              <Form.Group controlId='formGroupTaskPhoneNumber'>
                 <Form.Label>Phone number</Form.Label>
                 <Form.Control
                   type='text'
@@ -226,7 +209,7 @@ const EditTask = ({ task }) => {
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientActive'>
+              <Form.Group controlId='formGroupTaskActive'>
                 <Form.Label>Active task?</Form.Label>
                 <Button onClick={() => setActive(!active)}>
                   {!active &&
@@ -244,7 +227,7 @@ const EditTask = ({ task }) => {
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientAuthVisits'>
+              <Form.Group controlId='formGroupTaskAuthVisits'>
                 <Form.Label>Authorized visits</Form.Label>
                 <Form.Control
                   type='number'
@@ -253,7 +236,7 @@ const EditTask = ({ task }) => {
                 />
               </Form.Group>
               <Button onClick={handleSubmit}>Edit task</Button>
-              <Button onClick={cancelEditPatient}>Cancel</Button>
+              <Button onClick={cancelEditTask}>Cancel</Button>
             </Form>
           }
         </Modal.Body>
