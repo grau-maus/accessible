@@ -10,6 +10,7 @@ import GetPhysician from '../Physician/GetPhysician';
 import AddPatient from '../Patient/AddPatient';
 import GetPatient from '../Patient/GetPatient';
 import AddTask from '../Task/AddTask';
+import GetTask from '../Task/GetTask';
 import { logout } from '../../store/session';
 
 import './NavBar.css';
@@ -53,7 +54,7 @@ const NavBar = () => {
               My tasks
             </Dropdown.Item>
             <Dropdown.Item>
-              All tasks
+              <GetTask />
             </Dropdown.Item>
           </DropdownButton>
 

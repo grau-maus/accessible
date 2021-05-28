@@ -1,6 +1,7 @@
 // constants
 const EDIT_TASK = 'tasks/EDIT_TASK';
 const GET_ALL_TASKS = 'tasks/GET_ALL_TASKS';
+const GET_ONE_TASK = 'tasks/GET_ONE_TASK';
 const GET_USER_TASKS = 'tasks/GET_USER_TASKS';
 const DELETE_TASKS = 'tasks/DELETE_TASKS';
 
@@ -12,6 +13,11 @@ const editTask = (task) => ({
 const getAllTasks = (tasks) => ({
   type: GET_ALL_TASKS,
   payload: tasks
+});
+
+const getOneTask = (task) => ({
+  type: GET_ONE_TASK,
+  payload: task
 });
 
 const getUserTasks = (tasks) => ({
@@ -73,10 +79,20 @@ export const getEveryTask = () => async (dispatch) => {
 };
 
 export const getSingleUserTasks = (userId) => async (dispatch) => {
-  const response = await fetch(`/api/tasks/${userId}/`);
+  const response = await fetch(`/api/tasks/users/${userId}/`);
   if (response.ok) {
     const data = await response.json();
     await dispatch(getUserTasks(data));
+  } else {
+    return { error: 'error' };
+  }
+};
+
+export const getSingleTask = (taskId) => async (dispatch) => {
+  const response = await fetch(`/api/tasks/${taskId}/`);
+  if (response.ok) {
+    const data = await response.json();
+    await dispatch(getOneTask(data));
   } else {
     return { error: 'error' };
   }
@@ -100,7 +116,8 @@ export const removeTask = (taskId) => async (dispatch) => {
 
 const initialState = {
   taskList: null,
-  userTaskList: null
+  userTaskList: null,
+  singleTask: null
 };
 
 // reducer
@@ -116,6 +133,11 @@ export default function reducer(state = initialState, action) {
     case GET_USER_TASKS:
       newState = Object.assign({}, state);
       newState.userTaskList = action.payload;
+
+      return newState;
+    case GET_ONE_TASK:
+      newState = Object.assign({}, state);
+      newState.singleTask = action.payload;
 
       return newState;
     case EDIT_TASK:

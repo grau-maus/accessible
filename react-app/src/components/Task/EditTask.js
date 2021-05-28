@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { addEditTask, removeTask } from '../../store/tasks';
-import { getAllInsurance } from '../../store/insurance';
+import { addEditTask, removeTask, getSingleTask } from '../../store/tasks';
 import { editForm } from '../../store/edit';
+import { parseVisitType } from '../../services/role';
 
 const EditTask = ({ task }) => {
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.users.visitingUserList);
   const patientList = useSelector((state) => state.patients.patientList);
-  const parseDate = new Date(task.dob).toISOString().split('T')[0];
+  const parseDate = new Date(task.scheduledDate).toISOString().split('T')[0];
   const [show, setShow] = useState(true);
-  const [staffId, setStaffId] = useState(1);
-  const [patientId, setPatientId] = useState(1);
-  const [scheduledDate, setScheduledDate] = useState('');
-  const [status, setStatus] = useState(false);
+  const [staff, setStaff] = useState(task.staff);
+  const [staffId, setStaffId] = useState(staff.id);
+  const [patient, setPatient] = useState(task.patient);
+  const [patientId, setPatientId] = useState(patient.id);
+  const [scheduledDate, setScheduledDate] = useState(parseDate);
+  const [status, setStatus] = useState(task.completed);
+  const [visit, setVisit] = useState(parseVisitType(task.staff.role));
   const [showForm, setShowForm] = useState(false);
   const [deletedTask, setDeletedTask] = useState(false);
 
-  if (!insuranceList) return 'Loading...';
+  if (!patientList) return 'Loading...';
 
   const handleClose = () => {
     setShow(false);
@@ -33,6 +36,7 @@ const EditTask = ({ task }) => {
 
     const data = await dispatch(addEditTask({
       fetchType: 'PATCH',
+      taskId: task.id,
       staffId,
       patientId,
       visitType,
@@ -62,6 +66,41 @@ const EditTask = ({ task }) => {
     setDeletedTask(true);
   };
 
+  const handlePatientName = (patient) => {
+    if (patient.middleName) {
+      return `Patient: ${patient.lastName}, ${patient.firstName} ${patient.middleName[0]}.`
+    }
+
+    return `Patient: ${patient.lastName}, ${patient.firstName}`
+  };
+
+  const handlePatient = (patientId) => {
+    setPatientId(patientId);
+    setPatient(patientList[patientId]);
+  };
+
+  const handleStaff = (staffId) => {
+    setStaffId(staffId);
+    setStaff(userList[staffId]);
+    setVisit(parseVisitType(userList[staffId].role));
+  };
+
+  const handleStatus = (status) => {
+    if (status) {
+      return 'Completed';
+    }
+
+    return 'Pending';
+  };
+
+  const handleSetStatus = (string) => {
+    if (string === 'true') {
+      setStatus(true);
+    } else {
+      setStatus(false);
+    }
+  };
+
   return (
     <div
       onKeyDown={(e) => e.stopPropagation()}
@@ -89,15 +128,11 @@ const EditTask = ({ task }) => {
           }
           {!showForm && !deletedTask &&
             <>
-              <div className='task-name'>{`${lastName}, ${firstName}${middleName ? ` ${middleName}` : null}`}</div>
-              <div className='task-dob'>{`DOB: ${new Date(dob)}`}</div>
-              <div className='task-insuranceName'>{`Insurance: ${insurance.name}, ${insurance.type}`}</div>
-              <div className='task-authVisits'>{`Authorized visits: ${authVisits}`}</div>
-              <div className='task-mrn'>{`MRN: ${mrn}`}</div>
-              <div className='task-ssn'>{`SSN: ${ssn}`}</div>
-              <div className='task-primaryAddress'>{`Primary address: ${address}`}</div>
-              <div className='task-phoneNumber'>{`Phone: ${phoneNumber}`}</div>
-              <div className='task-active'>{`Active task: ${active ? 'Yes' : 'No'}`}</div>
+              <div className='task-staff'>{`Assigned staff: ${staff.lastName}, ${staff.firstName} (${staff.role})`}</div>
+              <div className='task-patient'>{handlePatientName(patient)}</div>
+              <div className='task-type'>{`Type of visit: ${visit}`}</div>
+              <div className='task-scheduledDate'>{`Date of visit: ${new Date(scheduledDate)}`}</div>
+              <div className='task-status'>{`Status: ${handleStatus(status)}`}</div>
               <div className='task-added'>{`Added: ${task.createdAt}`}</div>
               <div className='task-updated'>{`Updated: ${task.updatedAt}`}</div>
               <Button onClick={handleEditForm}>Edit details</Button>
@@ -105,138 +140,72 @@ const EditTask = ({ task }) => {
             </>
           }
           {showForm &&
-            <Form id='edit-task-form'>
-              <Form.Group controlId='formGroupTaskFirstName'>
-                <Form.Label>First name</Form.Label>
-                <Form.Control
-                  type='text'
-                  placeholder='John / Jane'
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group controlId='formGroupTaskMiddleName'>
-                <Form.Label>Middle name</Form.Label>
-                <Form.Control
-                  type='text'
-                  placeholder='Mary / Smith'
-                  value={middleName}
-                  onChange={(e) => setMiddleName(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group controlId='formGroupTaskLastName'>
-                <Form.Label>Last name</Form.Label>
-                <Form.Control
-                  type='text'
-                  placeholder='Doe / Deer'
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group controlId='formGroupTaskDOB'>
-                <Form.Label>DOB</Form.Label>
-                <Form.Control
-                  type='date'
-                  value={dob}
-                  onChange={(e) => setDob(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group controlId='formGroupTaskInsurance'>
-                <Form.Label>Insurance</Form.Label>
+            <Form id='add-task-form'>
+              <Form.Group controlId='formGroupTaskStaff'>
+                <Form.Label>Select staff</Form.Label>
                 <Form.Control
                   as='select'
-                  value={insuranceId}
-                  onChange={(e) => { setInsuranceId(e.target.value) }}
+                  value={staffId}
+                  onChange={(e) => handleStaff(e.target.value)}
                   custom
                 >
-                  {
-                    Object.values(insuranceList).map((insObj, index) => (
+                  {userList &&
+                    Object.values(userList).map((staff) => (
                       <option
-                        key={`ins-${index}`}
-                        value={insObj.id}
+                        key={`staff-${staff.id}`}
+                        value={staff.id}
                       >
-                        {insObj.name}
+                        {`${staff.lastName}, ${staff.firstName}: ${staff.role}`}
                       </option>
                     ))
                   }
                 </Form.Control>
               </Form.Group>
 
-              <Form.Group controlId='formGroupTaskMRN'>
-                <Form.Label>MRN</Form.Label>
+              <Form.Group controlId='formGroupTaskPatient'>
+                <Form.Label>Select patient</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='123456789'
-                  value={mrn}
-                  onChange={(e) => setMrn(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group controlId='formGroupTaskSSN'>
-                <Form.Label>SSN</Form.Label>
-                <Form.Control
-                  type='text'
-                  placeholder='123-45-6789'
-                  minLength='9'
-                  maxLength='9'
-                  value={ssn}
-                  onChange={(e) => setSsn(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group controlId='formGroupTaskAddress'>
-                <Form.Label>Address</Form.Label>
-                <Form.Control
-                  type='text'
-                  placeholder='123 Ontario Road'
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group controlId='formGroupTaskPhoneNumber'>
-                <Form.Label>Phone number</Form.Label>
-                <Form.Control
-                  type='text'
-                  placeholder='753-4432'
-                  maxLength='7'
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group controlId='formGroupTaskActive'>
-                <Form.Label>Active task?</Form.Label>
-                <Button onClick={() => setActive(!active)}>
-                  {!active &&
-                    'No'
+                  as='select'
+                  value={patientId}
+                  onChange={(e) => handlePatient(e.target.value)}
+                  custom
+                >
+                  {patientList &&
+                    Object.values(patientList).map((patient) => (
+                      <option
+                        key={`patient-${patient.id}`}
+                        value={patient.id}
+                      >
+                        {`${patient.lastName}, ${patient.firstName} ${patient.middleName ? patient.middleName[0] + '.' : ''}`}
+                      </option>
+                    ))
                   }
-                  {active &&
-                    'Yes'
-                  }
-                </Button>
-                <Form.Check
-                  type='checkbox'
-                  checked={active}
-                  onChange={(e) => setActive(e.target.checked)}
-                  hidden
+                </Form.Control>
+              </Form.Group>
+
+              <Form.Group controlId='formGroupTaskVisitDate'>
+                <Form.Label>Visit date</Form.Label>
+                <Form.Control
+                  type='date'
+                  value={scheduledDate}
+                  onChange={(e) => setScheduledDate(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupTaskAuthVisits'>
-                <Form.Label>Authorized visits</Form.Label>
+              <Form.Group controlId='formGroupTaskVisitStatus'>
+                <Form.Label>Visit status</Form.Label>
                 <Form.Control
-                  type='number'
-                  value={authVisits}
-                  onChange={(e) => setAuthVisits(e.target.value)}
-                />
+                  as='select'
+                  value={status}
+                  onChange={(e) => handleSetStatus(e.target.value)}
+                  custom
+                >
+                  <option value={false}>Pending</option>
+                  <option value={true}>Completed</option>
+                </Form.Control>
               </Form.Group>
-              <Button onClick={handleSubmit}>Edit task</Button>
-              <Button onClick={cancelEditTask}>Cancel</Button>
+              <Button variant='primary' onClick={handleSubmit}>Edit task</Button>
+              <Button variant='secondary' onClick={cancelEditTask}>Cancel</Button>
             </Form>
           }
         </Modal.Body>

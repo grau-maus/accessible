@@ -9,7 +9,7 @@ task_routes = Blueprint('tasks', __name__)
 
 
 # GET ALL TASKS FROM A USER
-@task_routes.route('/<int:user_id>')
+@task_routes.route('/users/<int:user_id>/')
 @login_required
 def tasks(user_id):
     get_all_tasks = Task.query.filter(
@@ -74,9 +74,17 @@ def edit_task():
         assigned_staff = request.json['staffId']
         assigned_patient = request.json['patientId']
         visit_type = request.json['visitType']
-        scheduled_date = request.json['scheduledDate']
+        scheduled_date = datetime(
+            request.json['visitYear'],
+            request.json['visitMonth'],
+            request.json['visitDay']
+        )
         status = request.json['status']
 
+        if status == 'true':
+            status = True
+        if status == 'false':
+            status = False
         if assigned_staff:
             task.user_id = assigned_staff
         if assigned_patient:
@@ -103,8 +111,8 @@ def edit_task():
         return {'error': 'Error 404. Task does not exist in the database'}, 404
     except UnmappedInstanceError:
         return {'error': 'Error 404. Task does not exist in the database'}, 404
-    except:
-        return {'error': 'Error 500. Contact your administrator for more details.'}, 500
+    # except:
+    #     return {'error': 'Error 500. Contact your administrator for more details.'}, 500
 
 
 # ADD TASK

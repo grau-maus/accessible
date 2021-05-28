@@ -229,21 +229,16 @@ const EditPatient = ({ patient }) => {
               </Form.Group>
 
               <Form.Group controlId='formGroupPatientActive'>
-                <Form.Label>Active patient?</Form.Label>
-                <Button onClick={() => setActive(!active)}>
-                  {!active &&
-                    'No'
-                  }
-                  {active &&
-                    'Yes'
-                  }
-                </Button>
-                <Form.Check
-                  type='checkbox'
-                  checked={active}
-                  onChange={(e) => setActive(e.target.checked)}
-                  hidden
-                />
+                <Form.Label>Active patient</Form.Label>
+                <Form.Control
+                  as='select'
+                  value={active}
+                  onChange={(e) => setActive(e.target.value === 'true' ? true : false)}
+                  custom
+                >
+                  <option value={true}>Yes</option>
+                  <option value={false}>No</option>
+                </Form.Control>
               </Form.Group>
 
               <Form.Group controlId='formGroupPatientAuthVisits'>

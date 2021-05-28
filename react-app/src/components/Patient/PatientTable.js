@@ -60,7 +60,7 @@ const PatientTable = () => {
                 <td key={`ssn-${index}`}>{patientObj.ssn}</td>
                 <td key={`address-${index}`}>{patientObj.primaryAdddress}</td>
                 <td key={`phone-${index}`}>{patientObj.phoneNumber}</td>
-                <td key={`active-${index}`}>{patientObj.phoneNumber ? 'Yes' : 'No'}</td>
+                <td key={`active-${index}`}>{patientObj.active ? 'Yes' : 'No'}</td>
                 <td key={`added-${index}`}>{patientObj.createdAt}</td>
                 <td key={`updated-${index}`}>{patientObj.updatedAt}</td>
               </tr>

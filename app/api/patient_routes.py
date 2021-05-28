@@ -77,6 +77,10 @@ def edit_patient():
         new_status = request.json['active']
         new_auth_visits = request.json['authVisits']
 
+        if new_status == 'true':
+            new_status = True
+        if new_status == 'false':
+            new_status = False
         if new_insurance:
             patient.insurance_id = new_insurance
         if new_first_name:
