@@ -1,21 +1,13 @@
-# Accessible
+# Flask React Project
 
-`Accessible` is a to-do list application that allows users to create their own customized lists and tasks
-<br/>
-Users can search for specific tasks within their lists, update its priority, and many more!
+This is the backend for the Flask React project.
 
-<br/>
-
-## Getting Started
-
-Follow the instructions below to have your very own `Accessible` app! (Used for development and testing purposes of course)
-<br/>
-Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` project on to [Heroku](https://www.heroku.com)
+## Getting started
 
 1. Clone this repository (only this branch)
 
    ```bash
-   git clone https://github.com/grau-maus/accessible.git
+   git clone https://github.com/appacademy-starters/python-project-starter.git
    ```
 
 2. Install dependencies
@@ -26,7 +18,6 @@ Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` 
 
 3. Create a **.env** file based on the example with proper settings for your
    development environment
-
 4. Setup your PostgreSQL user, password and database and make sure it matches your **.env** file
 
 5. Get into your pipenv, migrate your database, seed your database, and run your flask app
@@ -63,33 +54,25 @@ Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` 
    There is a layer in the Dockerfile that will install psycopg2 (not binary) for us.
 ***
 
-<!-- End with an example of getting some data out of the system or using it for a little demo -->
-
-<br/>
-
-## Deployment
+## Deploy to Heroku
 
 1. Create a new project on Heroku
-
 2. Under Resources click "Find more add-ons" and add the add on called "Heroku Postgres"
-
 3. Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line)
-
 4. Run
 
    ```bash
    heroku login
    ```
 
-5. Log in to the heroku container registry
+5. Login to the heroku container registry
 
    ```bash
    heroku container:login
    ```
 
 6. Update the `REACT_APP_BASE_URL` variable in the Dockerfile.
-   This should be the full URL of your `Accessible` project: i.e. "https://accessible-app.herokuapp.com/"
-
+   This should be the full URL of your Heroku app: i.e. "https://flask-react-aa.herokuapp.com"
 7. Push your docker container to heroku from the root directory of your project.
    This will build the dockerfile and push the image to your heroku container registry
 
@@ -113,25 +96,3 @@ Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` 
 10. Under Settings find "Config Vars" and add any additional/secret .env variables.
 
 11. profit
-
-<br/>
-
-## Built With
-
-[Python 3.9.4](https://www.python.org/) - Back-end
-* [Flask](https://flask.palletsprojects.com/en/2.0.x/) - API routes and authentication
-* [SQLAlchemy](https://www.sqlalchemy.org/) - SQL Toolkit & ORM
-* [Faker](https://faker.readthedocs.io/en/master/) - For generating seeder data
-***
-[NodeJS](https://nodejs.org/en/) - Front-end
-* [Create React App](https://github.com/facebook/create-react-app) - Used to bootstrap front-end
-* [React](https://reactjs.org/) / [Redux](https://redux.js.org/) - Client-sided framework
-***
-
-<br/>
-
-## Author
-
-* **Josh Tupas**
-   * *Initial work* - [Accessible](https://github.com/grau-maus/accessible.git)
-   * [LinkedIn](https://www.linkedin.com/in/josh-tupas/)
