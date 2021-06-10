@@ -133,5 +133,4 @@ Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` 
 ## Author
 
 * **Josh Tupas**
-   * *Initial work* - [Accessible](https://github.com/grau-maus/accessible.git)
    * [LinkedIn](https://www.linkedin.com/in/josh-tupas/)
