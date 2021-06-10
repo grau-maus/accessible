@@ -27,7 +27,7 @@
 }
 
 .navbar-right {
-  background-color: #118ab2;
+  background-color: #15B1E5;
   width: 70%;
   height: 100%;
   display: flex;
@@ -47,11 +47,19 @@
   margin-bottom: -20px;
 }
 
+#insurance-dropdown,
+#physicians-dropdown,
+#patients-dropdown,
+#tasks-dropdown {
+  margin-top: -20px;
+}
+
 #profile-dropdown {
   display: flex;
   justify-content: center;
   align-items: baseline;
-  font-size: 1rem;
+  font-size: 1.5rem;
+  margin-top: -16px;
 }
 
 #profile-dropdown:focus {
