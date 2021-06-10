@@ -47,7 +47,7 @@ const Home = () => {
             </div>
             {taskList ?
               Object.values(taskList).map((task, idx) => (
-                <div className='dashboard-tasks'>
+                <div className='dashboard-tasks' key={`tasks-div-${idx}`}>
                   <h4 key={`taskType-${idx}`}>{`${task.type}:`}</h4>
                   <h4 key={`taskPatient-${idx}`}>{`${task.patient.lastName}, ${task.patient.firstName}`}</h4>
                 </div>
@@ -62,7 +62,7 @@ const Home = () => {
               </div>
               {insuranceList ?
                 Object.values(insuranceList).map((insurance, idx) => (
-                  <div className='dashboard-insurance'>
+                  <div className='dashboard-insurance' key={`insurance-div-${idx}`}>
                     <h4 key={`insurance-${idx}`}>{insurance.name}</h4>
                   </div>
                 )) : 'Loading insurance...'
@@ -75,7 +75,7 @@ const Home = () => {
               </div>
               {physicianList ?
                 Object.values(physicianList).map((physician, idx) => (
-                  <div className='dashboard-physicians'>
+                  <div className='dashboard-physicians' key={`physicians-div-${idx}`}>
                     <h4 key={`physicians-${idx}`}>{physician.name}</h4>
                   </div>
                 )) : 'Loading physicians...'

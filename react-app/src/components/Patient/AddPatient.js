@@ -74,8 +74,8 @@ const AddPatient = () => {
     }));
 
     if (!data.error) {
-      resetForm();
       window.alert('Patient added!');
+      handleClose();
     } else {
       window.alert(data.error);
     }

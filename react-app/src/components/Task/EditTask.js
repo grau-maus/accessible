@@ -204,7 +204,7 @@ const EditTask = ({ task }) => {
                   <option value={true}>Completed</option>
                 </Form.Control>
               </Form.Group>
-              <Button variant='primary' onClick={handleSubmit}>Edit task</Button>
+              <Button variant='primary' onClick={handleSubmit}>Save changes</Button>
               <Button variant='secondary' onClick={cancelEditTask}>Cancel</Button>
             </Form>
           }

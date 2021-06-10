@@ -249,7 +249,7 @@ const EditPatient = ({ patient }) => {
                   onChange={(e) => setAuthVisits(e.target.value)}
                 />
               </Form.Group>
-              <Button onClick={handleSubmit}>Edit patient</Button>
+              <Button onClick={handleSubmit}>Save changes</Button>
               <Button onClick={cancelEditPatient}>Cancel</Button>
             </Form>
           }
