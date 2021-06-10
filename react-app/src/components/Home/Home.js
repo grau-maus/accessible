@@ -30,13 +30,13 @@ const Home = () => {
       <div className='dashboard-container'>
         <div className='dashboard-navbar'>
           <div className='dashboard-navbar-left'>
-            <p>Hello {user.firstName}!</p>
-            <p>{new Date().toDateString()}</p>
+            <p className='dashboard-hello-user'>Hello {user.firstName}!</p>
+            <p className='dashboard-current-date'>{new Date().toDateString()}</p>
           </div>
 
           <div className='dashboard-navbar-right'>
-            <p>Super Health Inc.</p>
-            <p>444 Academy Blvd.</p>
+            <p className='dashboard-company-name'>Super Health Inc.</p>
+            <p className='dashboard-company-address'>444 Academy Blvd.</p>
           </div>
         </div>
 

@@ -21,6 +21,21 @@
   width: 95vw;
 }
 
+.dashboard-navbar-left > p {
+  margin-left: 20px;
+  font-weight: 500;
+}
+
+.dashboard-navbar-right > p {
+  margin-right: 20px;
+  font-weight: 500;
+}
+
+.dashboard-hello-user,
+.dashboard-company-name {
+  margin-top: 5px;
+}
+
 .dashboard-navbar {
   display: flex;
   flex-direction: row;
