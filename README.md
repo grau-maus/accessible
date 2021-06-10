@@ -1,8 +1,8 @@
 # Accessible
 
-`Accessible` is a to-do list application that allows users to create their own customized lists and tasks
+`Accessible` is a medical records app that tracks patient and referring physician information, visits, and insurance
 <br/>
-Users can search for specific tasks within their lists, update its priority, and many more!
+User administrators can create user accounts for new staff as well as read, update, and delete other user accounts!
 
 <br/>
 
