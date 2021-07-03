@@ -14,16 +14,25 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  align-items: baseline;
+  align-items: center;
 }
 
-.navbar-logo > i.fa-ambulance {
+.navbar-ambulance-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 3px solid gray;
   border-radius: 100%;
-  padding: 10px;
-  color: #d62828;
-  font-size: 2.5rem;
+  height: 5.5rem;
+  width: 5.5rem;
   margin-right: 5px;
+  margin-left: 5px;
+}
+
+#ambulance-home {
+  height: 4rem;
+  width: 4rem;
+  color: #d62828;
 }
 
 .navbar-right {
