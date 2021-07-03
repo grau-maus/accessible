@@ -30,18 +30,35 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  align-items: baseline;
+  align-items: center;
   margin-bottom: 25px;
 }
 
-.login-logo > i.fa-ambulance {
+.login-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid gray;
+  border-radius: 100%;
+  width: 6.7rem;
+  height: 6.7rem;
+  margin-right: 5px;
+}
+
+#ambulance-login {
+  height: 4.5rem;
+  width: 4.5rem;
+  color: #d62828;
+}
+
+/* .login-logo > i.fa-ambulance {
   border: 3px solid gray;
   border-radius: 100%;
   padding: 10px;
   color: #d62828;
   font-size: 2.5rem;
   margin-right: 5px;
-}
+} */
 
 #login-form > .login-email {
   margin-bottom: 20px;

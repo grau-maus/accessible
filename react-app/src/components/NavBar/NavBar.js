@@ -1,4 +1,5 @@
 import React from 'react';
+import { ReactSVG } from 'react-svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import AddUser from '../User/AddUser';
@@ -13,13 +14,14 @@ import AddTask from '../Task/AddTask';
 import GetTask from '../Task/GetTask';
 import { logout } from '../../store/session';
 
+import ambulanceIcon from '../../utils/icons/font-awesome/ambulance-solid.svg';
+import profileIcon from '../../utils/icons/font-awesome/address-card-regular.svg';
 import './NavBar.css';
 
 const NavBar = () => {
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
-
-  const profileButton = (<i className='fas fa-id-card-alt' />);
+  const profileButton = (<ReactSVG src={profileIcon} wrapper='svg' id='profile-cog' />);
   const adminFeatures = (
     <>
       <Dropdown.Item>
@@ -38,7 +40,9 @@ const NavBar = () => {
   return (
     <div className='navbar-container'>
       <div className='navbar-logo'>
-        <i className='fas fa-ambulance' />
+        <div className='navbar-ambulance-icon'>
+          <ReactSVG src={ambulanceIcon} wrapper='svg' id='ambulance-home' />
+        </div>
         <h3>accessible health care</h3>
       </div>
       <div className='navbar-right'>

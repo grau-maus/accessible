@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { ReactSVG } from 'react-svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { login } from '../../store/session';
 import { Form, Button } from 'react-bootstrap';
 
+import ambulanceIcon from '../../utils/icons/font-awesome/ambulance-solid.svg';
 import './LoginForm.css'
 
 const LoginForm = () => {
@@ -52,7 +54,9 @@ const LoginForm = () => {
     <div id='login-form-container'>
       <Form id='login-form' onSubmit={onLogin}>
         <div className='login-logo'>
-          <i className='fas fa-ambulance' />
+          <div className='login-icon-wrapper'>
+            <ReactSVG src={ambulanceIcon} wrapper='svg' id='ambulance-login' />
+          </div>
 
           <h2>accessible</h2>
         </div>
