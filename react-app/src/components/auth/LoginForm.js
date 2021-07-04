@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { login } from '../../store/session';
 import { Form, Button } from 'react-bootstrap';
+import AppInfo from './AppInfo';
 
 import ambulanceIcon from '../../utils/icons/font-awesome/ambulance-solid.svg';
 import './LoginForm.css'
@@ -21,6 +22,8 @@ const LoginForm = () => {
 
     const data = await dispatch(login(email, password));
 
+    // TO DO:
+    // FIX ERRORS TO BE MORE VAGUE FOR SECURITY REASONS
     if (data.errors) {
       for (const ele of data.errors) {
         const type = ele.split(' ')[0];
@@ -28,7 +31,6 @@ const LoginForm = () => {
         if (type === 'email') setEmailError(ele);
         if (type === 'password') setPassError(ele);
       }
-      window.alert(data.errors);
     }
   };
 
@@ -95,6 +97,7 @@ const LoginForm = () => {
           <Button id='login-admin-demo' onClick={adminDemoLogin}>
             Admin Demo Login
           </Button>
+          <AppInfo />
         </div>
       </Form>
     </div>
