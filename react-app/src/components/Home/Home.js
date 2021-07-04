@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import { DateTime } from 'luxon';
 import { getAllInsurance } from '../../store/insurance';
 import { getAllPhysicians } from '../../store/physicians';
 import { getAllPatients } from '../../store/patients';
@@ -15,6 +16,7 @@ const Home = () => {
   const physicianList = useSelector((state) => state.physicians.physicianList);
   const patientList = useSelector((state) => state.patients.patientList);
   const taskList = useSelector((state) => state.tasks.taskList);
+  const [timeToday, setTimeToday] = useState(DateTime.now().toLocaleString(DateTime.DATETIME_MED))
 
   useEffect(() => {
     dispatch(getAllInsurance());
@@ -22,6 +24,16 @@ const Home = () => {
     dispatch(getAllPatients());
     dispatch(getEveryTask());
   }, [dispatch]);
+
+  useEffect(() => {
+    const updateTime = setInterval(() => {
+      setTimeToday(DateTime.now().toLocaleString(DateTime.DATETIME_MED));
+    }, 15 * 1000);
+
+    return () => {
+      clearInterval(updateTime);
+    };
+  }, []);
 
   return (
     <div className='home-container'>
@@ -31,7 +43,7 @@ const Home = () => {
         <div className='dashboard-navbar'>
           <div className='dashboard-navbar-left'>
             <p className='dashboard-hello-user'>Hello {user.firstName}!</p>
-            <p className='dashboard-current-date'>{new Date().toDateString()}</p>
+            <p className='dashboard-current-date'>{timeToday}</p>
           </div>
 
           <div className='dashboard-navbar-right'>
