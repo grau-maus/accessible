@@ -16,7 +16,7 @@ const Home = () => {
   const physicianList = useSelector((state) => state.physicians.physicianList);
   const patientList = useSelector((state) => state.patients.patientList);
   const taskList = useSelector((state) => state.tasks.taskList);
-  const [timeToday, setTimeToday] = useState(DateTime.now().toLocaleString(DateTime.DATETIME_MED))
+  const [timeToday, setTimeToday] = useState(DateTime.now().toLocaleString(DateTime.DATETIME_MED));
 
   useEffect(() => {
     dispatch(getAllInsurance());
@@ -28,7 +28,7 @@ const Home = () => {
   useEffect(() => {
     const updateTime = setInterval(() => {
       setTimeToday(DateTime.now().toLocaleString(DateTime.DATETIME_MED));
-    }, 15 * 1000);
+    }, 1000);
 
     return () => {
       clearInterval(updateTime);
