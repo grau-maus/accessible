@@ -71,6 +71,28 @@
   border-bottom: 1px solid gray;
 }
 
+.dashboard-tasks > h4,
+.dashboard-tasks-start > h4 {
+  margin: 0;
+}
+
+.dashboard-tasks-start {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dashboard-tasks {
+  border-top: 1px dashed rgb(128, 128, 128);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dashboard-tasks:hover,
+.dashboard-tasks-start:hover {
+  cursor: pointer;
+  background-color: rgba(128, 128, 128, 0.274);
+}
+
 .dashboard-body-right {
   display: flex;
   flex-direction: column;
@@ -99,6 +121,28 @@
   border-bottom: 1px solid gray;
 }
 
+.dashboard-insurance > h4,
+.dashboard-insurance-start > h4 {
+  margin: 0;
+}
+
+.dashboard-insurance-start {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dashboard-insurance {
+  border-top: 1px dashed rgb(128, 128, 128);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dashboard-insurance:hover,
+.dashboard-insurance-start:hover {
+  cursor: pointer;
+  background-color: rgba(128, 128, 128, 0.274);
+}
+
 .dashboard-body-right-physician {
   border: 1px solid gray;
   margin-top: 5px;
@@ -117,6 +161,28 @@
   font-weight: 500;
   background-color: white;
   border-bottom: 1px solid gray;
+}
+
+.dashboard-physicians > h4,
+.dashboard-physicians-start > h4 {
+  margin: 0;
+}
+
+.dashboard-physicians-start {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dashboard-physicians {
+  border-top: 1px dashed rgb(128, 128, 128);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dashboard-physicians:hover,
+.dashboard-physicians-start:hover {
+  cursor: pointer;
+  background-color: rgba(128, 128, 128, 0.274);
 }
 
 .dashboard-footer {
