@@ -61,6 +61,8 @@
 #patients-dropdown,
 #tasks-dropdown {
   margin-top: -20px;
+  border: none;
+  background-color: transparent;
 }
 
 #profile-dropdown {
@@ -69,10 +71,17 @@
   align-items: center;
   font-size: 1rem;
   margin-top: -15px;
+  border: none;
+  background-color: transparent;
 }
 
-#profile-dropdown:focus {
+#profile-dropdown:focus,
+#insurance-dropdown:focus,
+#physicians-dropdown:focus,
+#patients-dropdown:focus,
+#tasks-dropdown:focus {
   border-color: none;
+  box-shadow: none;
 }
 
 #profile-cog {
