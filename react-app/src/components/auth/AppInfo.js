@@ -13,12 +13,12 @@ const AppInfo = () => {
       onMouseOver={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
-      <div
+      <Button
         onClick={() => setShow(true)}
-        className='app-info-text-click'
+        id='app-info-text-click'
       >
         Need an account?
-      </div>
+      </Button>
       <Modal
         show={show}
         onHide={() => setShow(false)}

@@ -63,6 +63,7 @@ const LoginForm = () => {
           <h2>accessible</h2>
         </div>
 
+        <h3>Sign In</h3>
         <Form.Group controlId='formBasicEmail' className='login-email'>
           <Form.Label>Email address</Form.Label>
 
@@ -91,11 +92,11 @@ const LoginForm = () => {
 
         <div id='login-buttons'>
           <Button id='login-submit' variant='primary' type='submit'>
-            Login
+            Employee Sign In
           </Button>
 
           <Button id='login-admin-demo' onClick={adminDemoLogin}>
-            Admin Demo Login
+            Admin Demo Sign In
           </Button>
           <AppInfo />
         </div>
