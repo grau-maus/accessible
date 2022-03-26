@@ -29,11 +29,13 @@ Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` 
 
 4. Setup your PostgreSQL user, password and database and make sure it matches your **.env** file
 
-5. Get into your pipenv, migrate your database, seed your database, and run your flask app
+5. Get into your pipenv
 
    ```bash
    pipenv shell
    ```
+
+6. Migrate your database, seed your database, and run your flask app
 
    ```bash
    flask db upgrade
@@ -46,8 +48,17 @@ Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` 
    ```bash
    flask run
    ```
+6(a). If running into migration issues, delete your ``migrations`` folder, run the following commands, then redo step 6
 
-6. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
+   ```bash
+   flask db init
+   ```
+
+   ```bash
+   flask db migrate
+   ```
+
+7. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
 
 ***
 *IMPORTANT!*
