@@ -89,9 +89,9 @@ There is a layer in the Dockerfile that will install psycopg2 (not binary) for u
     Python packages since your last deployment, but if you aren't sure, it won't
     hurt to run it again.
 
-          ```bash
-          pipenv lock -r > requirements.txt
-          ```
+    ```bash
+    pipenv lock -r > requirements.txt
+    ```
 
 2.  Install the [flyctl CLI](https://fly.io/docs/hands-on/install-flyctl/)
 
