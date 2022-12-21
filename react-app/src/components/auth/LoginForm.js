@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import { login } from "../../store/session";
 import { Form, Button } from "react-bootstrap";
 import AppInfo from "./AppInfo";
-
 import ambulanceIcon from "../../utils/icons/font-awesome/ambulance-solid.svg";
 import "./LoginForm.css";
 
@@ -16,23 +15,25 @@ const LoginForm = () => {
   const [passError, setPassError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const retryLogin = (email, password) => {
+    setIsLoggingIn(true);
+
     let retries = 0;
     const loginInterval = setInterval(async () => {
       if (retries < 5) {
         const data = await dispatch(login(email, password));
 
         if (data && data.errors) {
-          if (data && data.errors) {
-            for (const ele of data.errors) {
-              const type = ele.split(" ")[0];
+          for (const ele of data.errors) {
+            const type = ele.split(" ")[0];
 
-              if (type === "email") setEmailError(ele);
-              if (type === "password") setPassError(ele);
-            }
+            if (type === "email") setEmailError(ele);
+            if (type === "password") setPassError(ele);
           }
 
+          setIsLoggingIn(false);
           clearInterval(loginInterval);
         } else if (data && data.status === 200) {
           clearInterval(loginInterval);
@@ -40,6 +41,7 @@ const LoginForm = () => {
 
         retries += 1;
       } else {
+        setIsLoggingIn(false);
         clearInterval(loginInterval);
       }
     }, 500);
@@ -106,11 +108,20 @@ const LoginForm = () => {
         </Form.Group>
 
         <div id="login-buttons">
-          <Button id="login-submit" variant="primary" type="submit">
+          <Button
+            id="login-submit"
+            variant="primary"
+            type="submit"
+            disabled={isLoggingIn}
+          >
             Login
           </Button>
 
-          <Button id="login-admin-demo" onClick={adminDemoLogin}>
+          <Button
+            id="login-admin-demo"
+            onClick={adminDemoLogin}
+            disabled={isLoggingIn}
+          >
             Admin Demo Login
           </Button>
           <AppInfo />
