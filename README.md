@@ -10,7 +10,7 @@ User administrators can create user accounts for new staff as well as read, upda
 
 Follow the instructions below to have your very own `Accessible` app! (Used for development and testing purposes of course)
 <br/>
-Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` project on to [Heroku](https://www.heroku.com)
+Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` project on to [Fly.io](https://fly.io/)
 
 1. Clone this repository (only this branch)
 
@@ -20,9 +20,9 @@ Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` 
 
 2. Install dependencies
 
-      ```bash
-      pipenv install --dev -r dev-requirements.txt && pipenv install -r requirements.txt
-      ```
+   ```bash
+   pipenv install --dev -r dev-requirements.txt && pipenv install -r requirements.txt
+   ```
 
 3. Create a **.env** file based on the example with proper settings for your
    development environment
@@ -48,31 +48,34 @@ Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` 
    ```bash
    flask run
    ```
-6(a). If running into migration issues, delete your ``migrations`` folder, run the following commands, then redo step 6
 
-   ```bash
-   flask db init
-   ```
+   - If running into migration issues, delete your `migrations` folder, run the following commands, then redo step 6
 
-   ```bash
-   flask db migrate
-   ```
+     ```bash
+     flask db init
+     ```
+
+     ```bash
+     flask db migrate
+     ```
 
 7. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
 
-***
-*IMPORTANT!*
-   If you add any python dependencies to your pipfiles, you'll need to regenerate your requirements.txt before deployment.
-   You can do this by running:
+---
 
-   ```bash
-   pipenv lock -r > requirements.txt
-   ```
+_IMPORTANT!_
+If you add any python dependencies to your pipfiles, you'll need to regenerate your requirements.txt before deployment.
+You can do this by running:
 
-*ALSO IMPORTANT!*
-   psycopg2-binary MUST remain a dev dependency because you can't install it on apline-linux.
-   There is a layer in the Dockerfile that will install psycopg2 (not binary) for us.
-***
+```bash
+pipenv lock -r > requirements.txt
+```
+
+_ALSO IMPORTANT!_
+`psycopg2-binary` MUST remain a dev dependency because you can't install it on apline-linux.
+There is a layer in the Dockerfile that will install psycopg2 (not binary) for us.
+
+---
 
 <!-- End with an example of getting some data out of the system or using it for a little demo -->
 
@@ -80,68 +83,95 @@ Refer to [Deployment](#Deployment) for notes on how to deploy your `Accessible` 
 
 ## Deployment
 
-1. Create a new project on Heroku
+1.  Before you deploy, don't forget to run the following command in order to
+    ensure that your production environment has all of your up-to-date
+    dependencies. You only have to run this command when you have installed new
+    Python packages since your last deployment, but if you aren't sure, it won't
+    hurt to run it again.
 
-2. Under Resources click "Find more add-ons" and add the add on called "Heroku Postgres"
+          ```bash
+          pipenv lock -r > requirements.txt
+          ```
 
-3. Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line)
+2.  Install the [flyctl CLI](https://fly.io/docs/hands-on/install-flyctl/)
 
-4. Run
+3.  Run:
 
-   ```bash
-   heroku login
-   ```
+    ```bash
+    fly auth login
+    ```
 
-5. Log in to the heroku container registry
+4.  Launch your app:
 
-   ```bash
-   heroku container:login
-   ```
+    ```bash
+    fly launch
+    ```
 
-6. Update the `REACT_APP_BASE_URL` variable in the Dockerfile.
-   This should be the full URL of your `Accessible` project: i.e. "https://accessible-app.herokuapp.com/"
+5.  Type in your app name (or leave blank to generate a random app name)
 
-7. Push your docker container to heroku from the root directory of your project.
-   This will build the dockerfile and push the image to your heroku container registry
+6.  Select a region for deployment (preferably the nearest location unless a majority of your users are based in another region)
 
-   ```bash
-   heroku container:push web -a {NAME_OF_HEROKU_APP}
-   ```
+7.  Select `y` if the CLI asks: `would you like to set up a Postgresql database?`
 
-8. Release your docker container to heroku
+8.  Select `N` if the CLI asks: `would you like to set up an Upstash Redis database?`
 
-   ```bash
-   heroku container:release web -a {NAME_OF_HEROKU_APP}
-   ```
+9.  Select `N` if the CLI asks: `would you like to deploy?`
 
-9. set up your database:
+10. Before deploying, set up your secret key by running:
 
-   ```bash
-   heroku run -a {NAME_OF_HEROKU_APP} flask db upgrade
-   heroku run -a {NAME_OF_HEROKU_APP} flask seed all
-   ```
+    ```bash
+    fly secrets set SECRET_KEY=<your secret key>
+    ```
 
-10. Under Settings find "Config Vars" and add any additional/secret .env variables.
+11. Deploy your app:
 
-11. profit
+    ```bash
+    fly deploy
+    ```
+
+12. SSH into your app:
+
+    ```bash
+    fly ssh console
+    ```
+
+13. Navigate into your app folder:
+
+    ```bash
+    cd var/www/
+    ```
+
+14. Set up your database
+
+    ```bash
+    flask db upgrade
+    flask seed all
+    ```
+
+15. profit
 
 <br/>
 
 ## Built With
 
 [Python 3.9.4](https://www.python.org/) - Back-end
-* [Flask](https://flask.palletsprojects.com/en/2.0.x/) - API routes and authentication
-* [SQLAlchemy](https://www.sqlalchemy.org/) - SQL Toolkit & ORM
-* [Faker](https://faker.readthedocs.io/en/master/) - For generating seeder data
-***
+
+- [Flask](https://flask.palletsprojects.com/en/2.0.x/) - API routes and authentication
+- [SQLAlchemy](https://www.sqlalchemy.org/) - SQL Toolkit & ORM
+- [Faker](https://faker.readthedocs.io/en/master/) - For generating seeder data
+
+---
+
 [NodeJS](https://nodejs.org/en/) - Front-end
-* [Create React App](https://github.com/facebook/create-react-app) - Used to bootstrap front-end
-* [React](https://reactjs.org/) / [Redux](https://redux.js.org/) - Client-sided framework
-***
+
+- [Create React App](https://github.com/facebook/create-react-app) - Used to bootstrap front-end
+- [React](https://reactjs.org/) / [Redux](https://redux.js.org/) - Client-sided framework
+
+---
 
 <br/>
 
 ## Author
 
-* **Josh Tupas**
-   * [LinkedIn](https://www.linkedin.com/in/josh-tupas/)
+- **Josh Tupas**
+  - [LinkedIn](https://www.linkedin.com/in/josh-tupas/)
