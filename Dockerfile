@@ -8,11 +8,11 @@ COPY react-app/. .
 RUN npm install
 RUN npm run build
 
-FROM python:3.9
+FROM python:3.11
 
 # Setup Flask environment
 ENV FLASK_APP=app
-ENV FLASK_ENV=production
+ENV FLASK_DEBUG=0
 ENV SQLALCHEMY_ECHO=True
 
 EXPOSE 8080
