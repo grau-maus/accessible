@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import EditTask from './EditTask';
-import { getEveryTask } from '../../store/tasks';
-import { editForm } from '../../store/edit';
-import { parseVisitType } from '../../services/role';
+import React, { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import EditTask from "./EditTask";
+import { getEveryTask } from "../../store/tasks";
+import { editFormStatus } from "../../store/edit";
+import { parseVisitType } from "../../services/role";
 
 const TaskTable = () => {
   const dispatch = useDispatch();
@@ -16,18 +16,14 @@ const TaskTable = () => {
     dispatch(getEveryTask());
   }, [dispatch]);
 
-  if (!taskList) return 'Loading...';
-
   const editTaskInfo = (taskObj) => {
-    dispatch(editForm());
+    dispatch(editFormStatus());
     setTask(taskObj);
   };
 
   return (
     <>
-      {showForm &&
-        <EditTask task={task} />
-      }
+      {showForm && <EditTask task={task} />}
       <Table responsive>
         <thead>
           <tr>
@@ -41,19 +37,25 @@ const TaskTable = () => {
           </tr>
         </thead>
         <tbody>
-          {taskList &&
-            Object.values(taskList).map((taskObj, index) => (
-              <tr key={`tr-${index}`} onClick={() => editTaskInfo(taskObj)}>
-                <td key={`name-${index}`}>{`${taskObj.staff.lastName}, ${taskObj.staff.firstName} (${taskObj.staff.role})`}</td>
-                <td key={`patient-${index}`}>{`${taskObj.patient.lastName}, ${taskObj.patient.firstName} ${taskObj.patient.middleName ? taskObj.patient.middleName[0] : ''}`}</td>
-                <td key={`vistType-${index}`}>{parseVisitType(taskObj.staff.role)}</td>
-                <td key={`visitDate-${index}`}>{taskObj.scheduledDate}</td>
-                <td key={`status-${index}`}>{taskObj.completed ? 'Completed' : 'Pending'}</td>
-                <td key={`added-${index}`}>{taskObj.createdAt}</td>
-                <td key={`updated-${index}`}>{taskObj.updatedAt}</td>
-              </tr>
-            ))
-          }
+          {taskList.length
+            ? taskList.map((taskObj) => (
+                <tr key={taskObj.id} onClick={() => editTaskInfo(taskObj)}>
+                  <td>{`${taskObj.staff.lastName}, ${taskObj.staff.firstName} (${taskObj.staff.role})`}</td>
+                  <td>{`${taskObj.patient.lastName}, ${
+                    taskObj.patient.firstName
+                  } ${
+                    taskObj.patient.middleName
+                      ? taskObj.patient.middleName[0]
+                      : ""
+                  }`}</td>
+                  <td>{parseVisitType(taskObj.staff.role)}</td>
+                  <td>{taskObj.scheduledDate}</td>
+                  <td>{taskObj.completed ? "Completed" : "Pending"}</td>
+                  <td>{taskObj.createdAt}</td>
+                  <td>{taskObj.updatedAt}</td>
+                </tr>
+              ))
+            : "Loading..."}
         </tbody>
       </Table>
     </>

@@ -1,22 +1,16 @@
-// constants
-const EDIT_FORM = 'edit/EDIT_FORM';
+import { createAction, createReducer } from "@reduxjs/toolkit";
 
-export const editForm = () => ({
-  type: EDIT_FORM
+export const editFormStatus = createAction("EDIT_FORM");
+
+const initialState = { editForm: false };
+
+const reducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(editFormStatus, (state, action) => {
+      const editForm = !state.editForm;
+      return { ...state, editForm };
+    })
+    .addDefaultCase((state) => state);
 });
 
-const initialState = { editForm: false }
-
-export default function reducer(state = initialState, action) {
-  let newState;
-
-  switch (action.type) {
-    case EDIT_FORM:
-      newState = Object.assign({}, state);
-      newState.editForm = !state.editForm;
-
-      return newState;
-    default:
-      return state;
-  }
-}
+export default reducer;

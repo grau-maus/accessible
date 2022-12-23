@@ -54,7 +54,7 @@ def del_task():
         db.session.delete(task)
         db.session.commit()
 
-        return {'message': 'Success.'}
+        return {'taskId': task_id}
     except AttributeError:
         return {'error': 'Error 404. Task does not exist in the database'}, 404
     except UnmappedInstanceError:

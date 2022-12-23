@@ -1,106 +1,125 @@
-// constants
-const EDIT_PHYSICIAN = 'physicians/EDIT_PHYSICIAN';
-const GET_PHYSICIANS = 'physicians/GET_PHYSICIANS';
-const DELETE_PHYSICIAN = 'physicians/DELETE_PHYSICIAN';
+import {
+  createAction,
+  createAsyncThunk,
+  createReducer,
+} from "@reduxjs/toolkit";
 
-const editPhysician = (physician) => ({
-  type: EDIT_PHYSICIAN,
-  payload: physician
-});
+export const clearPhysicianState = createAction("CLEAR_PHYSICIAN_STATE");
 
-const getPhysicians = (physician) => ({
-  type: GET_PHYSICIANS,
-  payload: physician
-});
+export const addEditPhysician = createAsyncThunk(
+  "EDIT_PHYSICIAN",
+  async (params) => {
+    try {
+      const {
+        fetchType,
+        physicianId,
+        name,
+        efax,
+        address,
+        phoneNumber,
+        npiNumber,
+      } = params;
+      const response = await fetch("/api/mcps/", {
+        method: `${fetchType}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          mcpId: physicianId,
+          mcpName: name,
+          efax,
+          address,
+          phoneNumber,
+          npiNumber,
+        }),
+      });
 
-const deletePhysician = (physicianId) => ({
-  type: DELETE_PHYSICIAN,
-  payload: physicianId
-});
-
-// thunks
-export const addEditPhysician = ({
-  fetchType,
-  physicianId,
-  name,
-  efax,
-  address,
-  phoneNumber,
-  npiNumber
-}) => async (dispatch) => {
-  const response = await fetch('/api/mcps/', {
-    method: `${fetchType}`,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      mcpId: physicianId,
-      mcpName: name,
-      efax,
-      address,
-      phoneNumber,
-      npiNumber
-    })
-  });
-
-  const data = await response.json();
-
-  if (fetchType === 'PATCH') {
-    dispatch(editPhysician(data));
+      if (response.ok) {
+        const data = await response.json();
+        return { data, fetchType };
+      }
+    } catch (err) {
+      console.error("Error editing physician:", err);
+    }
   }
+);
 
-  return data;
-};
+export const getAllPhysicians = createAsyncThunk("GET_PHYSICIANS", async () => {
+  try {
+    const response = await fetch("/api/mcps/");
 
-export const getAllPhysicians = () => async (dispatch) => {
-  const response = await fetch('/api/mcps/');
-  if (response.ok) {
-    const data = await response.json();
-    await dispatch(getPhysicians(data));
-  } else {
-    return { error: 'error' };
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (err) {
+    console.error("Error getting physicians:", err);
   }
-};
+});
 
-export const removePhysician = (physicianId) => async (dispatch) => {
-  const response = await fetch('/api/mcps/', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      mcpId: physicianId
-    })
-  });
+export const removePhysician = createAsyncThunk(
+  "DELETE_PHYSICIAN",
+  async (physicianId) => {
+    try {
+      const response = await fetch("/api/mcps/", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          mcpId: physicianId,
+        }),
+      });
 
-  const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      console.error("Error removing physician:", err);
+    }
+  }
+);
 
-  dispatch(deletePhysician(data.physicianId));
-};
+const initialState = { physicianList: [] };
 
-const initialState = { physicianList: null };
+const reducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(addEditPhysician.fulfilled, (state, action) => {
+      const { data, fetchType } = action.payload;
 
-// reducer
-export default function reducer(state = initialState, action) {
-  let newState;
+      if (fetchType === "PATCH") {
+        const physicianId = data.id;
+        const physicianList = state.physicianList.map((physicianEle) => {
+          if (physicianEle.id === physicianId) {
+            return { ...data };
+          }
 
-  switch (action.type) {
-    case GET_PHYSICIANS:
-      newState = Object.assign({}, state);
-      newState.physicianList = action.payload;
+          return physicianEle;
+        });
 
-      return newState;
-    case EDIT_PHYSICIAN:
-      newState = Object.assign({}, state);
-      newState.physicianList[action.payload.id] = action.payload;
+        return { ...state, physicianList };
+      }
 
-      return newState;
-    case DELETE_PHYSICIAN:
-      newState = Object.assign({}, state);
-      delete newState.physicianList[action.payload];
-
-      return newState;
-    default:
       return state;
-  }
-}
+    })
+    .addCase(getAllPhysicians.fulfilled, (state, action) => {
+      const data = action.payload;
+      const physicianList = Object.values(data);
+      return { ...state, physicianList };
+    })
+    .addCase(removePhysician.fulfilled, (state, action) => {
+      const { physicianId } = action.payload;
+      const physicianList = state.physicianList.filter(
+        (physicianEle) => physicianEle.id !== physicianId
+      );
+
+      return { ...state, physicianList };
+    })
+    .addCase(clearPhysicianState, (state, action) => {
+      return initialState;
+    })
+    .addDefaultCase((state) => state);
+});
+
+export default reducer;

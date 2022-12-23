@@ -12,9 +12,10 @@ user_routes = Blueprint('users', __name__)
 def users():
     if current_user.role != 'admin':
         return {'error': 'Error 401. Contact your administrator for more details.'}, 401
-    users = User.query.all()
+    get_all_users = User.query.all()
+    all_users = {user.id: user.to_dict() for user in get_all_users}
 
-    return {"users": {user.id: user.to_dict() for user in users}}
+    return all_users
 
 
 # GET ALL VISITING STAFF
@@ -23,12 +24,14 @@ def users():
 def visit_users():
     if current_user.role != 'admin':
         return {'error': 'Error 401. Contact your administrator for more details.'}, 401
-    users = User.query.filter(
+    get_all_visiting_users = User.query.filter(
         User.role != 'admin',
         User.role != 'S'
     ).all()
+    all_visiting_users = {user.id: user.to_dict()
+                          for user in get_all_visiting_users}
 
-    return {"users": {user.id: user.to_dict() for user in users}}
+    return all_visiting_users
 
 
 # GET SINGLE USER

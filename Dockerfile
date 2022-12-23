@@ -1,4 +1,4 @@
-FROM node:16 AS build-stage
+FROM node:18 AS build-stage
 
 WORKDIR /react-app
 ENV PATH react-app/node_modules/.bin:$PATH

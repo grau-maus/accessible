@@ -1,53 +1,15 @@
-// constants
-const EDIT_TASK = 'tasks/EDIT_TASK';
-const GET_ALL_TASKS = 'tasks/GET_ALL_TASKS';
-const GET_ONE_TASK = 'tasks/GET_ONE_TASK';
-const GET_USER_TASKS = 'tasks/GET_USER_TASKS';
-const DELETE_TASKS = 'tasks/DELETE_TASKS';
+import {
+  createAction,
+  createAsyncThunk,
+  createReducer,
+} from "@reduxjs/toolkit";
 
-const editTask = (task) => ({
-  type: EDIT_TASK,
-  payload: task
-});
+export const clearTaskState = createAction("CLEAR_TASK_STATE");
 
-const getAllTasks = (tasks) => ({
-  type: GET_ALL_TASKS,
-  payload: tasks
-});
-
-const getOneTask = (task) => ({
-  type: GET_ONE_TASK,
-  payload: task
-});
-
-const getUserTasks = (tasks) => ({
-  type: GET_USER_TASKS,
-  payload: tasks
-});
-
-const deleteTask = (taskId) => ({
-  type: DELETE_TASKS,
-  payload: taskId
-});
-
-// thunks
-export const addEditTask = ({
-  fetchType,
-  taskId,
-  staffId,
-  patientId,
-  visitType,
-  visitYear,
-  visitMonth,
-  visitDay,
-  status
-}) => async (dispatch) => {
-  const response = await fetch('/api/tasks/', {
-    method: `${fetchType}`,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
+export const addEditTask = createAsyncThunk("EDIT_TASK", async (params) => {
+  try {
+    const {
+      fetchType,
       taskId,
       staffId,
       patientId,
@@ -55,102 +17,153 @@ export const addEditTask = ({
       visitYear,
       visitMonth,
       visitDay,
-      status
-    })
-  });
+      status,
+    } = params;
+    const response = await fetch("/api/tasks/", {
+      method: `${fetchType}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        taskId,
+        staffId,
+        patientId,
+        visitType,
+        visitYear,
+        visitMonth,
+        visitDay,
+        status,
+      }),
+    });
 
-  const data = await response.json();
-
-  if (fetchType === 'PATCH') {
-    dispatch(editTask(data));
+    if (response.ok) {
+      const data = await response.json();
+      return { data, fetchType };
+    }
+  } catch (err) {
+    console.error("Error editing task:", err);
   }
+});
 
-  return data;
-};
+export const getEveryTask = createAsyncThunk("GET_ALL_TASKS", async () => {
+  try {
+    const response = await fetch("/api/tasks/");
 
-export const getEveryTask = () => async (dispatch) => {
-  const response = await fetch('/api/tasks/');
-  if (response.ok) {
-    const data = await response.json();
-    await dispatch(getAllTasks(data));
-  } else {
-    return { error: 'error' };
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (err) {
+    console.error("Error getting tasks:", err);
   }
-};
+});
 
-export const getSingleUserTasks = (userId) => async (dispatch) => {
-  const response = await fetch(`/api/tasks/users/${userId}/`);
-  if (response.ok) {
-    const data = await response.json();
-    await dispatch(getUserTasks(data));
-  } else {
-    return { error: 'error' };
+export const getSingleUserTasks = createAsyncThunk(
+  "GET_USER_TASKS",
+  async (userId) => {
+    try {
+      const response = await fetch(`/api/tasks/users/${userId}/`);
+
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      console.error("Error getting user's tasks:", err);
+    }
   }
-};
+);
 
-export const getSingleTask = (taskId) => async (dispatch) => {
-  const response = await fetch(`/api/tasks/${taskId}/`);
-  if (response.ok) {
-    const data = await response.json();
-    await dispatch(getOneTask(data));
-  } else {
-    return { error: 'error' };
+export const getSingleTask = createAsyncThunk(
+  "GET_ONE_TASK",
+  async (taskId) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/`);
+
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      console.error("Error getting task:", err);
+    }
   }
-};
+);
 
-export const removeTask = (taskId) => async (dispatch) => {
-  const response = await fetch('/api/tasks/', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      mcpId: taskId
-    })
-  });
+export const removeTask = createAsyncThunk("DELETE_TASKS", async (taskId) => {
+  try {
+    const response = await fetch("/api/tasks/", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        taskId,
+      }),
+    });
 
-  const data = await response.json();
-
-  dispatch(deleteTask(data.taskId));
-};
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (err) {
+    console.error("Error removing task:", err);
+  }
+});
 
 const initialState = {
-  taskList: null,
-  userTaskList: null,
-  singleTask: null
+  taskList: [],
+  userTaskList: [],
+  singleTask: {},
 };
 
-// reducer
-export default function reducer(state = initialState, action) {
-  let newState;
+const reducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(addEditTask.fulfilled, (state, action) => {
+      const { data, fetchType } = action.payload;
 
-  switch (action.type) {
-    case GET_ALL_TASKS:
-      newState = Object.assign({}, state);
-      newState.taskList = action.payload;
+      if (fetchType === "PATCH") {
+        const taskId = data.id;
+        const taskList = state.taskList.map((taskEle) => {
+          if (taskEle.id === taskId) {
+            return { ...data };
+          }
 
-      return newState;
-    case GET_USER_TASKS:
-      newState = Object.assign({}, state);
-      newState.userTaskList = action.payload;
+          return taskEle;
+        });
 
-      return newState;
-    case GET_ONE_TASK:
-      newState = Object.assign({}, state);
-      newState.singleTask = action.payload;
+        return { ...state, taskList };
+      }
 
-      return newState;
-    case EDIT_TASK:
-      newState = Object.assign({}, state);
-      newState.taskList[action.payload.id] = action.payload;
-
-      return newState;
-    case DELETE_TASKS:
-      newState = Object.assign({}, state);
-      delete newState.taskList[action.payload];
-
-      return newState;
-    default:
       return state;
-  }
-}
+    })
+    .addCase(getEveryTask.fulfilled, (state, action) => {
+      const data = action.payload;
+      const taskList = Object.values(data);
+      return { ...state, taskList };
+    })
+    .addCase(getSingleUserTasks.fulfilled, (state, action) => {
+      const data = action.payload;
+      const userTaskList = Object.values(data);
+      return { ...state, userTaskList };
+    })
+    .addCase(getSingleTask.fulfilled, (state, action) => {
+      const data = action.payload;
+      const singleTask = { ...data };
+      return { ...state, singleTask };
+    })
+    .addCase(removeTask.fulfilled, (state, action) => {
+      const { taskId } = action.payload;
+      const taskList = state.taskList.filter(
+        (taskEle) => taskEle.id !== taskId
+      );
+
+      return { ...state, taskList };
+    })
+    .addCase(clearTaskState, (state, action) => {
+      return initialState;
+    })
+    .addDefaultCase((state) => state);
+});
+
+export default reducer;

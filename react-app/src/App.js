@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import LoginForm from './components/auth/LoginForm';
-import NavBar from './components/NavBar/NavBar';
-import ProtectedRoute from './components/auth/ProtectedRoute';
-import Home from './components/Home/Home';
-import { authenticate } from './store/session';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import LoginForm from "./components/auth/LoginForm";
+import NavBar from "./components/NavBar/NavBar";
+import Home from "./components/Home/Home";
+import { authenticate } from "./store/session";
 // import { authenticate } from './services/auth';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   // const [authenticated, setAuthenticated] = useState(false);
@@ -18,7 +17,7 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      await dispatch(authenticate())
+      await dispatch(authenticate());
       setLoaded(true);
     })();
   }, [dispatch]);
@@ -30,14 +29,13 @@ function App() {
   return (
     <BrowserRouter>
       {user && <NavBar />}
-      <Switch>
-        <Route path='/login' exact={true}>
-          <LoginForm />
-        </Route>
-        <ProtectedRoute path='/' exact={true}>
-          <Home />
-        </ProtectedRoute>
-      </Switch>
+      <Routes>
+        <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
+        <Route
+          path="/login"
+          element={!user ? <LoginForm /> : <Navigate to="/" />}
+        />
+      </Routes>
     </BrowserRouter>
   );
 }
