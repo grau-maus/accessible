@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button, Form } from 'react-bootstrap';
-import { addEditPatient, removePatient } from '../../store/patients';
-import { getAllInsurance } from '../../store/insurance';
-import { editForm } from '../../store/edit';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Modal, Button, Form } from "react-bootstrap";
+import { addEditPatient, removePatient } from "../../store/patients";
+import { getAllInsurance } from "../../store/insurance";
+import { editFormStatus } from "../../store/edit";
 
 const EditPatient = ({ patient }) => {
   const dispatch = useDispatch();
   const insuranceList = useSelector((state) => state.insurance.insuranceList);
-  const parseDate = new Date(patient.dob).toISOString().split('T')[0];
+  const parseDate = new Date(patient.dob).toISOString().split("T")[0];
   const [show, setShow] = useState(true);
   const [firstName, setFirstName] = useState(patient.firstName);
   const [middleName, setMiddleName] = useState(patient.middleName);
@@ -29,37 +29,35 @@ const EditPatient = ({ patient }) => {
     dispatch(getAllInsurance());
   }, [dispatch]);
 
-  if (!insuranceList) return null;
-
   const handleClose = () => {
     setShow(false);
-    dispatch(editForm());
+    dispatch(editFormStatus());
   };
 
   const handleSubmit = async () => {
-    const dobYear = parseInt(dob.split('-')[0], 10);
-    const dobMonth = parseInt(dob.split('-')[1], 10);
-    const dobDate = parseInt(dob.split('-')[2], 10);
+    const dobYear = parseInt(dob.split("-")[0], 10);
+    const dobMonth = parseInt(dob.split("-")[1], 10);
+    const dobDate = parseInt(dob.split("-")[2], 10);
 
-    const data = await dispatch(addEditPatient({
-      fetchType: 'PATCH',
-      patientId: patient.id,
-      insuranceId,
-      firstName,
-      middleName,
-      lastName,
-      dobYear,
-      dobMonth,
-      dobDate,
-      mrn,
-      ssn,
-      address,
-      phoneNumber,
-      active,
-      authVisits
-    }));
-
-
+    const data = await dispatch(
+      addEditPatient({
+        fetchType: "PATCH",
+        patientId: patient.id,
+        insuranceId,
+        firstName,
+        middleName,
+        lastName,
+        dobYear,
+        dobMonth,
+        dobDate,
+        mrn,
+        ssn,
+        address,
+        phoneNumber,
+        active,
+        authVisits,
+      })
+    );
 
     if (!data.error) {
       setShowForm(false);
@@ -91,149 +89,154 @@ const EditPatient = ({ patient }) => {
       <Modal
         show={show}
         onHide={handleClose}
-        backdrop='static'
+        backdrop="static"
         keyboard={false}
-        id='modal-edit-patient-container'
+        id="modal-edit-patient-container"
       >
         <Modal.Header
           closeButton
-          id='modal-header-edit-patient'
-          className='modal-header-patient'
+          id="modal-header-edit-patient"
+          className="modal-header-patient"
         >
           <Modal.Title>Patient details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {deletedPatient &&
-            <div className='patient-deleted'>Patient removed from the database.</div>
-          }
-          {!showForm && !deletedPatient &&
+          {deletedPatient && (
+            <div className="patient-deleted">
+              Patient removed from the database.
+            </div>
+          )}
+          {!showForm && !deletedPatient && (
             <>
-              <div className='patient-name'>{`${lastName}, ${firstName}${middleName ? ` ${middleName}` : null}`}</div>
-              <div className='patient-dob'>{`DOB: ${new Date(dob)}`}</div>
-              <div className='patient-insuranceName'>{`Insurance: ${insurance.name}, ${insurance.type}`}</div>
-              <div className='patient-authVisits'>{`Authorized visits: ${authVisits}`}</div>
-              <div className='patient-mrn'>{`MRN: ${mrn}`}</div>
-              <div className='patient-ssn'>{`SSN: ${ssn}`}</div>
-              <div className='patient-primaryAddress'>{`Primary address: ${address}`}</div>
-              <div className='patient-phoneNumber'>{`Phone: ${phoneNumber}`}</div>
-              <div className='patient-active'>{`Active patient: ${active ? 'Yes' : 'No'}`}</div>
-              <div className='patient-added'>{`Added: ${patient.createdAt}`}</div>
-              <div className='patient-updated'>{`Updated: ${patient.updatedAt}`}</div>
+              <div className="patient-name">{`${lastName}, ${firstName}${
+                middleName ? ` ${middleName}` : null
+              }`}</div>
+              <div className="patient-dob">{`DOB: ${new Date(dob)}`}</div>
+              <div className="patient-insuranceName">{`Insurance: ${insurance.name}, ${insurance.type}`}</div>
+              <div className="patient-authVisits">{`Authorized visits: ${authVisits}`}</div>
+              <div className="patient-mrn">{`MRN: ${mrn}`}</div>
+              <div className="patient-ssn">{`SSN: ${ssn}`}</div>
+              <div className="patient-primaryAddress">{`Primary address: ${address}`}</div>
+              <div className="patient-phoneNumber">{`Phone: ${phoneNumber}`}</div>
+              <div className="patient-active">{`Active patient: ${
+                active ? "Yes" : "No"
+              }`}</div>
+              <div className="patient-added">{`Added: ${patient.createdAt}`}</div>
+              <div className="patient-updated">{`Updated: ${patient.updatedAt}`}</div>
               <Button onClick={handleEditForm}>Edit details</Button>
               <Button onClick={handleDeletePatient}>Delete patient</Button>
             </>
-          }
-          {showForm &&
-            <Form id='edit-patient-form'>
-              <Form.Group controlId='formGroupPatientFirstName'>
+          )}
+          {showForm && (
+            <Form id="edit-patient-form">
+              <Form.Group controlId="formGroupPatientFirstName">
                 <Form.Label>First name</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='John / Jane'
+                  type="text"
+                  placeholder="John / Jane"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientMiddleName'>
+              <Form.Group controlId="formGroupPatientMiddleName">
                 <Form.Label>Middle name</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='Mary / Smith'
+                  type="text"
+                  placeholder="Mary / Smith"
                   value={middleName}
                   onChange={(e) => setMiddleName(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientLastName'>
+              <Form.Group controlId="formGroupPatientLastName">
                 <Form.Label>Last name</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='Doe / Deer'
+                  type="text"
+                  placeholder="Doe / Deer"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientDOB'>
+              <Form.Group controlId="formGroupPatientDOB">
                 <Form.Label>DOB</Form.Label>
                 <Form.Control
-                  type='date'
+                  type="date"
                   value={dob}
                   onChange={(e) => setDob(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientInsurance'>
+              <Form.Group controlId="formGroupPatientInsurance">
                 <Form.Label>Insurance</Form.Label>
                 <Form.Control
-                  as='select'
+                  as="select"
                   value={insuranceId}
-                  onChange={(e) => { setInsuranceId(e.target.value) }}
+                  onChange={(e) => {
+                    setInsuranceId(e.target.value);
+                  }}
                   custom
                 >
-                  {
-                    Object.values(insuranceList).map((insObj, index) => (
-                      <option
-                        key={`ins-${index}`}
-                        value={insObj.id}
-                      >
-                        {insObj.name}
-                      </option>
-                    ))
-                  }
+                  {insuranceList.map((insObj) => (
+                    <option key={insObj.id} value={insObj.id}>
+                      {insObj.name}
+                    </option>
+                  ))}
                 </Form.Control>
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientMRN'>
+              <Form.Group controlId="formGroupPatientMRN">
                 <Form.Label>MRN</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='123456789'
+                  type="text"
+                  placeholder="123456789"
                   value={mrn}
                   onChange={(e) => setMrn(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientSSN'>
+              <Form.Group controlId="formGroupPatientSSN">
                 <Form.Label>SSN</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='123-45-6789'
-                  minLength='9'
-                  maxLength='9'
+                  type="text"
+                  placeholder="123-45-6789"
+                  minLength="9"
+                  maxLength="9"
                   value={ssn}
                   onChange={(e) => setSsn(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientAddress'>
+              <Form.Group controlId="formGroupPatientAddress">
                 <Form.Label>Address</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='123 Ontario Road'
+                  type="text"
+                  placeholder="123 Ontario Road"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientPhoneNumber'>
+              <Form.Group controlId="formGroupPatientPhoneNumber">
                 <Form.Label>Phone number</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='753-4432'
-                  maxLength='7'
+                  type="text"
+                  placeholder="753-4432"
+                  maxLength="7"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientActive'>
+              <Form.Group controlId="formGroupPatientActive">
                 <Form.Label>Active patient</Form.Label>
                 <Form.Control
-                  as='select'
+                  as="select"
                   value={active}
-                  onChange={(e) => setActive(e.target.value === 'true' ? true : false)}
+                  onChange={(e) =>
+                    setActive(e.target.value === "true" ? true : false)
+                  }
                   custom
                 >
                   <option value={true}>Yes</option>
@@ -241,10 +244,10 @@ const EditPatient = ({ patient }) => {
                 </Form.Control>
               </Form.Group>
 
-              <Form.Group controlId='formGroupPatientAuthVisits'>
+              <Form.Group controlId="formGroupPatientAuthVisits">
                 <Form.Label>Authorized visits</Form.Label>
                 <Form.Control
-                  type='number'
+                  type="number"
                   value={authVisits}
                   onChange={(e) => setAuthVisits(e.target.value)}
                 />
@@ -252,10 +255,10 @@ const EditPatient = ({ patient }) => {
               <Button onClick={handleSubmit}>Save changes</Button>
               <Button onClick={cancelEditPatient}>Cancel</Button>
             </Form>
-          }
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant='secondary' onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose}>
             Back
           </Button>
         </Modal.Footer>

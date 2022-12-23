@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import EditInsurance from './EditInsurance';
-import { getAllInsurance } from '../../store/insurance';
-import { editForm } from '../../store/edit';
+import React, { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import EditInsurance from "./EditInsurance";
+import { getAllInsurance } from "../../store/insurance";
+import { editFormStatus } from "../../store/edit";
 
 const InsuranceTable = () => {
   const dispatch = useDispatch();
@@ -15,18 +15,14 @@ const InsuranceTable = () => {
     dispatch(getAllInsurance());
   }, [dispatch]);
 
-  if (!insuranceList) return null;
-
   const editInsuranceInfo = (insObj) => {
-    dispatch(editForm());
+    dispatch(editFormStatus());
     setInsurance(insObj);
   };
 
   return (
     <>
-      {showForm &&
-        <EditInsurance insurance={insurance} />
-      }
+      {showForm && <EditInsurance insurance={insurance} />}
       <Table responsive>
         <thead>
           <tr>
@@ -37,16 +33,16 @@ const InsuranceTable = () => {
           </tr>
         </thead>
         <tbody>
-          {insuranceList &&
-            Object.values(insuranceList).map((insObj, index) => (
-              <tr key={`tr-${index}`} onClick={() => editInsuranceInfo(insObj)}>
-                <td key={`name-${index}`}>{insObj.name}</td>
-                <td key={`type-${index}`}>{insObj.type}</td>
-                <td key={`added-${index}`}>{insObj.createdAt}</td>
-                <td key={`updated-${index}`}>{insObj.updatedAt}</td>
-              </tr>
-            ))
-          }
+          {insuranceList.length
+            ? insuranceList.map((insObj) => (
+                <tr key={insObj.id} onClick={() => editInsuranceInfo(insObj)}>
+                  <td>{insObj.name}</td>
+                  <td>{insObj.type}</td>
+                  <td>{insObj.createdAt}</td>
+                  <td>{insObj.updatedAt}</td>
+                </tr>
+              ))
+            : "Loading..."}
         </tbody>
       </Table>
     </>

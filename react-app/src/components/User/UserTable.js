@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import EditUser from './EditUser';
-import { getAllUsers, clearUserState } from '../../store/users';
-import { editForm } from '../../store/edit';
-import { parseRole } from '../../services/role';
+import React, { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import EditUser from "./EditUser";
+import { getAllUsers, clearUserState } from "../../store/users";
+import { editFormStatus } from "../../store/edit";
+import { parseRole } from "../../services/role";
 
 const UserTable = () => {
   const dispatch = useDispatch();
@@ -15,22 +15,21 @@ const UserTable = () => {
   useEffect(() => {
     dispatch(getAllUsers());
 
-    return () => { dispatch(clearUserState()) };
+    return () => {
+      dispatch(clearUserState());
+    };
   }, [dispatch]);
 
-  if (!userList) return null;
-
   const editUserInfo = (userObj) => {
-    dispatch(editForm());
-    userObj.fullRole = parseRole(userObj.role);
-    setUser(userObj);
+    dispatch(editFormStatus());
+    const newUserObj = { ...userObj };
+    newUserObj.fullRole = parseRole(userObj.role);
+    setUser(newUserObj);
   };
 
   return (
     <>
-      {showForm &&
-        <EditUser user={user} />
-      }
+      {showForm && <EditUser user={user} />}
       <Table responsive>
         <thead>
           <tr>
@@ -43,18 +42,22 @@ const UserTable = () => {
           </tr>
         </thead>
         <tbody>
-          {userList &&
-            Object.values(userList).map((userObj, index) => (
-              <tr key={`tr-${index}`} onClick={() => editUserInfo(userObj)}>
-                <td key={`role-${index}`}>{parseRole(userObj.role)}</td>
-                <td key={`lastName-${index}`}>{userObj.lastName}</td>
-                <td key={`firstName-${index}`}>{userObj.firstName}</td>
-                <td key={`email-${index}`}>{userObj.email}</td>
-                <td key={`added-${index}`}>{userObj.createdAt}</td>
-                <td key={`updated-${index}`}>{userObj.updatedAt}</td>
+          {userList.length ? (
+            userList.map((userObj) => (
+              <tr key={userObj.id} onClick={() => editUserInfo(userObj)}>
+                <td>{parseRole(userObj.role)}</td>
+                <td>{userObj.lastName}</td>
+                <td>{userObj.firstName}</td>
+                <td>{userObj.email}</td>
+                <td>{userObj.createdAt}</td>
+                <td>{userObj.updatedAt}</td>
               </tr>
             ))
-          }
+          ) : (
+            <tr>
+              <td colSpan={6}>Loading...</td>
+            </tr>
+          )}
         </tbody>
       </Table>
     </>

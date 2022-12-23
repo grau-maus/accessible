@@ -1,140 +1,135 @@
-// constants
-const EDIT_USER = 'users/EDIT_USER';
-const GET_USERS = 'users/GET_USERS';
-const GET_VISITING_USERS = 'users/GET_VISITING_USERS';
-const DELETE_USER = 'users/DELETE_USER';
-const CLEAR_USER_STATE = 'users/CLEAR_USER_STATE';
+import {
+  createAction,
+  createAsyncThunk,
+  createReducer,
+} from "@reduxjs/toolkit";
 
-const editUser = (user) => ({
-  type: EDIT_USER,
-  payload: user
-});
+export const clearUserState = createAction("CLEAR_USER_STATE");
 
-const getUsers = (users) => ({
-  type: GET_USERS,
-  payload: users
-});
+export const addEditUser = createAsyncThunk("EDIT_USER", async (params) => {
+  try {
+    const { userId, fetchType, firstName, lastName, email, role, password } =
+      params;
+    const response = await fetch("/api/users/", {
+      method: `${fetchType}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+        firstName,
+        lastName,
+        email,
+        role,
+        password,
+      }),
+    });
 
-const getVisitingUsers = (users) => ({
-  type: GET_VISITING_USERS,
-  payload: users
-});
-
-const deleteUser = (userId) => ({
-  type: DELETE_USER,
-  payload: userId
-});
-
-export const clearUserState = () => ({
-  type: CLEAR_USER_STATE
-});
-
-// thunks
-export const addEditUser = ({
-  userId,
-  type,
-  firstName,
-  lastName,
-  email,
-  role,
-  password
-}) => async (dispatch) => {
-  const response = await fetch('/api/users/', {
-    method: `${type}`,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      userId,
-      firstName,
-      lastName,
-      email,
-      role,
-      password
-    })
-  });
-
-  const data = await response.json();
-
-  if (type === 'PATCH') {
-    dispatch(editUser(data));
+    if (response.ok) {
+      const data = await response.json();
+      return { data, fetchType };
+    }
+  } catch (err) {
+    console.error("Error editing user:", err);
   }
+});
 
-  return data;
-};
+export const getAllUsers = createAsyncThunk("GET_USERS", async () => {
+  try {
+    const response = await fetch("/api/users/");
 
-export const getAllUsers = () => async (dispatch) => {
-  const response = await fetch('/api/users/');
-  if (response.ok) {
-    const data = await response.json();
-    await dispatch(getUsers(data.users));
-  } else {
-    return { error: 'error' };
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (err) {
+    console.error("Error getting users:", err);
   }
-};
+});
 
-export const getAllVisitingUsers = () => async (dispatch) => {
-  const response = await fetch('/api/users/visiting/');
-  if (response.ok) {
-    const data = await response.json();
-    await dispatch(getVisitingUsers(data.users));
-  } else {
-    return { error: 'error' };
+export const getAllVisitingUsers = createAsyncThunk(
+  "GET_VISITING_USERS",
+  async () => {
+    try {
+      const response = await fetch("/api/users/visiting/");
+
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      console.error("Error getting visiting users:", err);
+    }
   }
-};
+);
 
-export const removeUser = (userId) => async (dispatch) => {
-  const response = await fetch('/api/users/', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      userId
-    })
-  });
+export const removeUser = createAsyncThunk("DELETE_USER", async (userId) => {
+  try {
+    const response = await fetch("/api/users/", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+      }),
+    });
 
-  const data = await response.json();
-
-  dispatch(deleteUser(data.userId));
-};
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (err) {
+    console.error("Error removing user:", err);
+  }
+});
 
 const initialState = {
-  userList: null,
-  visitingUserList: null
+  userList: [],
+  visitingUserList: [],
 };
 
-// reducer
-export default function reducer(state = initialState, action) {
-  let newState;
+const reducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(addEditUser.fulfilled, (state, action) => {
+      const { data, fetchType } = action.payload;
 
-  switch (action.type) {
-    case GET_USERS:
-      newState = Object.assign({}, state);
-      newState.userList = action.payload;
+      if (fetchType === "PATCH") {
+        const userId = data.id;
+        const userList = state.userList.map((userEle) => {
+          if (userEle === userId) {
+            return { ...data };
+          }
 
-      return newState;
-    case GET_VISITING_USERS:
-      newState = Object.assign({}, state);
-      newState.visitingUserList = action.payload;
+          return userEle;
+        });
 
-      return newState;
-    case EDIT_USER:
-      newState = Object.assign({}, state);
-      newState.userList[action.payload.id] = action.payload;
-
-      return newState;
-    case DELETE_USER:
-      newState = Object.assign({}, state);
-      delete newState.userList[action.payload];
-
-      return newState;
-    case CLEAR_USER_STATE:
-      return {
-        userList: null,
-        visitingUserList: null
+        return { ...state, userList };
       }
-    default:
+
       return state;
-  }
-}
+    })
+    .addCase(getAllUsers.fulfilled, (state, action) => {
+      const data = action.payload;
+      const userList = Object.values(data);
+      return { ...state, userList };
+    })
+    .addCase(getAllVisitingUsers.fulfilled, (state, action) => {
+      const data = action.payload;
+      const visitingUserList = Object.values(data);
+      return { ...state, visitingUserList };
+    })
+    .addCase(removeUser.fulfilled, (state, action) => {
+      const { userId } = action.payload;
+      const userList = state.userList.filter(
+        (userEle) => userEle.id !== userId
+      );
+      return { ...state, userList };
+    })
+    .addCase(clearUserState, (state, action) => {
+      return initialState;
+    })
+    .addDefaultCase((state) => state);
+});
+
+export default reducer;

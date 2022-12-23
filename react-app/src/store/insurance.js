@@ -1,100 +1,114 @@
-// constants
-const EDIT_INSURANCE = 'insurance/EDIT_INSURANCE';
-const GET_INSURANCE = 'insurance/GET_INSURANCE';
-const DELETE_INSURANCE = 'insurance/DELETE_INSURANCE';
+import {
+  createAction,
+  createAsyncThunk,
+  createReducer,
+} from "@reduxjs/toolkit";
 
-const editInsurance = (insurance) => ({
-  type: EDIT_INSURANCE,
-  payload: insurance
-});
+export const clearInsuranceState = createAction("CLEAR_INSURANCE_STATE");
 
-const getInsurance = (insurance) => ({
-  type: GET_INSURANCE,
-  payload: insurance
-});
+export const addEditInsurance = createAsyncThunk(
+  "EDIT_INSURANCE",
+  async (params) => {
+    try {
+      const { fetchType, insuranceId, name, type } = params;
+      const response = await fetch("/api/insurances/", {
+        method: `${fetchType}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          insuranceId,
+          name,
+          type,
+        }),
+      });
 
-const deleteInsurance = (insuranceId) => ({
-  type: DELETE_INSURANCE,
-  payload: insuranceId
-});
-
-// thunks
-export const addEditInsurance = ({
-  fetchType,
-  insuranceId,
-  name,
-  type
-}) => async (dispatch) => {
-  const response = await fetch('/api/insurances/', {
-    method: `${fetchType}`,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      insuranceId,
-      name,
-      type
-    })
-  });
-
-  const data = await response.json();
-
-  if (fetchType === 'PATCH') {
-    dispatch(editInsurance(data));
+      if (response.ok) {
+        const data = await response.json();
+        return { data, fetchType };
+      }
+    } catch (err) {
+      console.error("Error editing insurance:", err);
+    }
   }
+);
 
-  return data;
-};
+export const getAllInsurance = createAsyncThunk("GET_INSURANCE", async () => {
+  try {
+    const response = await fetch("/api/insurances/");
 
-export const getAllInsurance = () => async (dispatch) => {
-  const response = await fetch('/api/insurances/');
-  if (response.ok) {
-    const data = await response.json();
-    await dispatch(getInsurance(data));
-  } else {
-    return { error: 'error' };
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (err) {
+    console.error("Error getting insurance:", err);
   }
-};
+});
 
-export const removeInsurance = (insuranceId) => async (dispatch) => {
-  const response = await fetch('/api/insurances/', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      insuranceId
-    })
-  });
+export const removeInsurance = createAsyncThunk(
+  "DELETE_INSURANCE",
+  async (insuranceId) => {
+    try {
+      const response = await fetch("/api/insurances/", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          insuranceId,
+        }),
+      });
 
-  const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      console.error("Error removing insurance:", err);
+    }
+  }
+);
 
-  dispatch(deleteInsurance(data.insuranceId));
-};
+const initialState = { insuranceList: [] };
 
-const initialState = { insuranceList: null };
+const reducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(addEditInsurance.fulfilled, (state, action) => {
+      const { data, fetchType } = action.payload;
 
-// reducer
-export default function reducer(state = initialState, action) {
-  let newState;
+      if (fetchType === "PATCH") {
+        const insuranceId = data.id;
+        const insuranceList = state.insuranceList.map((insuranceEle) => {
+          if (insuranceEle.id === insuranceId) {
+            return { ...data };
+          }
 
-  switch (action.type) {
-    case GET_INSURANCE:
-      newState = Object.assign({}, state);
-      newState.insuranceList = action.payload;
+          return insuranceEle;
+        });
 
-      return newState;
-    case EDIT_INSURANCE:
-      newState = Object.assign({}, state);
-      newState.insuranceList[action.payload.id] = action.payload;
+        return { ...state, insuranceList };
+      }
 
-      return newState;
-    case DELETE_INSURANCE:
-      newState = Object.assign({}, state);
-      delete newState.insuranceList[action.payload];
-
-      return newState;
-    default:
       return state;
-  }
-}
+    })
+    .addCase(getAllInsurance.fulfilled, (state, action) => {
+      const data = action.payload;
+      const insuranceList = Object.values(data);
+      return { ...state, insuranceList };
+    })
+    .addCase(removeInsurance.fulfilled, (state, action) => {
+      const { insuranceId } = action.payload;
+      const insuranceList = state.insuranceList.filter(
+        (insuranceEle) => insuranceEle.id !== insuranceId
+      );
+
+      return { ...state, insuranceList };
+    })
+    .addCase(clearInsuranceState, (state, action) => {
+      return initialState;
+    })
+    .addDefaultCase((state) => state);
+});
+
+export default reducer;

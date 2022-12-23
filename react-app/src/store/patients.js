@@ -1,122 +1,142 @@
-// constants
-const EDIT_PATIENT = 'patients/EDIT_PATIENT';
-const GET_PATIENTS = 'patients/GET_PATIENTS';
-const DELETE_PATIENT = 'patients/DELETE_PATIENT';
+import {
+  createAction,
+  createAsyncThunk,
+  createReducer,
+} from "@reduxjs/toolkit";
 
-const editPatient = (patient) => ({
-  type: EDIT_PATIENT,
-  payload: patient
-});
+export const clearPatientState = createAction("CLEAR_PATIENT_STATE");
 
-const getPatients = (patient) => ({
-  type: GET_PATIENTS,
-  payload: patient
-});
+export const addEditPatient = createAsyncThunk(
+  "EDIT_PATIENT",
+  async (params) => {
+    try {
+      const {
+        fetchType,
+        patientId,
+        insuranceId,
+        firstName,
+        middleName,
+        lastName,
+        dobYear,
+        dobMonth,
+        dobDate,
+        mrn,
+        ssn,
+        address,
+        phoneNumber,
+        active,
+        authVisits,
+      } = params;
 
-const deletePatient = (patientId) => ({
-  type: DELETE_PATIENT,
-  payload: patientId
-});
+      const response = await fetch("/api/patients/", {
+        method: `${fetchType}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          patientId,
+          insuranceId,
+          firstName,
+          middleName,
+          lastName,
+          dobYear,
+          dobMonth,
+          dobDate,
+          mrn,
+          ssn,
+          address,
+          phoneNumber,
+          active,
+          authVisits,
+        }),
+      });
 
-// thunks
-export const addEditPatient = ({
-  fetchType,
-  patientId,
-  insuranceId,
-  firstName,
-  middleName,
-  lastName,
-  dobYear,
-  dobMonth,
-  dobDate,
-  mrn,
-  ssn,
-  address,
-  phoneNumber,
-  active,
-  authVisits
-}) => async (dispatch) => {
-  const response = await fetch('/api/patients/', {
-    method: `${fetchType}`,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      patientId,
-      insuranceId,
-      firstName,
-      middleName,
-      lastName,
-      dobYear,
-      dobMonth,
-      dobDate,
-      mrn,
-      ssn,
-      address,
-      phoneNumber,
-      active,
-      authVisits
-    })
-  });
-
-  const data = await response.json();
-
-  if (fetchType === 'PATCH') {
-    dispatch(editPatient(data));
+      if (response.ok) {
+        const data = await response.json();
+        return { data, fetchType };
+      }
+    } catch (err) {
+      console.error("Error editing patient:", err);
+    }
   }
+);
 
-  return data;
-};
+export const getAllPatients = createAsyncThunk("GET_PATIENTS", async () => {
+  try {
+    const response = await fetch("/api/patients/");
 
-export const getAllPatients = () => async (dispatch) => {
-  const response = await fetch('/api/patients/');
-  if (response.ok) {
-    const data = await response.json();
-    await dispatch(getPatients(data));
-  } else {
-    return { error: 'error' };
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (err) {
+    console.error("Error getting patients:", err);
   }
-};
+});
 
-export const removePatient = (patientId) => async (dispatch) => {
-  const response = await fetch('/api/patients/', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      patientId
-    })
-  });
+export const removePatient = createAsyncThunk(
+  "DELETE_PATIENT",
+  async (patientId) => {
+    try {
+      const response = await fetch("/api/patients/", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          patientId,
+        }),
+      });
 
-  const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      console.error("Error removing patient:", err);
+    }
+  }
+);
 
-  dispatch(deletePatient(data.patientId));
-};
+const initialState = { patientList: [] };
 
-const initialState = { patientList: null };
+const reducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(addEditPatient.fulfilled, (state, action) => {
+      const { data, fetchType } = action.payload;
 
-// reducer
-export default function reducer(state = initialState, action) {
-  let newState;
+      if (fetchType === "PATCH") {
+        const patientId = data.id;
+        const patientList = state.patientList.map((patientEle) => {
+          if (patientEle.id === patientId) {
+            return { ...data };
+          }
 
-  switch (action.type) {
-    case GET_PATIENTS:
-      newState = Object.assign({}, state);
-      newState.patientList = action.payload;
+          return patientEle;
+        });
 
-      return newState;
-    case EDIT_PATIENT:
-      newState = Object.assign({}, state);
-      newState.patientList[action.payload.id] = action.payload;
+        return { ...state, patientList };
+      }
 
-      return newState;
-    case DELETE_PATIENT:
-      newState = Object.assign({}, state);
-      delete newState.patientList[action.payload];
-
-      return newState;
-    default:
       return state;
-  }
-}
+    })
+    .addCase(getAllPatients.fulfilled, (state, action) => {
+      const data = action.payload;
+      const patientList = Object.values(data);
+      return { ...state, patientList };
+    })
+    .addCase(removePatient.fulfilled, (state, action) => {
+      const { patientId } = action.payload;
+      const patientList = state.patientList.filter(
+        (patientEle) => patientEle.id !== patientId
+      );
+
+      return { ...state, patientList };
+    })
+    .addCase(clearPatientState, (state, action) => {
+      return initialState;
+    })
+    .addDefaultCase((state) => state);
+});
+
+export default reducer;

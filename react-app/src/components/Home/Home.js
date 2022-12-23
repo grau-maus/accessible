@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'react-bootstrap';
-import { DateTime } from 'luxon';
-import { getAllInsurance } from '../../store/insurance';
-import { getAllPhysicians } from '../../store/physicians';
-import { getAllPatients } from '../../store/patients';
-import { getEveryTask } from '../../store/tasks';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "react-bootstrap";
+import { DateTime } from "luxon";
+import { clearUserState } from "../../store/users";
+import { clearInsuranceState, getAllInsurance } from "../../store/insurance";
+import { clearPhysicianState, getAllPhysicians } from "../../store/physicians";
+import { clearPatientState, getAllPatients } from "../../store/patients";
+import { clearTaskState, getEveryTask } from "../../store/tasks";
 
-import './Home.css'
+import "./Home.css";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -16,13 +17,23 @@ const Home = () => {
   const physicianList = useSelector((state) => state.physicians.physicianList);
   const patientList = useSelector((state) => state.patients.patientList);
   const taskList = useSelector((state) => state.tasks.taskList);
-  const [timeToday, setTimeToday] = useState(DateTime.now().toLocaleString(DateTime.DATETIME_MED));
+  const [timeToday, setTimeToday] = useState(
+    DateTime.now().toLocaleString(DateTime.DATETIME_MED)
+  );
 
   useEffect(() => {
     dispatch(getAllInsurance());
     dispatch(getAllPhysicians());
     dispatch(getAllPatients());
     dispatch(getEveryTask());
+
+    return () => {
+      dispatch(clearUserState());
+      dispatch(clearInsuranceState());
+      dispatch(clearPhysicianState());
+      dispatch(clearPatientState());
+      dispatch(clearTaskState());
+    };
   }, [dispatch]);
 
   useEffect(() => {
@@ -36,128 +47,144 @@ const Home = () => {
   }, []);
 
   return (
-    <div className='home-container'>
-      <div className='home-nav-spacer'></div>
+    <div className="home-container">
+      <div className="home-nav-spacer"></div>
 
-      <div className='dashboard-container'>
-        <div className='dashboard-navbar'>
-          <div className='dashboard-navbar-left'>
-            <p className='dashboard-hello-user'>Hello {user.firstName}!</p>
-            <p className='dashboard-current-date'>{timeToday}</p>
+      <div className="dashboard-container">
+        <div className="dashboard-navbar">
+          <div className="dashboard-navbar-left">
+            <p className="dashboard-hello-user">Hello {user.firstName}!</p>
+            <p className="dashboard-current-date">{timeToday}</p>
           </div>
 
-          <div className='dashboard-navbar-right'>
-            <p className='dashboard-company-name'>Super Health Inc.</p>
-            <p className='dashboard-company-address'>444 Academy Blvd.</p>
+          <div className="dashboard-navbar-right">
+            <p className="dashboard-company-name">Super Health Inc.</p>
+            <p className="dashboard-company-address">444 Academy Blvd.</p>
           </div>
         </div>
 
-        <div className='dashboard-body'>
-          <div className='dashboard-body-left'>
-            <div className='dashboard-task-header'>
+        <div className="dashboard-body">
+          <div className="dashboard-body-left">
+            <div className="dashboard-task-header">
               <p>Tasks this month:</p>
             </div>
-            {taskList ?
-              Object.values(taskList).map((task, idx) => {
-                if (idx === 0) {
-                  return (
-                    <div className='dashboard-tasks-start' key={`tasks-div-${idx}`}>
-                      <h4 key={`taskType-${idx}`}>{`${task.type}:`}</h4>
-                      <h4 key={`taskPatient-${idx}`}>{`${task.patient.lastName}, ${task.patient.firstName}`}</h4>
-                    </div>
-                  )
-                } else {
-                  return (
-                    <div className='dashboard-tasks' key={`tasks-div-${idx}`}>
-                      <h4 key={`taskType-${idx}`}>{`${task.type}:`}</h4>
-                      <h4 key={`taskPatient-${idx}`}>{`${task.patient.lastName}, ${task.patient.firstName}`}</h4>
-                    </div>
-                  )
-                }
-              }) : 'Loading tasks...'
-            }
+            {taskList.length
+              ? taskList.map((task, idx) => {
+                  if (idx === 0) {
+                    return (
+                      <div className="dashboard-tasks-start" key={task.id}>
+                        <h4>{`${task.type}:`}</h4>
+                        <h4>{`${task.patient.lastName}, ${task.patient.firstName}`}</h4>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div className="dashboard-tasks" key={task.id}>
+                        <h4>{`${task.type}:`}</h4>
+                        <h4>{`${task.patient.lastName}, ${task.patient.firstName}`}</h4>
+                      </div>
+                    );
+                  }
+                })
+              : "Loading tasks..."}
           </div>
 
-          <div className='dashboard-body-right'>
-            <div className='dashboard-body-right-insurance'>
-              <div className='dashboard-insurance-header'>
+          <div className="dashboard-body-right">
+            <div className="dashboard-body-right-insurance">
+              <div className="dashboard-insurance-header">
                 <p>Insurance:</p>
               </div>
-              {insuranceList ?
-                Object.values(insuranceList).map((insurance, idx) => {
-                  if (idx === 0) {
-                    return (
-                      <div className='dashboard-insurance-start' key={`insurance-div-${idx}`}>
-                        <h4 key={`insurance-${idx}`}>{insurance.name}</h4>
-                      </div>
-                    )
-                  } else {
-                    return (
-                      <div className='dashboard-insurance' key={`insurance-div-${idx}`}>
-                        <h4 key={`insurance-${idx}`}>{insurance.name}</h4>
-                      </div>
-                    )
-                  }
-                }) : 'Loading insurance...'
-              }
+              {insuranceList.length
+                ? insuranceList.map((insurance, idx) => {
+                    if (idx === 0) {
+                      return (
+                        <div
+                          className="dashboard-insurance-start"
+                          key={insurance.id}
+                        >
+                          <h4>{insurance.name}</h4>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="dashboard-insurance" key={insurance.id}>
+                          <h4>{insurance.name}</h4>
+                        </div>
+                      );
+                    }
+                  })
+                : "Loading insurance..."}
             </div>
 
-            <div className='dashboard-body-right-physician'>
-              <div className='dashboard-physicians-header'>
+            <div className="dashboard-body-right-physician">
+              <div className="dashboard-physicians-header">
                 <p>Referring physicians:</p>
               </div>
-              {physicianList ?
-                Object.values(physicianList).map((physician, idx) => {
-                  if (idx === 0) {
-                    return (
-                      <div className='dashboard-physicians-start' key={`physicians-div-${idx}`}>
-                        <h4 key={`physicians-${idx}`}>{physician.name}</h4>
-                      </div>
-                    )
-                  } else {
-                    return (
-                      <div className='dashboard-physicians' key={`physicians-div-${idx}`}>
-                        <h4 key={`physicians-${idx}`}>{physician.name}</h4>
-                      </div>
-                    )
-                  }
-                }) : 'Loading physicians...'
-              }
+              {physicianList.length
+                ? physicianList.map((physician, idx) => {
+                    if (idx === 0) {
+                      return (
+                        <div
+                          className="dashboard-physicians-start"
+                          key={physician.id}
+                        >
+                          <h4>{physician.name}</h4>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                          className="dashboard-physicians"
+                          key={physician.id}
+                        >
+                          <h4>{physician.name}</h4>
+                        </div>
+                      );
+                    }
+                  })
+                : "Loading physicians..."}
             </div>
           </div>
         </div>
 
-        <div className='dashboard-footer'>
+        <div className="dashboard-footer">
           <h4>Patient birthdays:</h4>
-          {patientList ? (
+          {patientList.length ? (
             <>
               <h3>
+                <p>{patientList[0].firstName}</p>
                 <p>
-                  {Object.values(patientList)[0].firstName}
-                </p>
-                <p>
-                  {new Date(Object.values(patientList)[0].dob).toDateString().split(' ').splice(1, 20).join(' ')}
-                </p>
-              </h3>
-              <h3>
-                <p>
-                  {Object.values(patientList)[1].firstName}
-                </p>
-                <p>
-                  {new Date(Object.values(patientList)[1].dob).toDateString().split(' ').splice(1, 20).join(' ')}
+                  {new Date(patientList[0].dob)
+                    .toDateString()
+                    .split(" ")
+                    .splice(1, 20)
+                    .join(" ")}
                 </p>
               </h3>
               <h3>
+                <p>{patientList[1].firstName}</p>
                 <p>
-                  {Object.values(patientList)[2].firstName}
+                  {new Date(patientList[1].dob)
+                    .toDateString()
+                    .split(" ")
+                    .splice(1, 20)
+                    .join(" ")}
                 </p>
+              </h3>
+              <h3>
+                <p>{patientList[2].firstName}</p>
                 <p>
-                  {new Date(Object.values(patientList)[2].dob).toDateString().split(' ').splice(1, 20).join(' ')}
+                  {new Date(patientList[2].dob)
+                    .toDateString()
+                    .split(" ")
+                    .splice(1, 20)
+                    .join(" ")}
                 </p>
               </h3>
             </>
-          ) : 'Loading patients...'
-          }
+          ) : (
+            "Loading patients..."
+          )}
           <Button>View all birthdays</Button>
         </div>
       </div>

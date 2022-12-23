@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Modal, Button, Form } from 'react-bootstrap';
-import { addEditPhysician, removePhysician } from '../../store/physicians';
-import { editForm } from '../../store/edit';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Modal, Button, Form } from "react-bootstrap";
+import { addEditPhysician, removePhysician } from "../../store/physicians";
+import { editFormStatus } from "../../store/edit";
 
 const EditPhysician = ({ physician }) => {
   const dispatch = useDispatch();
@@ -17,19 +17,21 @@ const EditPhysician = ({ physician }) => {
 
   const handleClose = () => {
     setShow(false);
-    dispatch(editForm());
+    dispatch(editFormStatus());
   };
 
   const handleSubmit = async () => {
-    const data = await dispatch(addEditPhysician({
-      fetchType: 'PATCH',
-      physicianId: physician.id,
-      name,
-      efax,
-      address,
-      phoneNumber,
-      npiNumber
-    }));
+    const data = await dispatch(
+      addEditPhysician({
+        fetchType: "PATCH",
+        physicianId: physician.id,
+        name,
+        efax,
+        address,
+        phoneNumber,
+        npiNumber,
+      })
+    );
 
     if (!data.error) {
       setShowForm(false);
@@ -61,81 +63,83 @@ const EditPhysician = ({ physician }) => {
       <Modal
         show={show}
         onHide={handleClose}
-        backdrop='static'
+        backdrop="static"
         keyboard={false}
-        id='modal-edit-physician-container'
+        id="modal-edit-physician-container"
       >
         <Modal.Header
           closeButton
-          id='modal-header-edit-physician'
-          className='modal-header-physician'
+          id="modal-header-edit-physician"
+          className="modal-header-physician"
         >
           <Modal.Title>Physician details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {deletedMCP &&
-            <div className='physician-deleted'>Physician removed from the database.</div>
-          }
-          {!showForm && !deletedMCP &&
+          {deletedMCP && (
+            <div className="physician-deleted">
+              Physician removed from the database.
+            </div>
+          )}
+          {!showForm && !deletedMCP && (
             <>
-              <div className='physician-name'>{name}</div>
-              <div className='physician-efax'>{`E-Fax: ${efax}`}</div>
-              <div className='physician-address'>{address}</div>
-              <div className='physician-efax'>{`Phone: ${phoneNumber}`}</div>
-              <div className='physician-efax'>{`NPI: ${npiNumber}`}</div>
-              <div className='physician-added'>{`Added: ${physician.createdAt}`}</div>
-              <div className='physician-updated'>{`Updated: ${physician.updatedAt}`}</div>
+              <div className="physician-name">{name}</div>
+              <div className="physician-efax">{`E-Fax: ${efax}`}</div>
+              <div className="physician-address">{address}</div>
+              <div className="physician-efax">{`Phone: ${phoneNumber}`}</div>
+              <div className="physician-efax">{`NPI: ${npiNumber}`}</div>
+              <div className="physician-added">{`Added: ${physician.createdAt}`}</div>
+              <div className="physician-updated">{`Updated: ${physician.updatedAt}`}</div>
               <Button onClick={handleEditForm}>Edit details</Button>
               <Button onClick={handleDeletePhysician}>Delete physician</Button>
             </>
-          }
-          {showForm &&
-            <Form id='edit-physician-form'>
-              <Form.Group controlId='formGroupPhysicianName'>
+          )}
+          {showForm && (
+            <Form id="edit-physician-form">
+              <Form.Group controlId="formGroupPhysicianName">
                 <Form.Label>Name of physician</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='John Doe / Jane Deer'
+                  type="text"
+                  placeholder="John Doe / Jane Deer"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPhysicianEfax'>
+              <Form.Group controlId="formGroupPhysicianEfax">
                 <Form.Label>E-Fax number</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='(123) 456-7890'
+                  type="text"
+                  placeholder="(123) 456-7890"
                   value={efax}
                   onChange={(e) => setEfax(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPhysicianAddress'>
+              <Form.Group controlId="formGroupPhysicianAddress">
                 <Form.Label>Address</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='4200 Grimwald Lane'
+                  type="text"
+                  placeholder="4200 Grimwald Lane"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPhysicianPhoneNumber'>
+              <Form.Group controlId="formGroupPhysicianPhoneNumber">
                 <Form.Label>Phone number</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='(456) 753-4432'
+                  type="text"
+                  placeholder="(456) 753-4432"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </Form.Group>
 
-              <Form.Group controlId='formGroupPhysicianNPI'>
+              <Form.Group controlId="formGroupPhysicianNPI">
                 <Form.Label>NPI number</Form.Label>
                 <Form.Control
-                  type='text'
-                  placeholder='5884621185'
+                  type="text"
+                  placeholder="5884621185"
                   value={npiNumber}
                   onChange={(e) => setNpiNumber(e.target.value)}
                 />
@@ -143,10 +147,10 @@ const EditPhysician = ({ physician }) => {
               <Button onClick={handleSubmit}>Edit physician</Button>
               <Button onClick={cancelEditPhysician}>Cancel</Button>
             </Form>
-          }
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant='secondary' onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose}>
             Back
           </Button>
         </Modal.Footer>

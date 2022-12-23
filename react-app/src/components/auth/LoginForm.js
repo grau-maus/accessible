@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ReactSVG } from "react-svg";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { login } from "../../store/session";
 import { Form, Button } from "react-bootstrap";
 import AppInfo from "./AppInfo";
@@ -10,6 +10,7 @@ import "./LoginForm.css";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);
   const [emailError, setEmailError] = useState("");
   const [passError, setPassError] = useState("");
@@ -23,7 +24,10 @@ const LoginForm = () => {
     let retries = 0;
     const loginInterval = setInterval(async () => {
       if (retries < 5) {
-        const data = await dispatch(login(email, password));
+        retries += 1;
+
+        const action = await dispatch(login({ email, password }));
+        const data = action.payload;
 
         if (data && data.errors) {
           for (const ele of data.errors) {
@@ -35,11 +39,9 @@ const LoginForm = () => {
 
           setIsLoggingIn(false);
           clearInterval(loginInterval);
-        } else if (data && data.status === 200) {
+        } else if (data && (!data.errors || !data.errors.length)) {
           clearInterval(loginInterval);
         }
-
-        retries += 1;
       } else {
         setIsLoggingIn(false);
         clearInterval(loginInterval);
@@ -67,7 +69,7 @@ const LoginForm = () => {
   };
 
   if (user) {
-    return <Redirect to="/" />;
+    return navigate("/");
   }
 
   return (

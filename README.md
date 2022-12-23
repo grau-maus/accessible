@@ -68,7 +68,7 @@ If you add any python dependencies to your pipfiles, you'll need to regenerate y
 You can do this by running:
 
 ```bash
-pipenv lock -r > requirements.txt
+pipenv requirements > requirements.txt
 ```
 
 _ALSO IMPORTANT!_
@@ -90,7 +90,7 @@ There is a layer in the Dockerfile that will install psycopg2 (not binary) for u
     hurt to run it again.
 
     ```bash
-    pipenv lock -r > requirements.txt
+    pipenv requirements > requirements.txt
     ```
 
 2.  Install the [flyctl CLI](https://fly.io/docs/hands-on/install-flyctl/)

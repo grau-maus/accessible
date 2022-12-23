@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import EditPhysician from './EditPhysician';
-import { getAllPhysicians } from '../../store/physicians';
-import { editForm } from '../../store/edit';
+import React, { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import EditPhysician from "./EditPhysician";
+import { getAllPhysicians } from "../../store/physicians";
+import { editFormStatus } from "../../store/edit";
 
 const PhysicianTable = () => {
   const dispatch = useDispatch();
@@ -15,18 +15,14 @@ const PhysicianTable = () => {
     dispatch(getAllPhysicians());
   }, [dispatch]);
 
-  if (!physicianList) return null;
-
   const editPhysicianInfo = (mcpObj) => {
-    dispatch(editForm());
+    dispatch(editFormStatus());
     setPhysician(mcpObj);
   };
 
   return (
     <>
-      {showForm &&
-        <EditPhysician physician={physician} />
-      }
+      {showForm && <EditPhysician physician={physician} />}
       <Table responsive>
         <thead>
           <tr>
@@ -40,19 +36,19 @@ const PhysicianTable = () => {
           </tr>
         </thead>
         <tbody>
-          {physicianList &&
-            Object.values(physicianList).map((mcpObj, index) => (
-              <tr key={`tr-${index}`} onClick={() => editPhysicianInfo(mcpObj)}>
-                <td key={`name-${index}`}>{mcpObj.name}</td>
-                <td key={`efax-${index}`}>{mcpObj.efax}</td>
-                <td key={`address-${index}`}>{mcpObj.address}</td>
-                <td key={`phone-${index}`}>{mcpObj.phoneNumber}</td>
-                <td key={`npi-${index}`}>{mcpObj.npiNumber}</td>
-                <td key={`added-${index}`}>{mcpObj.createdAt}</td>
-                <td key={`updated-${index}`}>{mcpObj.updatedAt}</td>
-              </tr>
-            ))
-          }
+          {physicianList.length
+            ? physicianList.map((mcpObj) => (
+                <tr key={mcpObj.id} onClick={() => editPhysicianInfo(mcpObj)}>
+                  <td>{mcpObj.name}</td>
+                  <td>{mcpObj.efax}</td>
+                  <td>{mcpObj.address}</td>
+                  <td>{mcpObj.phoneNumber}</td>
+                  <td>{mcpObj.npiNumber}</td>
+                  <td>{mcpObj.createdAt}</td>
+                  <td>{mcpObj.updatedAt}</td>
+                </tr>
+              ))
+            : "Loading..."}
         </tbody>
       </Table>
     </>

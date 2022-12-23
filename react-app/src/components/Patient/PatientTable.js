@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import EditPatient from './EditPatient';
-import { getAllPatients } from '../../store/patients';
-import { editForm } from '../../store/edit';
+import React, { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import EditPatient from "./EditPatient";
+import { getAllPatients } from "../../store/patients";
+import { editFormStatus } from "../../store/edit";
 
 const PatientTable = () => {
   const dispatch = useDispatch();
@@ -16,15 +16,13 @@ const PatientTable = () => {
   }, [dispatch]);
 
   const editPatientInfo = (patientObj) => {
-    dispatch(editForm());
+    dispatch(editFormStatus());
     setPatient(patientObj);
   };
 
   return (
     <>
-      {showForm &&
-        <EditPatient patient={patient} />
-      }
+      {showForm && <EditPatient patient={patient} />}
       <Table responsive>
         <thead>
           <tr>
@@ -44,28 +42,30 @@ const PatientTable = () => {
           </tr>
         </thead>
         <tbody>
-          {!patientList &&
-            <div>Loading...</div>
-          }
-          {patientList &&
-            Object.values(patientList).map((patientObj, index) => (
-              <tr key={`tr-${index}`} onClick={() => editPatientInfo(patientObj)}>
-                <td key={`lastName-${index}`}>{patientObj.lastName}</td>
-                <td key={`firstName-${index}`}>{patientObj.firstName}</td>
-                <td key={`middleName-${index}`}>{patientObj.middleName}</td>
-                <td key={`mrn-${index}`}>{patientObj.mrn}</td>
-                <td key={`insurance-${index}`}>{patientObj.insurance.name}</td>
-                <td key={`authVisits-${index}`}>{patientObj.authorizedVisits}</td>
-                <td key={`dob-${index}`}>{patientObj.dob}</td>
-                <td key={`ssn-${index}`}>{patientObj.ssn}</td>
-                <td key={`address-${index}`}>{patientObj.primaryAdddress}</td>
-                <td key={`phone-${index}`}>{patientObj.phoneNumber}</td>
-                <td key={`active-${index}`}>{patientObj.active ? 'Yes' : 'No'}</td>
-                <td key={`added-${index}`}>{patientObj.createdAt}</td>
-                <td key={`updated-${index}`}>{patientObj.updatedAt}</td>
+          {patientList.length ? (
+            patientList.map((patientObj) => (
+              <tr
+                key={patientObj.id}
+                onClick={() => editPatientInfo(patientObj)}
+              >
+                <td>{patientObj.lastName}</td>
+                <td>{patientObj.firstName}</td>
+                <td>{patientObj.middleName}</td>
+                <td>{patientObj.mrn}</td>
+                <td>{patientObj.insurance.name}</td>
+                <td>{patientObj.authorizedVisits}</td>
+                <td>{patientObj.dob}</td>
+                <td>{patientObj.ssn}</td>
+                <td>{patientObj.primaryAdddress}</td>
+                <td>{patientObj.phoneNumber}</td>
+                <td>{patientObj.active ? "Yes" : "No"}</td>
+                <td>{patientObj.createdAt}</td>
+                <td>{patientObj.updatedAt}</td>
               </tr>
             ))
-          }
+          ) : (
+            <div>Loading...</div>
+          )}
         </tbody>
       </Table>
     </>

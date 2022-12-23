@@ -1,34 +1,25 @@
-// constants
-const SET_USER = "session/SET_USER";
-const REMOVE_USER = "session/REMOVE_USER";
+import { createAsyncThunk, createReducer } from "@reduxjs/toolkit";
 
-const setUser = (user) => ({
-  type: SET_USER,
-  payload: user,
-});
-
-const removeUser = () => ({
-  type: REMOVE_USER,
-});
-
-// thunks
-export const authenticate = () => async (dispatch) => {
-  const response = await fetch("/api/auth/", {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await response.json();
-
-  if (data.errors) {
-    return;
-  }
-
-  dispatch(setUser(data));
-};
-
-export const login = (email, password) => async (dispatch) => {
+export const authenticate = createAsyncThunk("AUTH_USER", async () => {
   try {
+    const response = await fetch("/api/auth/", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (err) {
+    console.error("Error authenticating user:", err);
+  }
+});
+
+export const login = createAsyncThunk("LOGIN_USER", async (params) => {
+  try {
+    const { email, password } = params;
     const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
@@ -41,57 +32,70 @@ export const login = (email, password) => async (dispatch) => {
     });
     const data = await response.json();
 
-    if (data.errors) {
-      return data;
-    }
-
-    dispatch(setUser(data));
-    return response;
+    return data;
   } catch (err) {
-    console.error("Error logging in: ", err);
+    console.error("Error logging user in:", err);
   }
-};
+});
 
-export const logout = () => async (dispatch) => {
-  const response = await fetch("/api/auth/logout", {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  // const data = await response.json();
+export const signUp = createAsyncThunk(
+  "SIGNUP_USER",
+  async (username, email, password) => {
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
 
-  if (response.ok) {
-    dispatch(removeUser());
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      console.error("Error signing user up:", err);
+    }
   }
-};
+);
 
-export const signUp = (username, email, password) => async (dispatch) => {
-  const response = await fetch("/api/auth/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username,
-      email,
-      password,
-    }),
-  });
-  const data = await response.json();
-
-  dispatch(setUser(data));
-};
+export const logout = createAsyncThunk("REMOVE_USER", async () => {
+  try {
+    await fetch("/api/auth/logout", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (err) {
+    console.error("Error logging user out:", err);
+  }
+});
 
 const initialState = { user: null };
 
-// reducer
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case SET_USER:
-      return { user: action.payload };
-    case REMOVE_USER:
+const reducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(authenticate.fulfilled, (state, action) => {
+      const data = action.payload.id ? action.payload : null;
+      return { ...state, user: data };
+    })
+    .addCase(login.fulfilled, (state, action) => {
+      const data = action.payload.id ? action.payload : null;
+      return { ...state, user: data };
+    })
+    .addCase(signUp.fulfilled, (state, action) => {
+      const data = action.payload.id ? action.payload : null;
+      return { ...state, user: data };
+    })
+    .addCase(logout.fulfilled, (state, action) => {
       return { user: null };
-    default:
-      return state;
-  }
-}
+    })
+    .addDefaultCase((state) => state);
+});
+
+export default reducer;
