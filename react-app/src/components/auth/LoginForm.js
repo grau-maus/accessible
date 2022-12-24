@@ -6,12 +6,14 @@ import AppInfo from "./AppInfo";
 import { ReactComponent as Logo } from "../../utils/icons/accessible-logo2.svg";
 import "./LoginForm.css";
 
+// TODO: refactor error handling
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);
   const [emailError, setEmailError] = useState("");
   const [passError, setPassError] = useState("");
+  const [hasError, setHasError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailLabelClass, setEmailLabelClass] = useState("");
@@ -41,6 +43,7 @@ const LoginForm = () => {
             }
           }
 
+          setHasError(true);
           setIsLoggingIn(false);
           clearInterval(loginInterval);
         } else if (data && (!data.errors || !data.errors.length)) {
@@ -64,13 +67,12 @@ const LoginForm = () => {
 
   const updateEmail = (e) => {
     setEmail(e.target.value);
-    setEmailError("");
-    setPassError("");
+    setHasError(false);
   };
 
   const updatePassword = (e) => {
     setPassword(e.target.value);
-    setPassError("");
+    setHasError(false);
   };
 
   const focusedInput = (e) => {
@@ -121,13 +123,15 @@ const LoginForm = () => {
           <input
             type="email"
             id="email-login"
-            className={passError ? "input-error" : null}
+            className={hasError ? "input-error" : null}
             onClick={focusedInput}
             onBlur={blurredInput}
             value={email}
             onChange={updateEmail}
           />
-          {emailError ? <div className="login-errors">{emailError}</div> : null}
+          <div className={hasError ? "login-error" : "login-error hide"}>
+            {emailError}
+          </div>
         </div>
         <div className="login-input-container">
           <label
@@ -139,13 +143,15 @@ const LoginForm = () => {
           <input
             type="password"
             id="password-login"
-            className={passError ? "input-error" : null}
+            className={hasError ? "input-error" : null}
             onClick={focusedInput}
             onBlur={blurredInput}
             value={password}
             onChange={updatePassword}
           />
-          {passError ? <div className="login-errors">{passError}</div> : null}
+          <div className={hasError ? "login-error" : "login-error hide"}>
+            {passError}
+          </div>
         </div>
         <div className="login-buttons">
           <button

@@ -96,20 +96,15 @@
   width: 5rem;
 }
 
-.login-errors {
+div.login-error {
   color: red;
   position: absolute;
   margin-top: 2.4rem;
   margin-left: 0.1rem;
-  animation: slide-right 0.1s forwards;
+  animation: slide-right-in 0.1s forwards;
 }
 
-.login-input-container > input.input-error {
-  border: 0.15rem solid red;
-  animation: pulse-border 0.3s ease-in-out;
-}
-
-@keyframes slide-right {
+@keyframes slide-right-in {
   0% {
     transform: translateX(-85%);
   }
@@ -117,6 +112,28 @@
   100% {
     transform: translateX(0%);
   }
+}
+
+div.login-error.hide {
+  color: rgba(255, 0, 0, 0);
+  animation: slide-right-out 1s forwards;
+}
+
+@keyframes slide-right-out {
+  0% {
+    transform: translateX(0%);
+    color: red;
+  }
+
+  100% {
+    transform: translateX(100%);
+    color: rgba(255, 0, 0, 0);
+  }
+}
+
+.login-input-container > input.input-error {
+  border: 0.15rem solid red;
+  animation: pulse-border 0.3s ease-in-out;
 }
 
 @keyframes pulse-border {
@@ -132,112 +149,3 @@
     border: 0.15rem solid red;
   }
 }
-
-/* #login-form-container {
-  background: url(../../utils/background-images/open-hands.jfif) no-repeat
-    center center fixed;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.login-errors {
-  color: red;
-}
-
-#login-form {
-  border: 1px solid gray;
-  box-shadow: 0px 0px 8px 0px black;
-  border-radius: 20px;
-  padding: 40px;
-  width: 400px;
-  background-color: rgba(255, 255, 255, 0.922);
-}
-
-#login-form > div > input {
-  border: 1px solid gray;
-  background-color: rgba(255, 255, 255, 0.795);
-}
-
-.login-logo {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.login-icon-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 3px solid gray;
-  border-radius: 100%;
-  width: 6.7rem;
-  height: 6.7rem;
-  margin-right: 5px;
-}
-
-#ambulance-login {
-  height: 4.5rem;
-  width: 4.5rem;
-  color: #d62828;
-}
-
-#login-form > .login-email {
-  margin-bottom: 20px;
-}
-
-#login-buttons {
-  margin-top: 25px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#login-buttons > button {
-  margin: 5px;
-}
-
-#login-submit {
-  background-color: #168aad;
-  border-color: #168aad;
-}
-
-#login-submit:hover {
-  background-color: #127391;
-}
-
-#login-admin-demo {
-  background-color: #a4161a;
-  border-color: #a4161a;
-}
-
-#login-admin-demo:hover {
-  background-color: #790f13;
-}
-
-.app-info-text-click {
-  text-align: center;
-  margin-top: 8px;
-  text-decoration: underline;
-  width: 160px;
-}
-
-.app-info-text-click:hover {
-  cursor: pointer;
-  background-color: rgba(128, 128, 128, 0.288);
-}
-
-.modal-header-app-info > button {
-  border: none;
-  background-color: transparent;
-}
-
-.modal-header-app-info > button:hover {
-  background-color: rgba(128, 128, 128, 0.377);
-} */
