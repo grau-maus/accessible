@@ -1,6 +1,141 @@
 #login-form-container {
-  /* background: url(https://images.unsplash.com/photo-1599659593072-10de2e109486?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80) no-repeat center center fixed; */
-  background: url(../../utils/background-images/open-hands.jfif) no-repeat center center fixed;
+  display: flex;
+  height: 100vh;
+}
+
+:is(#login-page-image, #login-form) {
+  width: 50%;
+}
+
+#login-page-image {
+  background-color: aquamarine;
+  min-width: 30rem;
+}
+
+#login-form {
+  background-color: white;
+  min-width: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-logo {
+  min-width: 40rem;
+  min-height: 25rem;
+}
+
+.login-input-container {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+}
+
+.login-input-container > input {
+  width: 21rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  padding: 0 0.2rem;
+  border: 0.15rem solid rgba(0, 0, 0, 0);
+  border-bottom: 0.15rem solid black;
+}
+
+.login-input-label {
+  position: absolute;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-left: 0.2rem;
+  cursor: text;
+}
+
+.login-input-label.focused-input {
+  font-size: 1rem;
+  background-color: white;
+  padding: 0 0.4rem;
+  height: 1rem;
+  animation: slide-up 0.1s forwards;
+}
+
+.login-input-label.blurred-input {
+  animation: slide-down 0.1s forwards;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(0%);
+    font-size: 1.5rem;
+  }
+
+  100% {
+    transform: translateY(-85%);
+    font-size: 1rem;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    transform: translateY(-85%);
+    font-size: 1rem;
+  }
+
+  100% {
+    transform: translateY(0%);
+    font-size: 1.5rem;
+  }
+}
+
+.login-buttons {
+  display: flex;
+  flex-direction: column;
+  width: 10rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.login-submit-btn {
+  width: 5rem;
+}
+
+.login-errors {
+  color: red;
+  position: absolute;
+  margin-top: 2.4rem;
+  margin-left: 0.1rem;
+  animation: slide-right 0.1s forwards;
+}
+
+.login-input-container > input.input-error {
+  border: 0.15rem solid red;
+  animation: pulse-border 0.3s ease-in-out;
+}
+
+@keyframes slide-right {
+  0% {
+    transform: translateX(-85%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes pulse-border {
+  0% {
+    border: 0.15rem solid red;
+  }
+
+  50% {
+    border: 0.3rem solid red;
+  }
+
+  100% {
+    border: 0.15rem solid red;
+  }
+}
+
+/* #login-form-container {
+  background: url(../../utils/background-images/open-hands.jfif) no-repeat
+    center center fixed;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -105,4 +240,4 @@
 
 .modal-header-app-info > button:hover {
   background-color: rgba(128, 128, 128, 0.377);
-}
+} */

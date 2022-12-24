@@ -4,12 +4,13 @@ from wtforms.validators import DataRequired, Email, ValidationError
 from app.models import User
 
 
+# TODO - fix validation errors
 def user_exists(form, field):
     print("Checking if user exists", field.data)
     email = field.data
     user = User.query.filter(User.email == email).first()
     if not user:
-        raise ValidationError("Email provided not found.")
+        raise ValidationError("")
 
 
 def password_matches(form, field):
@@ -18,9 +19,9 @@ def password_matches(form, field):
     email = form.data['email']
     user = User.query.filter(User.email == email).first()
     if not user:
-        raise ValidationError("No such user exists.")
+        raise ValidationError("Invalid credentials")
     if not user.check_password(password):
-        raise ValidationError("Password was incorrect.")
+        raise ValidationError("")
 
 
 class LoginForm(FlaskForm):

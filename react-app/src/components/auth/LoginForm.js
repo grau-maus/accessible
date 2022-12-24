@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { ReactSVG } from "react-svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../store/session";
-import { Form, Button } from "react-bootstrap";
 import AppInfo from "./AppInfo";
-import ambulanceIcon from "../../utils/icons/font-awesome/ambulance-solid.svg";
+import { ReactComponent as Logo } from "../../utils/icons/accessible-logo2.svg";
 import "./LoginForm.css";
 
 const LoginForm = () => {
@@ -16,6 +14,8 @@ const LoginForm = () => {
   const [passError, setPassError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailLabelClass, setEmailLabelClass] = useState("");
+  const [passwordLabelClass, setPasswordLabelClass] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const retryLogin = (email, password) => {
@@ -33,8 +33,12 @@ const LoginForm = () => {
           for (const ele of data.errors) {
             const type = ele.split(" ")[0];
 
-            if (type === "email") setEmailError(ele);
-            if (type === "password") setPassError(ele);
+            if (type === "email") {
+              setEmailError(ele.split(" : ")[1]);
+            }
+            if (type === "password") {
+              setPassError(ele.split(" : ")[1]);
+            }
           }
 
           setIsLoggingIn(false);
@@ -61,11 +65,39 @@ const LoginForm = () => {
   const updateEmail = (e) => {
     setEmail(e.target.value);
     setEmailError("");
+    setPassError("");
   };
 
   const updatePassword = (e) => {
     setPassword(e.target.value);
     setPassError("");
+  };
+
+  const focusedInput = (e) => {
+    const tagId = e.target.id;
+
+    if (tagId === "email-login") {
+      setEmailLabelClass("focused-input");
+    } else if (tagId === "password-login") {
+      setPasswordLabelClass("focused-input");
+    }
+  };
+
+  const blurredInput = (e) => {
+    const tagId = e.target.id;
+
+    if (tagId === "email-login") {
+      if (!email.trim()) {
+        setEmailLabelClass("blurred-input");
+        // setEmail("");
+        e.target.value = ""; // <--- b/c "setEmail" hook not working?
+      }
+    } else if (tagId === "password-login") {
+      if (!password.trim()) {
+        setPasswordLabelClass("blurred-input");
+        setPassword("");
+      }
+    }
   };
 
   if (user) {
@@ -74,21 +106,72 @@ const LoginForm = () => {
 
   return (
     <div id="login-form-container">
-      <Form id="login-form" onSubmit={onLogin}>
-        <div className="login-logo">
-          <div className="login-icon-wrapper">
-            <ReactSVG src={ambulanceIcon} wrapper="svg" id="ambulance-login" />
-          </div>
-
-          <h2>accessible</h2>
+      <div id="login-page-image">
+        <h1>image here</h1>
+      </div>
+      <form id="login-form" onSubmit={onLogin}>
+        <Logo className="login-logo" />
+        <div className="login-input-container">
+          <label
+            htmlFor="email-login"
+            className={`login-input-label ${emailLabelClass}`}
+          >
+            Email
+          </label>
+          <input
+            type="email"
+            id="email-login"
+            className={passError ? "input-error" : null}
+            onClick={focusedInput}
+            onBlur={blurredInput}
+            value={email}
+            onChange={updateEmail}
+          />
+          {emailError ? <div className="login-errors">{emailError}</div> : null}
         </div>
-
+        <div className="login-input-container">
+          <label
+            htmlFor="password-login"
+            className={`login-input-label ${passwordLabelClass}`}
+          >
+            Password
+          </label>
+          <input
+            type="password"
+            id="password-login"
+            className={passError ? "input-error" : null}
+            onClick={focusedInput}
+            onBlur={blurredInput}
+            value={password}
+            onChange={updatePassword}
+          />
+          {passError ? <div className="login-errors">{passError}</div> : null}
+        </div>
+        <div className="login-buttons">
+          <button
+            className="login-submit-btn"
+            type="submit"
+            disabled={isLoggingIn}
+          >
+            Log in
+          </button>
+          <button
+            className="login-demo-btn"
+            onClick={adminDemoLogin}
+            disabled={isLoggingIn}
+          >
+            Admin demo log in
+          </button>
+        </div>
+        <AppInfo />
+      </form>
+      {/* <Form id="login-form" onSubmit={onLogin}>
         <Form.Group controlId="formBasicEmail" className="login-email">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>Email</Form.Label>
 
           <Form.Control
             type="email"
-            placeholder="Email"
+            placeholder="jane.doe@organization.com"
             value={email}
             onChange={updateEmail}
           />
@@ -101,7 +184,6 @@ const LoginForm = () => {
 
           <Form.Control
             type="password"
-            placeholder="Password"
             value={password}
             onChange={updatePassword}
           />
@@ -128,7 +210,7 @@ const LoginForm = () => {
           </Button>
           <AppInfo />
         </div>
-      </Form>
+      </Form> */}
     </div>
   );
 };

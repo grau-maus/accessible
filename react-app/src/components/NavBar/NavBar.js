@@ -1,27 +1,30 @@
-import React from 'react';
-import { ReactSVG } from 'react-svg';
-import { useDispatch, useSelector } from 'react-redux';
-import { DropdownButton, Dropdown } from 'react-bootstrap';
-import AddUser from '../User/AddUser';
-import GetUser from '../User/GetUser';
-import AddInsurance from '../Insurance/AddInsurance';
-import GetInsurance from '../Insurance/GetInsurance';
-import AddPhysician from '../Physician/AddPhysician';
-import GetPhysician from '../Physician/GetPhysician';
-import AddPatient from '../Patient/AddPatient';
-import GetPatient from '../Patient/GetPatient';
-import AddTask from '../Task/AddTask';
-import GetTask from '../Task/GetTask';
-import { logout } from '../../store/session';
+import React from "react";
+// import { ReactSVG } from 'react-svg';
+import { useDispatch, useSelector } from "react-redux";
+import { DropdownButton, Dropdown } from "react-bootstrap";
+import AddUser from "../User/AddUser";
+import GetUser from "../User/GetUser";
+import AddInsurance from "../Insurance/AddInsurance";
+import GetInsurance from "../Insurance/GetInsurance";
+import AddPhysician from "../Physician/AddPhysician";
+import GetPhysician from "../Physician/GetPhysician";
+import AddPatient from "../Patient/AddPatient";
+import GetPatient from "../Patient/GetPatient";
+import AddTask from "../Task/AddTask";
+import GetTask from "../Task/GetTask";
+import { logout } from "../../store/session";
 
-import ambulanceIcon from '../../utils/icons/font-awesome/ambulance-solid.svg';
-import profileIcon from '../../utils/icons/font-awesome/address-card-regular.svg';
-import './NavBar.css';
+import ambulanceIcon from "../../utils/icons/font-awesome/ambulance-solid.svg";
+import profileIcon from "../../utils/icons/font-awesome/address-card-regular.svg";
+import "./NavBar.css";
 
 const NavBar = () => {
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
-  const profileButton = (<ReactSVG src={profileIcon} wrapper='svg' id='profile-cog' />);
+  const profileButton = (
+    <div>SVG</div>
+    // <ReactSVG src={profileIcon} wrapper="svg" id="profile-cog" />
+  );
   const adminFeatures = (
     <>
       <Dropdown.Item>
@@ -38,31 +41,30 @@ const NavBar = () => {
   };
 
   return (
-    <div className='navbar-container'>
-      <div className='navbar-logo'>
-        <div className='navbar-ambulance-icon'>
-          <ReactSVG src={ambulanceIcon} wrapper='svg' id='ambulance-home' />
+    <div className="navbar-container">
+      <div className="navbar-logo">
+        <div className="navbar-ambulance-icon">
+          {/* <ReactSVG src={ambulanceIcon} wrapper="svg" id="ambulance-home" /> */}
+          SVG
         </div>
         <h3>accessible health care</h3>
       </div>
-      <div className='navbar-right'>
-        <div className='navbar-company-name'>
+      <div className="navbar-right">
+        <div className="navbar-company-name">
           <h4>Super Health Inc.</h4>
         </div>
-        <div className='navbar-dropdowns'>
-          <DropdownButton id='tasks-dropdown' title='Tasks'>
+        <div className="navbar-dropdowns">
+          <DropdownButton id="tasks-dropdown" title="Tasks">
             <Dropdown.Item>
               <AddTask />
             </Dropdown.Item>
-            <Dropdown.Item>
-              My tasks
-            </Dropdown.Item>
+            <Dropdown.Item>My tasks</Dropdown.Item>
             <Dropdown.Item>
               <GetTask />
             </Dropdown.Item>
           </DropdownButton>
 
-          <DropdownButton id='patients-dropdown' title='Patients'>
+          <DropdownButton id="patients-dropdown" title="Patients">
             <Dropdown.Item>
               <AddPatient />
             </Dropdown.Item>
@@ -71,7 +73,7 @@ const NavBar = () => {
             </Dropdown.Item>
           </DropdownButton>
 
-          <DropdownButton id='physicians-dropdown' title='Physicians'>
+          <DropdownButton id="physicians-dropdown" title="Physicians">
             <Dropdown.Item>
               <AddPhysician />
             </Dropdown.Item>
@@ -80,7 +82,7 @@ const NavBar = () => {
             </Dropdown.Item>
           </DropdownButton>
 
-          <DropdownButton id='insurance-dropdown' title='Insurance'>
+          <DropdownButton id="insurance-dropdown" title="Insurance">
             <Dropdown.Item>
               <AddInsurance />
             </Dropdown.Item>
@@ -89,19 +91,15 @@ const NavBar = () => {
             </Dropdown.Item>
           </DropdownButton>
 
-          <DropdownButton id='profile-dropdown' title={profileButton}>
-            {user.role === 'admin' && adminFeatures}
-            <Dropdown.Item>
-              My profile
-            </Dropdown.Item>
-            <Dropdown.Item onClick={onLogout}>
-              Log out
-            </Dropdown.Item>
+          <DropdownButton id="profile-dropdown" title={profileButton}>
+            {user.role === "admin" && adminFeatures}
+            <Dropdown.Item>My profile</Dropdown.Item>
+            <Dropdown.Item onClick={onLogout}>Log out</Dropdown.Item>
           </DropdownButton>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default NavBar;

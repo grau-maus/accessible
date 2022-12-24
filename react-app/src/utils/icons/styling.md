@@ -1,0 +1,3 @@
+## Logo font:
+
+- Libre Franklin
