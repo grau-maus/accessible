@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../store/session";
 import AppInfo from "./AppInfo";
-import { ReactComponent as Logo } from "../../utils/icons/accessible-logo2.svg";
+// import { ReactComponent as Logo } from "../../utils/icons/accessible-logo2-colored.svg";
+import { ReactComponent as Logo } from "../../utils/icons/image2vector.svg";
+import { ReactComponent as TestLogo } from "../../utils/icons/new-logo.svg";
+import { ReactComponent as TestLogo1 } from "../../utils/icons/test2.svg";
 import "./LoginForm.css";
 
 // TODO: refactor error handling
@@ -75,30 +78,18 @@ const LoginForm = () => {
     setHasError(false);
   };
 
-  const focusedInput = (e) => {
-    const tagId = e.target.id;
-
-    if (tagId === "email-login") {
-      setEmailLabelClass("focused-input");
-    } else if (tagId === "password-login") {
-      setPasswordLabelClass("focused-input");
+  const blurredEmailInput = (e) => {
+    if (!email.trim()) {
+      setEmailLabelClass("blurred-input");
+      // setEmail("");
+      e.target.value = ""; // <--- b/c "setEmail" hook not working?
     }
   };
 
-  const blurredInput = (e) => {
-    const tagId = e.target.id;
-
-    if (tagId === "email-login") {
-      if (!email.trim()) {
-        setEmailLabelClass("blurred-input");
-        // setEmail("");
-        e.target.value = ""; // <--- b/c "setEmail" hook not working?
-      }
-    } else if (tagId === "password-login") {
-      if (!password.trim()) {
-        setPasswordLabelClass("blurred-input");
-        setPassword("");
-      }
+  const blurredPassInput = (e) => {
+    if (!password.trim()) {
+      setPasswordLabelClass("blurred-input");
+      setPassword("");
     }
   };
 
@@ -113,6 +104,8 @@ const LoginForm = () => {
       </div>
       <form id="login-form" onSubmit={onLogin}>
         <Logo className="login-logo" />
+        <TestLogo className="login-logo" />
+        <TestLogo1 className="login-logo" />
         <div className="login-input-container">
           <label
             htmlFor="email-login"
@@ -124,8 +117,8 @@ const LoginForm = () => {
             type="email"
             id="email-login"
             className={hasError ? "input-error" : null}
-            onClick={focusedInput}
-            onBlur={blurredInput}
+            onFocus={() => setEmailLabelClass("focused-input")}
+            onBlur={blurredEmailInput}
             value={email}
             onChange={updateEmail}
           />
@@ -144,8 +137,8 @@ const LoginForm = () => {
             type="password"
             id="password-login"
             className={hasError ? "input-error" : null}
-            onClick={focusedInput}
-            onBlur={blurredInput}
+            onFocus={() => setPasswordLabelClass("focused-input")}
+            onBlur={blurredPassInput}
             value={password}
             onChange={updatePassword}
           />
@@ -171,52 +164,6 @@ const LoginForm = () => {
         </div>
         <AppInfo />
       </form>
-      {/* <Form id="login-form" onSubmit={onLogin}>
-        <Form.Group controlId="formBasicEmail" className="login-email">
-          <Form.Label>Email</Form.Label>
-
-          <Form.Control
-            type="email"
-            placeholder="jane.doe@organization.com"
-            value={email}
-            onChange={updateEmail}
-          />
-
-          {emailError && <div className="login-errors">{emailError}</div>}
-        </Form.Group>
-
-        <Form.Group controlId="formBasicPassword" className="login-password">
-          <Form.Label>Password</Form.Label>
-
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={updatePassword}
-          />
-
-          {passError && <div className="login-errors">{passError}</div>}
-        </Form.Group>
-
-        <div id="login-buttons">
-          <Button
-            id="login-submit"
-            variant="primary"
-            type="submit"
-            disabled={isLoggingIn}
-          >
-            Login
-          </Button>
-
-          <Button
-            id="login-admin-demo"
-            onClick={adminDemoLogin}
-            disabled={isLoggingIn}
-          >
-            Admin Demo Login
-          </Button>
-          <AppInfo />
-        </div>
-      </Form> */}
     </div>
   );
 };

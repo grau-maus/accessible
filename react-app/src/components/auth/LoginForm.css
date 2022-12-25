@@ -8,12 +8,11 @@
 }
 
 #login-page-image {
-  background-color: aquamarine;
+  background-color: #53687e;
   min-width: 30rem;
 }
 
 #login-form {
-  background-color: white;
   min-width: 30rem;
   display: flex;
   flex-direction: column;
@@ -29,15 +28,17 @@
   display: flex;
   flex-direction: column;
   margin: 1rem;
+  margin-bottom: 2rem;
 }
 
 .login-input-container > input {
   width: 21rem;
+  background-color: transparent;
   height: 2.5rem;
   font-size: 1.5rem;
   padding: 0 0.2rem;
   border: 0.15rem solid rgba(0, 0, 0, 0);
-  border-bottom: 0.15rem solid black;
+  border-bottom: 0.15rem solid #3a4454;
 }
 
 .login-input-label {
@@ -46,42 +47,15 @@
   font-size: 1.5rem;
   margin-left: 0.2rem;
   cursor: text;
+  user-select: none;
+  transition: all 0.1s;
 }
 
 .login-input-label.focused-input {
   font-size: 1rem;
   background-color: white;
   padding: 0 0.4rem;
-  height: 1rem;
-  animation: slide-up 0.1s forwards;
-}
-
-.login-input-label.blurred-input {
-  animation: slide-down 0.1s forwards;
-}
-
-@keyframes slide-up {
-  0% {
-    transform: translateY(0%);
-    font-size: 1.5rem;
-  }
-
-  100% {
-    transform: translateY(-85%);
-    font-size: 1rem;
-  }
-}
-
-@keyframes slide-down {
-  0% {
-    transform: translateY(-85%);
-    font-size: 1rem;
-  }
-
-  100% {
-    transform: translateY(0%);
-    font-size: 1.5rem;
-  }
+  margin-top: -1.22rem;
 }
 
 .login-buttons {
@@ -92,16 +66,31 @@
   margin-top: 1rem;
 }
 
-.login-submit-btn {
-  width: 5rem;
+.login-buttons > button {
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 400;
+  text-align: center;
+  border: none;
+  border-radius: 1rem;
+  width: 15rem;
+  height: 2.6rem;
+  margin-bottom: 1rem;
+  background-color: #1f5e61;
+}
+
+button.login-submit-btn {
+  width: 6rem;
 }
 
 div.login-error {
-  color: red;
+  color: #b30000;
   position: absolute;
   margin-top: 2.4rem;
   margin-left: 0.1rem;
   animation: slide-right-in 0.1s forwards;
+  visibility: visible;
+  transition: visibility 0.2s, margin-left 0.2s, color 0.2s;
 }
 
 @keyframes slide-right-in {
@@ -116,36 +105,25 @@ div.login-error {
 
 div.login-error.hide {
   color: rgba(255, 0, 0, 0);
-  animation: slide-right-out 1s forwards;
-}
-
-@keyframes slide-right-out {
-  0% {
-    transform: translateX(0%);
-    color: red;
-  }
-
-  100% {
-    transform: translateX(100%);
-    color: rgba(255, 0, 0, 0);
-  }
+  margin-left: 4rem;
+  visibility: hidden;
 }
 
 .login-input-container > input.input-error {
-  border: 0.15rem solid red;
+  border: 0.15rem solid #b30000;
   animation: pulse-border 0.3s ease-in-out;
 }
 
 @keyframes pulse-border {
   0% {
-    border: 0.15rem solid red;
+    border: 0.15rem solid #b30000;
   }
 
   50% {
-    border: 0.3rem solid red;
+    border: 0.3rem solid #b30000;
   }
 
   100% {
-    border: 0.15rem solid red;
+    border: 0.15rem solid #b30000;
   }
 }

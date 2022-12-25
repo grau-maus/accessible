@@ -1,3 +1,3 @@
 ## Logo font:
 
-- Libre Franklin
+- Montserrat
