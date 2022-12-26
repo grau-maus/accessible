@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../store/session";
+import Carousel from "./Carousel";
 import AppInfo from "./AppInfo";
-// import { ReactComponent as Logo } from "../../utils/icons/accessible-logo2-colored.svg";
-import { ReactComponent as Logo } from "../../utils/icons/image2vector.svg";
-import { ReactComponent as TestLogo } from "../../utils/icons/new-logo.svg";
-import { ReactComponent as TestLogo1 } from "../../utils/icons/test2.svg";
+import { ReactComponent as Logo } from "../../utils/icons/accessible-logo3.svg";
 import "./LoginForm.css";
 
 // TODO: refactor error handling
@@ -99,13 +97,9 @@ const LoginForm = () => {
 
   return (
     <div id="login-form-container">
-      <div id="login-page-image">
-        <h1>image here</h1>
-      </div>
+      <Carousel />
       <form id="login-form" onSubmit={onLogin}>
         <Logo className="login-logo" />
-        <TestLogo className="login-logo" />
-        <TestLogo1 className="login-logo" />
         <div className="login-input-container">
           <label
             htmlFor="email-login"
@@ -156,6 +150,7 @@ const LoginForm = () => {
           </button>
           <button
             className="login-demo-btn"
+            type="button"
             onClick={adminDemoLogin}
             disabled={isLoggingIn}
           >

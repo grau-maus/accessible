@@ -13,9 +13,6 @@ import GetPatient from "../Patient/GetPatient";
 import AddTask from "../Task/AddTask";
 import GetTask from "../Task/GetTask";
 import { logout } from "../../store/session";
-
-import ambulanceIcon from "../../utils/icons/font-awesome/ambulance-solid.svg";
-import profileIcon from "../../utils/icons/font-awesome/address-card-regular.svg";
 import "./NavBar.css";
 
 const NavBar = () => {
