@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ReactComponent as IconLeft } from "../../utils/icons/chevron-bar-left.svg";
 import { ReactComponent as IconRight } from "../../utils/icons/chevron-bar-right.svg";
+import { useInterval } from "../../utils";
 
 const Carousel = () => {
   const [imageClass1, setImageClass1] = useState("");
@@ -12,6 +13,10 @@ const Carousel = () => {
   const [dotPicker3, setDotPicker3] = useState("");
   const [dotPicker4, setDotPicker4] = useState("");
   const [currDot, setCurrDot] = useState("dot-1");
+
+  useInterval(() => {
+    iconRightClick();
+  }, 6000);
 
   const classFuncMap = {
     "dot-1": () => {
@@ -53,7 +58,7 @@ const Carousel = () => {
     if (classFuncMap[currDotEle]) classFuncMap[currDotEle]();
   };
 
-  const iconLeftClick = () => {
+  function iconLeftClick() {
     const currImgNum = Number(currDot.split("-")[1]);
 
     clearState();
@@ -63,9 +68,9 @@ const Carousel = () => {
     } else {
       classFuncMap[`dot-${currImgNum - 1}`]();
     }
-  };
+  }
 
-  const iconRightClick = () => {
+  function iconRightClick() {
     const currImgNum = Number(currDot.split("-")[1]);
 
     clearState();
@@ -75,25 +80,25 @@ const Carousel = () => {
     } else {
       classFuncMap[`dot-${currImgNum + 1}`]();
     }
-  };
+  }
 
   return (
     <div id="login-page-carousel">
       <div className={`carousel-image image-1 ${imageClass1}`}>
-        <div>image 1</div>
+        <div className="image-container" />
         <div>
-          accessible is a platform that allows home health companies to schedule
+          Accessible is a platform that allows home health companies to schedule
           appointments and manage their schedules online
         </div>
       </div>
       <div className={`carousel-image image-2 ${imageClass2}`}>
-        <div>image 2</div>
+        <div className="image-container" />
         <div>
           Get appointment reminder notifications and manage patient records
         </div>
       </div>
       <div className={`carousel-image image-3 ${imageClass3}`}>
-        <div>image 3</div>
+        <div className="image-container" />
         <div>
           <div>Schedule a variety of healthcare services, such as:</div>
           <ul>
@@ -105,11 +110,11 @@ const Carousel = () => {
         </div>
       </div>
       <div className={`carousel-image image-4 ${imageClass4}`}>
-        <div>image 4</div>
+        <div className="image-container" />
         <div>
           Our goal is to make it easier for home health companies to manage and
           schedule appointments, streamlining the appointment process and saving
-          time for users.
+          time for users
         </div>
       </div>
       <div className="carousel-navigate-picker">
