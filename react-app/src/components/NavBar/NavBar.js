@@ -1,5 +1,4 @@
 import React from "react";
-// import { ReactSVG } from 'react-svg';
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import AddUser from "../User/AddUser";
@@ -13,15 +12,14 @@ import GetPatient from "../Patient/GetPatient";
 import AddTask from "../Task/AddTask";
 import GetTask from "../Task/GetTask";
 import { logout } from "../../store/session";
+import { ReactComponent as Logo } from "../../utils/icons/accessible-logo3.svg";
+import { ReactComponent as ProfileIcon } from "../../utils/icons/person-lines-fill.svg";
 import "./NavBar.css";
 
 const NavBar = () => {
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
-  const profileButton = (
-    <div>SVG</div>
-    // <ReactSVG src={profileIcon} wrapper="svg" id="profile-cog" />
-  );
+  const profileButton = <ProfileIcon id="profile-cog" />;
   const adminFeatures = (
     <>
       <Dropdown.Item>
@@ -39,13 +37,10 @@ const NavBar = () => {
 
   return (
     <div className="navbar-container">
-      <div className="navbar-logo">
-        <div className="navbar-ambulance-icon">
-          {/* <ReactSVG src={ambulanceIcon} wrapper="svg" id="ambulance-home" /> */}
-          SVG
-        </div>
-        <h3>accessible health care</h3>
+      <div className="logo-wrapper">
+        <Logo id="logo-home" />
       </div>
+      <div className="navbar-separator" />
       <div className="navbar-right">
         <div className="navbar-company-name">
           <h4>Super Health Inc.</h4>
