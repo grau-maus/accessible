@@ -154,7 +154,7 @@ There is a layer in the Dockerfile that will install psycopg2 (not binary) for u
 
 ## Built With
 
-[Python 3.9.4](https://www.python.org/) - Back-end
+[Python 3.11](https://www.python.org/) - Back-end
 
 - [Flask](https://flask.palletsprojects.com/en/2.0.x/) - API routes and authentication
 - [SQLAlchemy](https://www.sqlalchemy.org/) - SQL Toolkit & ORM
