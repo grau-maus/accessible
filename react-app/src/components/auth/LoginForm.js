@@ -1,22 +1,30 @@
 import React, { useState } from "react";
-import { ReactSVG } from "react-svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../store/session";
-import { Form, Button } from "react-bootstrap";
+import Carousel from "./Carousel";
 import AppInfo from "./AppInfo";
-import ambulanceIcon from "../../utils/icons/font-awesome/ambulance-solid.svg";
+import { ReactComponent as Logo } from "../../utils/icons/accessible-logo3.svg";
+import { ReactComponent as LogoName } from "../../utils/icons/accessible-logo3-name.svg";
+import { ReactComponent as ShowPassword } from "../../utils/icons/pass-eye.svg";
+import { ReactComponent as HidePassword } from "../../utils/icons/pass-eye-slash.svg";
 import "./LoginForm.css";
 
+// TODO: refactor error handling
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);
   const [emailError, setEmailError] = useState("");
   const [passError, setPassError] = useState("");
+  const [hasError, setHasError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailLabelClass, setEmailLabelClass] = useState("");
+  const [passwordLabelClass, setPasswordLabelClass] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [passInputType, setPassInputType] = useState("password");
+  const [displayPassTooltip, setDisplayPassTooltip] = useState("hide");
 
   const retryLogin = (email, password) => {
     setIsLoggingIn(true);
@@ -33,10 +41,15 @@ const LoginForm = () => {
           for (const ele of data.errors) {
             const type = ele.split(" ")[0];
 
-            if (type === "email") setEmailError(ele);
-            if (type === "password") setPassError(ele);
+            if (type === "email") {
+              setEmailError(ele.split(" : ")[1]);
+            }
+            if (type === "password") {
+              setPassError(ele.split(" : ")[1]);
+            }
           }
 
+          setHasError(true);
           setIsLoggingIn(false);
           clearInterval(loginInterval);
         } else if (data && (!data.errors || !data.errors.length)) {
@@ -60,12 +73,35 @@ const LoginForm = () => {
 
   const updateEmail = (e) => {
     setEmail(e.target.value);
-    setEmailError("");
+    setHasError(false);
   };
 
   const updatePassword = (e) => {
     setPassword(e.target.value);
-    setPassError("");
+    setHasError(false);
+  };
+
+  const blurredEmailInput = (e) => {
+    if (!email.trim()) {
+      setEmailLabelClass("blurred-input");
+      // setEmail("");
+      e.target.value = ""; // <--- b/c "setEmail" hook not working?
+    }
+  };
+
+  const blurredPassInput = (e) => {
+    if (!password.trim()) {
+      setPasswordLabelClass("blurred-input");
+      setPassword("");
+    }
+  };
+
+  const showPassword = (e) => {
+    setPassInputType("text");
+  };
+
+  const hidePassword = (e) => {
+    setPassInputType("password");
   };
 
   if (user) {
@@ -73,62 +109,98 @@ const LoginForm = () => {
   }
 
   return (
-    <div id="login-form-container">
-      <Form id="login-form" onSubmit={onLogin}>
-        <div className="login-logo">
-          <div className="login-icon-wrapper">
-            <ReactSVG src={ambulanceIcon} wrapper="svg" id="ambulance-login" />
-          </div>
-
-          <h2>accessible</h2>
-        </div>
-
-        <Form.Group controlId="formBasicEmail" className="login-email">
-          <Form.Label>Email address</Form.Label>
-
-          <Form.Control
+    <div
+      id="login-form-container"
+      onMouseEnter={() => setDisplayPassTooltip("hide")}
+    >
+      <Carousel />
+      <form id="login-form" onSubmit={onLogin}>
+        <LogoName className="login-logo-name" />
+        <Logo className="login-logo" />
+        <div className="login-input-container">
+          <label
+            htmlFor="email-login"
+            className={`login-input-label ${emailLabelClass}`}
+          >
+            Email
+          </label>
+          <input
             type="email"
-            placeholder="Email"
+            id="email-login"
+            className={hasError ? "input-error" : null}
+            onFocus={() => setEmailLabelClass("focused-input")}
+            onBlur={blurredEmailInput}
             value={email}
             onChange={updateEmail}
           />
-
-          {emailError && <div className="login-errors">{emailError}</div>}
-        </Form.Group>
-
-        <Form.Group controlId="formBasicPassword" className="login-password">
-          <Form.Label>Password</Form.Label>
-
-          <Form.Control
-            type="password"
-            placeholder="Password"
+          <div className={hasError ? "login-error" : "login-error hide"}>
+            {emailError}
+          </div>
+        </div>
+        <div className="login-input-container">
+          <label
+            htmlFor="password-login"
+            className={`login-input-label ${passwordLabelClass}`}
+          >
+            Password
+          </label>
+          <input
+            type={passInputType}
+            id="password-login"
+            className={hasError ? "input-error" : null}
+            onFocus={() => setPasswordLabelClass("focused-input")}
+            onBlur={blurredPassInput}
             value={password}
             onChange={updatePassword}
           />
-
-          {passError && <div className="login-errors">{passError}</div>}
-        </Form.Group>
-
-        <div id="login-buttons">
-          <Button
-            id="login-submit"
-            variant="primary"
+          <div className="password-icon-wrapper">
+            <div className={`password-icon-tooltip ${displayPassTooltip}`}>
+              show / hide password
+              <div className="tooltip-triangle" />
+            </div>
+            {passInputType === "password" ? (
+              <button
+                onClick={showPassword}
+                onMouseEnter={() => setDisplayPassTooltip("")}
+                onMouseLeave={() => setDisplayPassTooltip("hide")}
+                type="button"
+              >
+                <ShowPassword className="password-icon" />
+              </button>
+            ) : (
+              <button
+                onClick={hidePassword}
+                onMouseEnter={() => setDisplayPassTooltip("")}
+                onMouseLeave={() => setDisplayPassTooltip("hide")}
+                type="button"
+              >
+                <HidePassword className="password-icon" />
+              </button>
+            )}
+          </div>
+          <div className={hasError ? "login-error" : "login-error hide"}>
+            {passError}
+          </div>
+        </div>
+        <div className="login-buttons">
+          <button
+            className="login-submit-btn"
             type="submit"
             disabled={isLoggingIn}
           >
-            Login
-          </Button>
-
-          <Button
-            id="login-admin-demo"
+            Log in
+          </button>
+          <button
+            className="login-demo-btn"
+            type="button"
             onClick={adminDemoLogin}
             disabled={isLoggingIn}
           >
-            Admin Demo Login
-          </Button>
-          <AppInfo />
+            Admin demo log in
+          </button>
         </div>
-      </Form>
+        <AppInfo />
+      </form>
     </div>
   );
 };
