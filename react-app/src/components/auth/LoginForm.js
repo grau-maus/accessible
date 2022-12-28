@@ -5,6 +5,9 @@ import { login } from "../../store/session";
 import Carousel from "./Carousel";
 import AppInfo from "./AppInfo";
 import { ReactComponent as Logo } from "../../utils/icons/accessible-logo3.svg";
+import { ReactComponent as LogoName } from "../../utils/icons/accessible-logo3-name.svg";
+import { ReactComponent as ShowPassword } from "../../utils/icons/pass-eye.svg";
+import { ReactComponent as HidePassword } from "../../utils/icons/pass-eye-slash.svg";
 import "./LoginForm.css";
 
 // TODO: refactor error handling
@@ -20,6 +23,8 @@ const LoginForm = () => {
   const [emailLabelClass, setEmailLabelClass] = useState("");
   const [passwordLabelClass, setPasswordLabelClass] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [passInputType, setPassInputType] = useState("password");
+  const [displayPassTooltip, setDisplayPassTooltip] = useState("hide");
 
   const retryLogin = (email, password) => {
     setIsLoggingIn(true);
@@ -91,14 +96,26 @@ const LoginForm = () => {
     }
   };
 
+  const showPassword = (e) => {
+    setPassInputType("text");
+  };
+
+  const hidePassword = (e) => {
+    setPassInputType("password");
+  };
+
   if (user) {
     return navigate("/");
   }
 
   return (
-    <div id="login-form-container">
+    <div
+      id="login-form-container"
+      onMouseEnter={() => setDisplayPassTooltip("hide")}
+    >
       <Carousel />
       <form id="login-form" onSubmit={onLogin}>
+        <LogoName className="login-logo-name" />
         <Logo className="login-logo" />
         <div className="login-input-container">
           <label
@@ -128,7 +145,7 @@ const LoginForm = () => {
             Password
           </label>
           <input
-            type="password"
+            type={passInputType}
             id="password-login"
             className={hasError ? "input-error" : null}
             onFocus={() => setPasswordLabelClass("focused-input")}
@@ -136,6 +153,31 @@ const LoginForm = () => {
             value={password}
             onChange={updatePassword}
           />
+          <div className="password-icon-wrapper">
+            <div className={`password-icon-tooltip ${displayPassTooltip}`}>
+              show / hide password
+              <div className="tooltip-triangle" />
+            </div>
+            {passInputType === "password" ? (
+              <button
+                onClick={showPassword}
+                onMouseEnter={() => setDisplayPassTooltip("")}
+                onMouseLeave={() => setDisplayPassTooltip("hide")}
+                type="button"
+              >
+                <ShowPassword className="password-icon" />
+              </button>
+            ) : (
+              <button
+                onClick={hidePassword}
+                onMouseEnter={() => setDisplayPassTooltip("")}
+                onMouseLeave={() => setDisplayPassTooltip("hide")}
+                type="button"
+              >
+                <HidePassword className="password-icon" />
+              </button>
+            )}
+          </div>
           <div className={hasError ? "login-error" : "login-error hide"}>
             {passError}
           </div>

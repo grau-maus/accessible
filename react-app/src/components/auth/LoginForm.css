@@ -1,8 +1,384 @@
-@media (min-width: 100rem) and (min-height: 58.438rem) {
+#login-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2f9097;
+  height: 100vh;
+}
+
+#login-page-carousel {
+  display: none;
+}
+
+#login-form {
+  min-width: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  margin: 2rem 0;
+  border: 0.3rem solid black;
+  transition: all 0.2s;
+}
+
+.login-logo-name {
+  display: none;
+}
+
+.login-logo {
+  min-width: 40rem;
+  min-height: 25rem;
+}
+
+.login-input-container {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  margin-bottom: 2rem;
+}
+
+.login-input-container > input {
+  width: 21rem;
+  background-color: transparent;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  padding: 0 0.2rem;
+  border: 0.15rem solid rgba(0, 0, 0, 0);
+  border-bottom: 0.15rem solid #3a4454;
+}
+
+.password-icon-wrapper {
+  position: absolute;
+  margin-top: 0.4rem;
+  margin-left: 22rem;
+}
+
+.password-icon-tooltip {
+  margin-top: -2rem;
+  margin-left: -5rem;
+  position: absolute;
+  font-weight: 500;
+  width: 12rem;
+  visibility: visible;
+  border-radius: 1rem;
+  background-color: rgba(0, 0, 0, 0.137);
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.tooltip-triangle {
+  position: absolute;
+  border-color: transparent;
+  left: 5.4rem;
+  width: 0;
+  height: 0;
+  border: 0.3rem solid transparent;
+  border-top: 0.6rem solid rgba(0, 0, 0, 0.137);
+  border-bottom: 0;
+  visibility: visible;
+  transition: all 0.2s;
+}
+
+.password-icon-tooltip.hide {
+  color: rgba(255, 255, 255, 0);
+  background-color: rgba(255, 255, 255, 0);
+  visibility: hidden;
+}
+
+.password-icon-tooltip.hide > .tooltip-triangle {
+  border: none;
+  visibility: hidden;
+}
+
+.password-icon-wrapper > button {
+  border: none;
+  background-color: transparent;
+  margin-left: -0.4rem;
+}
+
+.password-icon-wrapper .password-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  transition: all 0.2s;
+  visibility: visible;
+}
+
+.password-icon-wrapper > button:hover {
+  color: rgb(161, 161, 161);
+  cursor: pointer;
+}
+
+.login-input-label {
+  position: absolute;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-left: 0.2rem;
+  cursor: text;
+  user-select: none;
+  transition: all 0.1s;
+}
+
+.login-input-label.focused-input {
+  font-size: 1rem;
+  background-color: white;
+  padding: 0 0.4rem;
+  margin-top: -1.22rem;
+}
+
+.login-buttons {
+  display: flex;
+  flex-direction: column;
+  width: 10rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.login-buttons > button {
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 400;
+  text-align: center;
+  border: none;
+  border-radius: 1rem;
+  width: 15rem;
+  height: 2.6rem;
+  margin-bottom: 1rem;
+  background-color: #1f5e61;
+  user-select: none;
+  transition: all 0.2s;
+}
+
+.login-buttons > button:hover {
+  background-color: #2f9097;
+  box-shadow: 0 0.1rem 0.3rem grey;
+}
+
+.login-buttons > button:disabled {
+  background-color: gray;
+  box-shadow: none;
+}
+
+button.login-submit-btn {
+  width: 8rem;
+}
+
+div.login-error {
+  color: #b30000;
+  position: absolute;
+  margin-top: 2.4rem;
+  margin-left: 0.1rem;
+  animation: slide-right-in 0.1s forwards;
+  visibility: visible;
+  transition: visibility 0.2s, margin-left 0.2s, color 0.2s;
+}
+
+@keyframes slide-right-in {
+  0% {
+    transform: translateX(-85%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+div.login-error.hide {
+  color: rgba(255, 0, 0, 0);
+  margin-left: 4rem;
+  visibility: hidden;
+}
+
+.login-input-container > input.input-error {
+  border: 0.15rem solid #b30000;
+  animation: pulse-border 0.3s ease-in-out;
+}
+
+@keyframes pulse-border {
+  0% {
+    border: 0.15rem solid #b30000;
+  }
+
+  50% {
+    border: 0.3rem solid #b30000;
+  }
+
+  100% {
+    border: 0.15rem solid #b30000;
+  }
+}
+
+.about-app-info {
+  text-decoration: underline;
+  background-color: transparent;
+  margin-bottom: 1rem;
+  transition: all 0.2s;
+}
+
+.about-app-info:hover {
+  background-color: rgb(221, 221, 221);
+  padding: 0 0.4rem;
+  cursor: pointer;
+}
+
+.about-app::backdrop {
+  background-color: rgba(46, 46, 46, 0.418);
+}
+
+.about-app {
+  border: none;
+  padding: 0;
+  height: fit-content;
+  width: fit-content;
+}
+
+.about-app-content {
+  height: fit-content;
+  width: 45rem;
+}
+
+.about-app-content > * {
+  padding: 0 1.5rem;
+}
+
+.about-app-header {
+  padding-top: 1.4rem;
+  height: 4rem;
+  position: relative;
+  background-color: rgb(245, 245, 245);
+  margin-bottom: 0.6rem;
+}
+
+.about-app-header > svg {
+  position: absolute;
+  top: 0.6rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.about-app-header > svg:hover {
+  cursor: pointer;
+}
+
+.about-app-btn-wrapper {
+  margin-top: 1rem;
+  padding: 0;
+  padding-top: 1rem;
+  background-color: rgb(245, 245, 245);
+  display: flex;
+  justify-content: center;
+}
+
+.about-app-btn-wrapper > button {
+  border: none;
+  text-align: center;
+  width: 15rem;
+  height: 2.8rem;
+  border-radius: 1rem;
+  margin: 1rem;
+  margin-top: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: white;
+  padding: 0.4rem 1rem;
+  background-color: #1f5e61;
+  transition: all 0.2s;
+}
+
+.about-app-btn-wrapper > button:hover {
+  background-color: #2f9097;
+  box-shadow: 0 0.1rem 0.3rem grey;
+}
+
+@media (max-width: 40.625rem) {
+  #login-form {
+    min-width: unset;
+    overflow: hidden;
+  }
+
+  .login-logo-name {
+    display: unset;
+    margin: 0 -4rem;
+    margin-top: -8rem;
+    width: 30rem;
+  }
+
+  .login-logo {
+    display: none;
+  }
+
+  .login-input-container > input {
+    padding: unset;
+    width: 18rem;
+  }
+
+  #password-login {
+    padding-right: 2.3rem;
+  }
+
+  .password-icon-wrapper {
+    margin-left: 16rem;
+  }
+
+  .password-icon-tooltip {
+    margin-top: -3.4rem;
+    width: 8rem;
+  }
+}
+
+@media (min-width: 40.625rem) and (max-width: 100rem) {
+  @media (min-height: 46.563rem) {
+    #login-form {
+      padding-bottom: 3rem;
+    }
+
+    .login-logo {
+      margin-top: -4rem;
+    }
+  }
+
+  @media (min-height: 33.125rem) and (max-height: 46.563rem) {
+    #login-form {
+      padding-bottom: unset;
+      overflow: hidden;
+      height: 33rem;
+    }
+
+    .login-logo {
+      margin-top: -4rem;
+      min-width: 30rem;
+      min-height: 15rem;
+      margin-bottom: -4rem;
+    }
+  }
+
+  @media (max-height: 33.125rem) {
+    #login-form-container {
+      background-color: white;
+    }
+
+    #login-form {
+      border: none;
+      margin: 0;
+      min-width: unset;
+    }
+
+    .login-logo-name {
+      display: unset;
+      margin-bottom: -8rem;
+    }
+
+    .login-logo {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: 100rem) and (min-height: 51.875rem) {
   #login-form-container {
     display: flex;
-    height: 100vh;
-    min-height: 58.438rem;
+    justify-self: unset;
+    align-items: unset;
   }
 
   :is(#login-page-carousel, #login-form) {
@@ -10,11 +386,11 @@
   }
 
   #login-page-carousel {
-    background-color: #2f9097;
     min-width: 30rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
   }
 
   .carousel-image {
@@ -25,10 +401,9 @@
   }
 
   .carousel-image > .image-container {
-    margin-top: 5rem;
-    width: 50rem;
-    height: 35rem;
-    box-shadow: inset 0 0 0.8rem 3rem #2f9097;
+    width: 100rem;
+    height: 80rem;
+    transition: all 0.2s;
   }
 
   .carousel-image.image-1 > .image-container {
@@ -42,9 +417,11 @@
   }
 
   .carousel-image.image-3 > .image-container {
+    margin-top: -50rem;
+    height: 150rem;
     background: url(../../utils/background-images/person-working-coffee.avif)
       no-repeat;
-    background-size: contain;
+    background-size: cover;
   }
 
   .carousel-image.image-4 > .image-container {
@@ -54,9 +431,20 @@
   }
 
   .carousel-image > div:not(div.image-container) {
+    top: 30rem;
+    width: 40rem;
+    position: absolute;
     padding: 2rem;
     font-size: 1.3rem;
     color: white;
+    background-color: rgba(0, 0, 0, 0.267);
+    border-radius: 1rem;
+    backdrop-filter: blur(10px) saturate(70%);
+  }
+
+  .carousel-image.image-3 > div:not(div.image-container) {
+    text-align: left;
+    width: 30rem;
   }
 
   .carousel-image.hide {
@@ -73,7 +461,7 @@
   }
 
   .carousel-navigate-picker > .chevron {
-    color: rgba(221, 221, 221, 0.233);
+    color: rgba(221, 221, 221, 0.425);
     height: 3rem;
     width: 3rem;
     transition: all 0.2s;
@@ -119,211 +507,39 @@
   }
 
   #login-form {
-    min-width: 30rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    border-left: none;
+    border-right: none;
   }
 
-  .login-logo {
-    min-width: 40rem;
-    min-height: 25rem;
+  .login-logo-name {
+    display: none;
   }
+}
 
-  .login-input-container {
-    display: flex;
-    flex-direction: column;
-    margin: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .login-input-container > input {
-    width: 21rem;
-    background-color: transparent;
-    height: 2.5rem;
-    font-size: 1.5rem;
-    padding: 0 0.2rem;
-    border: 0.15rem solid rgba(0, 0, 0, 0);
-    border-bottom: 0.15rem solid #3a4454;
-  }
-
-  .login-input-label {
-    position: absolute;
-    text-align: center;
-    font-size: 1.5rem;
-    margin-left: 0.2rem;
-    cursor: text;
-    user-select: none;
-    transition: all 0.1s;
-  }
-
-  .login-input-label.focused-input {
-    font-size: 1rem;
-    background-color: white;
-    padding: 0 0.4rem;
-    margin-top: -1.22rem;
-  }
-
-  .login-buttons {
-    display: flex;
-    flex-direction: column;
-    width: 10rem;
-    align-items: center;
-    margin-top: 1rem;
-  }
-
-  .login-buttons > button {
-    color: white;
-    font-size: 1.3rem;
-    font-weight: 400;
-    text-align: center;
-    border: none;
-    border-radius: 1rem;
-    width: 15rem;
-    height: 2.6rem;
-    margin-bottom: 1rem;
-    background-color: #1f5e61;
-    transition: all 0.2s;
-  }
-
-  .login-buttons > button:hover {
-    background-color: #2f9097;
-    box-shadow: 0 0.1rem 0.3rem grey;
-  }
-
-  .login-buttons > button:disabled {
-    background-color: gray;
-    box-shadow: none;
-  }
-
-  button.login-submit-btn {
-    width: 8rem;
-  }
-
-  div.login-error {
-    color: #b30000;
-    position: absolute;
-    margin-top: 2.4rem;
-    margin-left: 0.1rem;
-    animation: slide-right-in 0.1s forwards;
-    visibility: visible;
-    transition: visibility 0.2s, margin-left 0.2s, color 0.2s;
-  }
-
-  @keyframes slide-right-in {
-    0% {
-      transform: translateX(-85%);
+/* Galaxy Fold (single screen -- why??) */
+@media (max-width: 17.5rem) {
+  @media (max-height: 40.813rem) {
+    #login-form-container {
+      background-color: white;
     }
 
-    100% {
-      transform: translateX(0%);
-    }
-  }
-
-  div.login-error.hide {
-    color: rgba(255, 0, 0, 0);
-    margin-left: 4rem;
-    visibility: hidden;
-  }
-
-  .login-input-container > input.input-error {
-    border: 0.15rem solid #b30000;
-    animation: pulse-border 0.3s ease-in-out;
-  }
-
-  @keyframes pulse-border {
-    0% {
-      border: 0.15rem solid #b30000;
+    #login-form {
+      border: none;
+      min-width: unset;
+      margin: 0;
     }
 
-    50% {
-      border: 0.3rem solid #b30000;
+    .login-logo-name {
+      width: 25rem;
+      margin-bottom: -4rem;
     }
 
-    100% {
-      border: 0.15rem solid #b30000;
+    .login-input-container > input {
+      width: 15rem;
     }
-  }
 
-  .about-app-info {
-    text-decoration: underline;
-    background-color: transparent;
-    transition: all 0.2s;
-  }
-
-  .about-app-info:hover {
-    background-color: rgb(221, 221, 221);
-    padding: 0 0.4rem;
-    cursor: pointer;
-  }
-
-  .about-app::backdrop {
-    background-color: rgba(46, 46, 46, 0.418);
-  }
-
-  .about-app {
-    border: none;
-    padding: 0;
-    height: fit-content;
-    width: fit-content;
-  }
-
-  .about-app-content {
-    height: fit-content;
-    width: 45rem;
-  }
-
-  .about-app-content > * {
-    padding: 0 1.5rem;
-  }
-
-  .about-app-header {
-    padding-top: 1.4rem;
-    height: 4rem;
-    position: relative;
-    background-color: rgb(245, 245, 245);
-    margin-bottom: 0.6rem;
-  }
-
-  .about-app-header > svg {
-    position: absolute;
-    top: 0.6rem;
-    right: 1rem;
-    width: 2rem;
-    height: 2rem;
-  }
-
-  .about-app-header > svg:hover {
-    cursor: pointer;
-  }
-
-  .about-app-btn-wrapper {
-    margin-top: 1rem;
-    padding: 0;
-    padding-top: 1rem;
-    background-color: rgb(245, 245, 245);
-    display: flex;
-    justify-content: center;
-  }
-
-  .about-app-btn-wrapper > button {
-    border: none;
-    text-align: center;
-    width: 15rem;
-    height: 2.8rem;
-    border-radius: 1rem;
-    margin: 1rem;
-    margin-top: 0;
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: white;
-    padding: 0.4rem 1rem;
-    background-color: #1f5e61;
-    transition: all 0.2s;
-  }
-
-  .about-app-btn-wrapper > button:hover {
-    background-color: #2f9097;
-    box-shadow: 0 0.1rem 0.3rem grey;
+    .password-icon-wrapper {
+      margin-left: 13rem;
+    }
   }
 }
